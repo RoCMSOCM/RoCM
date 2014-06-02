@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Rotation Curve Simulation</title>
+    
+    <script src="http://localhost:8888/src/library/d3.v3.js"></script>
+    <script src="http://localhost:8888/src/library/glow.js"></script>
+    <script src="http://localhost:8888/src/library/parallel.js"></script>
+    <script src="http://localhost:8888/src/library/jquery-1.9.1.js"></script>
+    <script src="http://localhost:8888/src/library/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="http://localhost:8888/src/style/css/humanity/jquery-ui-1.9.2.custom.css">
+    <link rel="stylesheet" href="http://localhost:8888/src/style/css/RoCS_style.css">
+
+  </head>
+  <body class="space">
+
+    <div id="wrapper_slider">
+      <div style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;' 
+            unselectable='on'
+            onselectstart='return false;' 
+            onmousedown='return false;'>
+        <p>
+          <label for="angle_value" style="color:white"><b>Tilt angle: </b></label>
+          <input type="text" id="angle_value" onclick="update_original('angle')" style="border:0; color:#f6931f; background-color:black; font-weight:bold;width=700px;">
+        </p>
+        </div>
+        <div style="width:20px; float:left;position:relative;">
+          <div id="slider_angle" style="height:500px;"></div>
+        </div>
+      </div>
+
+      <div id="milky_way_galaxy"></div>
+
+
+  <script type="text/javascript" src="http://localhost:8888/src/logic/RoCS.js"></script>
+  </body>
+</html>

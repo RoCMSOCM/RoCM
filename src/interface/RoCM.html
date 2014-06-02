@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" type="text/css" href="http://localhost:8888/src/style/css/RoCM_style.css">  
+
+    <!-- MathJax: Latex equations to HTML (needs to be in the html head) -->
+    <script type="text/javascript" src="http://localhost:8888/src/library/init_mathjax.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+</head>
+
+<body>
+  <link rel="icon" href="http://localhost:8888/src/library/galaxy.ico">
+  
+  <title>Rotation Curve Modeler</title>
+  <div>
+    <button id="save" onclick="saveSVG('graph')" style="float:left">Save</button>
+  </div>
+  <br><br>
+  <div id="wrapper">
+    <div style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;' 
+        unselectable='on'
+        onselectstart='return false;' 
+        onmousedown='return false;'>
+    <p>
+      <label for="Nstar_amount"><b>N*: </b></label>
+      <input type="text" id="Nstar_amount" onclick="update_original('Nstar')" style="border:0; color:#f6931f; font-weight:bold;width=700px;">
+    </p>
+    </div>
+    <div style="width:20px; float:left;position:relative;">
+      <div id="slider_Nstar" style="height:500px;"></div>
+    </div>
+
+    <div id="graph" style="fill:white;float:left;position:relative;">
+      <svg xmlns="http://www.w3.org/2000/svg" id="graph_svg"></svg>
+      <div id="constants">
+          <table class="reference" id="constants_table" border="1" style="width:950px;float:left;">
+            <tbody/>
+          </table>
+        </div>
+     </div> 
+    
+    <br>
+
+    <div id="sliders" style="float:left;position:relative;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;" 
+        unselectable="on"
+        onselectstart="return false;" 
+        onmousedown="return false;">
+      <p>
+        <label for="r0_amount"><b>r0: </b></label>
+        <input type="text" id="r0_amount" onclick="update_original('r0')" style="border:0; color:#f6931f; font-weight:bold;">
+      </p>
+      <div id="slider_r0" style="width:950px"></div>
+      
+      <p>
+      <label for="sigma0_amount"><b>sigma0: </b></label>
+      <input type="text" id="sigma0_amount" onclick="update_original('sigma0')" style="border:0; color:#f6931f; font-weight:bold;">
+      </p>
+      <div style="float:left;">
+        <div id="slider_sigma0" style="width:950px"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <form id="svgform" method="post" action="http://d3export.cancan.cshl.edu/download.pl">
+    <input type="hidden" id="output_format" name="output_format" value="">
+    <input type="hidden" id="data" name="data" value="">
+  </form>
+
+  <link rel="stylesheet" href="http://localhost:8888/src/style/css/humanity/jquery-ui-1.9.2.custom.css">
+  
+  <script src="http://localhost:8888/src/library/d3.v3.js"></script>
+  <script src="http://localhost:8888/src/library/jquery-1.9.1.js"></script>
+  <script src="http://localhost:8888/src/library/jquery-ui.js"></script>
+
+  <script src="http://localhost:8888/src/library/vkbeautify.js"></script>
+  <script src="http://localhost:8888/src/library/prettify.js"></script>
+
+  <script src="http://localhost:8888/src/library/bessel.js"></script>
+  <script src="http://localhost:8888/src/library/integrate.js"></script>
+
+  <script src="http://localhost:8888/src/library/FileSaver.js"></script>
+  <script src="http://localhost:8888/src/library/Blob.js"></script>
+
+  <script src="http://localhost:8888/src/logic/RoCM.js"></script>
+
+<div id="latex_wrapper" style="">
+  <div id="input" style="margin-left:auto;margin-right:auto;">
+    <p>Enter $\LaTeX$ code:<br> <input id="tex" type="text" style="width:400px"/></p>
+  </div>
+  <div id="output" style="margin-left:auto;margin-right:auto;width=100%"></div>
+</div>
+</body>
+</html>

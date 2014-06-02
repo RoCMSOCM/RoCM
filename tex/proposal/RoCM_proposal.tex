@@ -1,0 +1,130 @@
+\documentclass[12pt]{article}
+\title{RoCM: A Rotation Curve Modeler for Arbitrary Galaxies\\\normalsize Version 2.0}
+\author{Robert Moss, Alex Clement}
+\date{\today}
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{gantt}
+\usepackage{tikz}
+
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Abstract}
+
+Astrophysicists will need to model galaxies in programs like MATLAB or Mathematica, but there doesn't exist a singular tool to expedite this process in a universal format. RoCM will help generalize the work being done on galaxy research.  With observable data as the input, any galaxy can be imported into the tool. The data will come from another project, SOCM (Scholarly Observed Celestial Measurements by Patrick McGee and David Miller). RoCM plots the data graph, and includes several curves as overlays. Aiding in finding alternate theories to dark matter, the purpose of RoCM is to expose the intricacies of each theory that solves the rotation curve problem. The scientist or researcher working with this tool will be able to visually see how each parameter in the given model effects the behavior of the rotation curve. Once finished modeling, the user can export the graph in an SVG format. Being a loss-less format makes Scalable Vector Graphics particularly important for data visualization and the figure can be included in scholarly articles.
+
+\section{Objectives}
+
+Originally built by Robert Moss to model the Milky Way galaxy (directed research by Dr. James G. O'Brien), RoCM 2.0 will include several necessary features to generalize the tool:
+
+\begin{itemize}
+	\item Web interface for RoCM and SOCM
+	\begin{itemize}
+		\item Create a website to host RoCM and SOCM. 
+		\item Seamless UI for scientists to access the data and model the curves within RoCM.
+		\item Host the website on WIT or external servers.
+	\end{itemize}
+	\item Standardize each individual model to be a function v(R)
+	\begin{itemize}
+		\item Input: R (galactocentric distance in kpc)
+		\item Output: v (rotation velocity in $\frac{km}{s}$)
+		\item Currently 3 models are implemented:
+		\begin{enumerate}
+			\item General relativity model
+			\item Lambda-CDM model (general relativity + cold dark matter)
+			\item Conformal gravity
+		\end{enumerate}
+		\item Include other alternatives:
+		\begin{enumerate}
+			\item MoND: Modification of Newtonian Dynamics
+			\item TeVeS: Tensor-vector-scalar gravity
+		\end{enumerate}
+	\end{itemize}
+	\item Allow users to import their own model (via JavaScript code)
+	\begin{itemize}
+		\item Following the defined v(R) input/output standard.
+		\item Observable galactic parameters from SOCM will be available as constants.
+		\item User defined constants will need to be implemented in the user's function.
+	\end{itemize}
+	\item Import LaTeX equation for each model (optional)
+	\begin{itemize}
+		\item The user can import their own LaTeX equation to be displayed during the data plotting.
+		\item Aids in understanding the behavior of each parameter.
+	\end{itemize}
+	\item Implement different galactic bulge models
+	\begin{itemize}
+		\item Current bulge model is for large disk galaxies.
+		\item Bulge models for different classifications of galaxies will be necessary.
+	\end{itemize}
+	\item Interact with RoCS (Rotation Curve Simulation)
+	\begin{itemize}
+		\item RoCS visualizes the spin of star clusters around the center of a galaxy. 
+		\item Live update the simulation when changing the parameter sliders.
+		\item Include scale and legend for the visualization.
+	\end{itemize}
+	\item Import velocity data and galactic parameters from SOCM.
+	\begin{itemize}
+		\item Use the repository of observable galactic data to model hundreds/thousands of different galaxies.
+	\end{itemize}
+	\item Dynamic parameter sliders
+	\begin{itemize}
+		\item For every parameter in the individual models, a dynamic slider with user defined ranges can be created. 
+		\item Enables the user to visualize the behavior of each parameter within the entire model.
+		\item Allows for the testing of uncertainty within the observable data.
+	\end{itemize}
+	\item Settings module for graphing tool
+	\begin{itemize}
+		\item Edit x,y ranges
+		\item Edit line colors
+		\item Edit graph title
+	\end{itemize}
+	\item Make it open source and widely available.
+	\begin{itemize}
+		\item Comment code
+		\item Create necessary APIs for RoCM and RoCS
+		\item Redesign code to lower complexity.	
+	\end{itemize}
+\end{itemize}
+
+\section{Project Implementation and Management}
+RoCM is written in JavaScript using the data visualization library, D3 (Data Driven Documents). Development will continue to use JavaScript to implement the website interface and the logic for other models. Worries about computationally expensive calculations in JavaScript was quickly thwarted by RoCM 1.0. JavaScript can handle the recalculation of each model, without depending on an external mathematical engine. 
+
+The interface between RoCM and SOCM will use AJAX. A simple AJAX call allows data to be imported to RoCM from SOCM. JQuery will be used to create an organized UI for the web interface. Other external dependencies will include a JavaScript library for bessel functions and for numerical integration. Other mathematical libraries will be added as necessary.
+
+\section{Plan}
+\begin{gantt}{8}{13}
+	\begin{ganttitle}
+      \titleelement{5/19}{2}
+      \titleelement{6/9}{3}
+      \titleelement{6/16}{2}
+      \titleelement{6/23}{2}
+      \titleelement{7/14}{2}
+      \titleelement{8/7}{2}
+	\end{ganttitle}
+	\ganttbar[color=red]{Proposal}{0}{2}
+	\ganttbar{Software Reqmt. Spec. (SRS)}{2}{3}
+	\ganttbar{Software Design Desc. (SDD)}{5}{2}
+	\ganttbar{Object Design Doc. (ODD)}{7}{2}
+	\ganttbar{Design Prototype}{8}{3}
+	\ganttbar{Testing}{10}{2}
+	\ganttbar[color=blue]{Report/Presentation}{11}{2}
+	\node[fill=white,draw] at ([yshift=-12pt]current bounding box.south){
+{\color{red}Red} = current | {\color{blue} Blue} = final};
+\end{gantt}
+
+\section{Resources and Budget}
+\textit{See ``Section 5: Resources and Budget'' of the SOCM proposal for details.}
+
+
+
+\end{document}
