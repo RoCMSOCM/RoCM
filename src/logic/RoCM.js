@@ -476,18 +476,27 @@ function import_constants() {
 
     var table = $("#constants_table");
     
-    table.append($("<tr>"));
+    table.append($("<thead><tr>"));
     
-    for(var i=0;i<n;i++){
-      table.append($("<td>")
-          .text(data[keys[i]])
-      );
-    }
-
     table = $('#constants_table tr:last');
     for(var i=0;i<n;i++){
-      table.append($("<td>")
+      
+      table.append($("<th>")
         .text(keys[i]));
+    }
+
+
+    // table.append($("</tr></thead>"));
+    table = $('#constants_table');
+    table.append($("<tbody><tr>"));
+
+    table = $('#constants_table tr:last');
+
+    for(var i=0;i<n;i++){    
+      
+      table.append($("<td><em>")
+          .text(data[keys[i]])
+      );
     }
 
     initialize_sliders();
@@ -540,7 +549,7 @@ function initialize_sliders() {
   Nstar_coeff = Nstar_min; 
 
   $( "#slider_Nstar" ).slider({
-    orientation: "vertical",
+    // orientation: "vertical",
     range: "min",
     min: Nstar_min/Nstar_coeff,
     max: Nstar_max/Nstar_coeff,
