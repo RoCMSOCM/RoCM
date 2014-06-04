@@ -4,7 +4,17 @@ var d_sun = 8.33 //+- 0.35 kpc
 var font = "12px sans-serif";
 document.getElementById("graph").style.font = font;
 
-$("#save").button();
+$("#save").button({
+  icons: {
+    secondary: "ui-icon-disk"
+  }
+});
+
+$("#simulate").button({
+  icons: {
+    secondary: "ui-icon-arrowreturnthick-1-e"
+  }
+});
 
 var margin = {top: 20, right: 125, bottom: 30, left: 40},
     width = 1050 - margin.left - margin.right,
@@ -74,6 +84,7 @@ var calc_done = false;
 var blackOrWhite = "black"
 
 var hide_legend_labels = true;
+
 
 
 
@@ -456,6 +467,8 @@ function legend_name(d) {
 }
 
 function import_constants() {
+  
+  // TODO FIX: Import constants without formatting 
   d3.csv("http://localhost:8888/data/MILKY_WAY_CONSTANTS.csv", function(error, data) {
     data = data[0];
 
@@ -470,6 +483,12 @@ function import_constants() {
     R0kpc_orig = R0kpc;
     Nstar_orig = Nstar;
 
+    initialize_sliders();
+  });
+
+  // TODO FIX: Import the formatted constants (html formatting, superscripts, subscripts, etc.)
+  d3.csv("http://localhost:8888/data/MILKY_WAY_CONSTANTS_FORMATTED.csv", function(error, data) {
+    data = data[0];
 
     var keys = Object.keys(data);
     var n = keys.length;
@@ -482,7 +501,7 @@ function import_constants() {
     for(var i=0;i<n;i++){
       
       table.append($("<th>")
-        .text(keys[i]));
+        .html(keys[i]));
     }
 
 
@@ -495,11 +514,9 @@ function import_constants() {
     for(var i=0;i<n;i++){    
       
       table.append($("<td><em>")
-          .text(data[keys[i]])
+          .html("<code>" + data[keys[i]] + "</code>")
       );
     }
-
-    initialize_sliders();
   });
 }
 
@@ -750,6 +767,49 @@ function submit_download_form(type){
   saveAs(blob, "d3_svg_element.svg");
 
   // form.submit();
+}
+
+function send_to_rocs(galaxy_name) {
+  var vrot_name = "";
+  var vels = [];
+  var opac = [];
+
+  $('.velocity path').each(function () {
+    vel = $(this).attr('class'); 
+    op = +$(this).css('opacity');
+    if(op == 1)
+      vels.push(vel);
+  });
+
+  total_count = vels.length;
+  data_count = 0;
+  model_count = 0;
+  models = [];
+
+  for(var i=0;i<vels.length;i++){
+      if(vels[i].contains("DATA"))
+        data_count++;
+      else{
+        model_count++;
+        models.push(vels[i]);
+      }
+  }
+
+  if(data_count == total_count)
+  {
+    vrot_name = "VROT_DATA"
+  }
+  else if(model_count == 1){
+    vrot_name = models[0];
+  } 
+  else
+  {
+    alert('Select only one model to simulate.\nOr\nSelect only the data.\n\n(click the legend)')
+    return;
+  }
+
+  var rocs_url = "http://localhost:8888/src/interface/RoCS.html#"+vrot_name;
+  window.location.href = rocs_url;
 }
 
 function formatting(string) {

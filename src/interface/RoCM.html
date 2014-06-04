@@ -33,15 +33,28 @@
  
   
   <div id="wrapper" style="max-width:1200px;margin:0 auto">
-      <div style="float:right">
-        <button id="save" onclick="saveSVG('graph')" style="float:left">Save to SVG</button>
-      </div>
-      <h1>Rotation Curve Modeler</h1>
-      <h2> </h2>
-    <div id="graph" style="fill:white;">
+   
+    <h1>Rotation Curve Modeler</h1>
+    <h2> </h2>   
+    
+    <div style="float:right;">
+      <button id="save" onclick="saveSVG('graph')" style="float:right">Save to SVG</button>
+    </div>
+
+    <br>
+    
+    <div id="graph" style="fill:white;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;">
       <br><br>
       <svg xmlns="http://www.w3.org/2000/svg" id="graph_svg" style="display:block;margin:auto;"></svg>
     </div>
+
+    <br>
+
+    <div style="float:right;">
+      <button id="simulate" onclick="send_to_rocs('Milky Way')" style="float:right">Simulate</button>
+    </div>
+
+    <br>
 
     <h2>Parameters</h2>
     <div id="constants" style="float:left;width:100%">

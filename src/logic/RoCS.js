@@ -1,4 +1,4 @@
-var w = 1500, h = w,
+var w = 1500, h = w*0.85,
 AU = 100,
 days = 36.5, 
 spScale = 100 * 5, 
@@ -26,21 +26,41 @@ var size_scale = d3.scale.linear()
 
 AU *= dist;
 
+$("#back").button({
+  icons: {
+    primary: "ui-icon-arrowreturnthick-1-w"
+  }
+});
 
 // $("input").bind("keyup",function(e){
 //     var value = this.value + String.fromCharCode(e.keyCode);
 // });
 
 d3.csv("http://localhost:8888/data/MILKY_WAY_OUTPUT.csv", function(error, data) {
-//  galaxy(data, "VROT_TOTAL", "Rotation Curve of the Milky Way (General Relativity + Cold Dark Matter)");   
-  galaxy(data, "VROT_DATA", "Rotation Curve of the Milky Way (Data)");     
-//  galaxy(data, "VROT_GR", "Rotation Curve of the Milky Way (General Relativity)");
-//  galaxy(data, "VROT_CONFORMAL", "Rotation Curve of the Milky Way (Conformal Gravity)");   
-//  galaxy(data, "VROT_DARK", "Rotation Curve of the Milky Way (Cold Dark Matter)");   
+  var vrot_name = window.location.href.split("#")[1];
+
+  switch(vrot_name) {
+    case "VROT_DATA":
+        galaxy(data, vrot_name, "Milky Way", "Observational Data");   
+        break;
+    case "VROT_GR":
+        galaxy(data, vrot_name, "Milky Way", "General Relativity");
+        break;
+    case "VROT_TOTAL":
+        galaxy(data, vrot_name, "Milky Way", "Lambda Cold Dark Mater");
+        break;
+    case "VROT_CONFORMAL":
+        galaxy(data, vrot_name, "Milky Way", "Conformal Gravity");
+        break;
+    default:
+        galaxy(data, "VROT_DATA", "Milky Way", "Observational Data");
+  } 
 
 });
 
-function galaxy(data, velocity, title_text) {
+function galaxy(data, velocity, galaxy_name, data_type) {
+
+  generate_title(galaxy_name, data_type);
 
   initialize_angle_slider()
 
@@ -50,8 +70,10 @@ function galaxy(data, velocity, title_text) {
 
   dist_factor = 3;
 
+  var velocity_factor = 50;
+
   var stars = data.map(function(d) {
-    return {R: +d.R * dist_factor, r: 1, velocity: +d[velocity]/50};
+    return {R: +d.R * dist_factor, r: 1, velocity: +d[velocity]/velocity_factor};
   });
 
   var min_R = d3.min(stars, function(d) { return d.R; });
@@ -66,26 +88,24 @@ function galaxy(data, velocity, title_text) {
     .range([0.1, 2]);
 
   var svg = d3.select("#milky_way_galaxy").insert("svg")
-    .attr("width", w/2).attr("height", h/2)
+    .attr("width", w/2).attr("height", h/2).style("margin", "auto").style("display","block")
          .call(myGlow);
 
   svg.append("circle").attr("r", black_hole_size * sizeScale).attr("cx", w/4)
-    .attr("cy", h/4).attr("class", "black_hole") 
+    .attr("cy", h/4).attr("class", "black_hole");
 
-  var title = svg.append("text")
-      .attr("class", "title")
-      .attr("x", (w / 4))             
-      .attr("y", 40)
-      .attr("text-anchor", "middle")  
-      .style("font-size", "20px") 
-      .style("text-decoration", "underline")  
-      .style("stroke", "none")
-      .style("fill", "white")
-      .text(title_text);
+
+  var title = svg.append("h3")
+        .attr("color", "white")
+        .text("Rotation Curve Simulation of the Milky Way Galaxy");
 
 
 
-  var is3D = true;
+  var is3D = false;
+
+  if(!is3D){
+    $("#slider_wrapper").hide();
+  }
 
   var h_factor = is3D ? 8 : 4;
 
@@ -93,6 +113,10 @@ function galaxy(data, velocity, title_text) {
     .attr("transform", "translate(" + w/4 + "," + h/h_factor + ")")
 
   range_color.domain([min_velocity, max_velocity]);
+
+  initialize_spin_slider();
+
+  initialize_legend(min_velocity, max_velocity, velocity_factor);
 
   container.selectAll("g.star").data(stars).enter().append("g")
     .attr("class", "star").each(function(d, i) {
@@ -142,6 +166,8 @@ function galaxy(data, velocity, title_text) {
 }
 
 var t0 = Date.now() - 10000000;
+_spin_velocity = 100;
+spin_velocity = _spin_velocity;
 
 function rotate(star_cluster, star_velocity, is3D){
   var delta = (Date.now() - t0);
@@ -151,13 +177,13 @@ function rotate(star_cluster, star_velocity, is3D){
   if(is3D){
     star_cluster
     .transition()
-      .duration(1000)
+      .duration(10)
         .attr("style", function (d) {
           return "-webkit-transform: perspective(800) scale(1) scale3d(1, 1, 2) rotate3d(1, 0, 0, " + a_value + "deg) translate3d(0px, 198px, 0px);stroke:none;fill:" + range_color(d.velocity);
         })
   }
   star_cluster.attr("transform",  function(d) {
-      return "rotate(" + delta * d.velocity/100 + ")";
+      return "rotate(" + delta * d.velocity/spin_velocity + ")";
   });
 }
 
@@ -186,6 +212,20 @@ function initialize_angle_slider() {
   $( "#angle_value" ).val( a_value + " degrees" );
 }
 
+function initialize_spin_slider() {
+
+  $( "#slider_spin" ).slider({
+    range: "min",
+    min: spin_velocity/2,
+    max: spin_velocity*2,
+    value: spin_velocity,
+    change: function( event, ui ) {
+      spin_velocity = +ui.value;
+    }
+  });
+
+}
+
 function slide_slider(event, ui, type) {
   var local_val = +ui.value;
 
@@ -197,6 +237,21 @@ function slide_slider(event, ui, type) {
 
 }
 
+function initialize_legend(vmin, vmax, velocity_factor) {
+    vmin = vmin*velocity_factor;
+    vmax = vmax*velocity_factor;
+    vmid = (vmax+vmin)/2
+
+  $( "#velocity_value_min" ).val( Math.round(vmin) + " km/s" );
+  $( "#velocity_value_min" ).css('color',range_color(vmin/velocity_factor));
+
+  $( "#velocity_value_mid" ).val( Math.round(vmid) + " km/s" );
+  $( "#velocity_value_mid" ).css('color',range_color(vmid/velocity_factor));
+
+  $( "#velocity_value_max" ).val( Math.round(vmax) + " km/s" );
+  $( "#velocity_value_max" ).css('color',range_color(vmax/velocity_factor));
+}
+
 function update_original(type) {
   var orig_val = 0;
   var val_suffix = "";
@@ -205,12 +260,43 @@ function update_original(type) {
     orig_val = a_init;
     val_suffix = " degrees";
   }
+  else if(type == "spin"){
+    spin_velocity = _spin_velocity;
+    orig_val = spin_velocity;
+  }
 
   var slider_name = "#slider_" + type;
 
   $slider = $(slider_name);
   $slider.slider("value", orig_val);
   $slider.trigger("change");
+}
+
+function generate_title(galaxy_name, data_type) {
+
+  d3.select("#title_div")
+    .append("h3")
+      .append("font")
+        .attr("color", "white")
+          .text("Rotation Curve Simulation of the " + galaxy_name + " Galaxy");
+
+  d3.select("#title_div")
+      .append("font")
+        .attr("color", "white")
+          .text(data_type);
+
+  d3.select("#title_div")
+    .append("h2")
+          .text(" ");
+          
+
+
+  $("#title_div").append($("<thead><tr>"));
+}
+
+function back(){
+  var rocm_url = "http://localhost:8888/src/interface/RoCM.html";
+  window.location.href = rocm_url;
 }
 
 function sleep(millis, callback) {
