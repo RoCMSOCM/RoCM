@@ -6,7 +6,7 @@ dist = 1 / 5,
 sizeScale = dist,
 black_hole_size = 1;
 
- var myGlow = glow("myGlow").rgb("#ff0").stdDeviation(.2);
+var myGlow = glow("myGlow").rgb("#ff0").stdDeviation(.2);
 
 var color = d3.scale.linear()
  .range(["gold","firebrick"]);
