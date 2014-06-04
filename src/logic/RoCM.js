@@ -74,7 +74,7 @@ var sun_class = "SUN"
 
 var sun_label = "Sun"
 
-var title_text = "Rotation curve of the Milky Way Galaxy";
+var galaxy_name = "Milky Way";
 
 var bulge_b = 0.611499 // *10^10
 var bulge_t = 0.0939927
@@ -406,10 +406,10 @@ d3.csv("http://localhost:8888/data/MILKY_WAY_OUTPUT.csv", function(error, data) 
       .attr("text-anchor", "middle")  
       .style("font", font)
       .style("font-size", animate_title ? "40px" : "14px") 
-      .style("font-style", "italic")
+      // .style("font-style", "italic")
       .style("text-decoration", "underline")
       .style("fill", blackOrWhite)
-      .text(title_text);
+      .text(galaxy_name + " Galaxy");
 
     if(animate_title){
       title.transition()
@@ -438,12 +438,12 @@ function get_opacity(d) {
   o_data = 1
   o_error = err_op
   o_dark = 0
-  o_total = 1
+  o_total = 0
   o_sun = sun_op
   o_gr = 1
   o_bulge = 0
   o_default = 1
-  o_conformal = 1
+  o_conformal = 0
 
    return is(d, "err") ? o_error : is(d, "data") ? o_data : is(d, "dark") ? o_dark : is(d, "total") ? o_total : is(d, "sun") ? o_sun : is(d, "gr") ? o_gr : is(d, "bulge") ? o_bulge: is(d, "conformal") ? o_conformal : o_default;
 }
@@ -808,7 +808,7 @@ function send_to_rocs(galaxy_name) {
     return;
   }
 
-  var rocs_url = "http://localhost:8888/src/interface/RoCS.html#"+vrot_name;
+  var rocs_url = "http://localhost:8888/src/interface/RoCS.html#"+galaxy_name+"#"+vrot_name;
   window.location.href = rocs_url;
 }
 

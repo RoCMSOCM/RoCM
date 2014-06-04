@@ -37,23 +37,25 @@ $("#back").button({
 // });
 
 d3.csv("http://localhost:8888/data/MILKY_WAY_OUTPUT.csv", function(error, data) {
-  var vrot_name = window.location.href.split("#")[1];
+  var hash_split = window.location.href.split("#")
+  var galaxy_name = hash_split[1];
+  var vrot_name = hash_split[2];
 
   switch(vrot_name) {
     case "VROT_DATA":
-        galaxy(data, vrot_name, "Milky Way", "Observational Data");   
+        galaxy(data, vrot_name, galaxy_name, "Observational Data");   
         break;
     case "VROT_GR":
-        galaxy(data, vrot_name, "Milky Way", "General Relativity");
+        galaxy(data, vrot_name, galaxy_name, "General Relativity");
         break;
     case "VROT_TOTAL":
-        galaxy(data, vrot_name, "Milky Way", "Lambda Cold Dark Mater");
+        galaxy(data, vrot_name, galaxy_name, "Lambda Cold Dark Mater");
         break;
     case "VROT_CONFORMAL":
-        galaxy(data, vrot_name, "Milky Way", "Conformal Gravity");
+        galaxy(data, vrot_name, galaxy_name, "Conformal Gravity");
         break;
     default:
-        galaxy(data, "VROT_DATA", "Milky Way", "Observational Data");
+        galaxy(data, "VROT_DATA", galaxy_name, "Observational Data");
   } 
 
 });
@@ -93,12 +95,6 @@ function galaxy(data, velocity, galaxy_name, data_type) {
 
   svg.append("circle").attr("r", black_hole_size * sizeScale).attr("cx", w/4)
     .attr("cy", h/4).attr("class", "black_hole");
-
-
-  var title = svg.append("h3")
-        .attr("color", "white")
-        .text("Rotation Curve Simulation of the Milky Way Galaxy");
-
 
 
   var is3D = false;
@@ -278,12 +274,12 @@ function generate_title(galaxy_name, data_type) {
     .append("h3")
       .append("font")
         .attr("color", "white")
-          .text("Rotation Curve Simulation of the " + galaxy_name + " Galaxy");
+          .text("Rotation Curve Simulation: " + galaxy_name + " Galaxy");
 
   d3.select("#title_div")
       .append("font")
         .attr("color", "white")
-          .text(data_type);
+          .text("Using " + data_type);
 
   d3.select("#title_div")
     .append("h2")
