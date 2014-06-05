@@ -4,17 +4,9 @@ var d_sun = 8.33 //+- 0.35 kpc
 var font = "12px sans-serif";
 document.getElementById("graph").style.font = font;
 
-$("#save").button({
-  icons: {
-    secondary: "ui-icon-disk"
-  }
-});
+$("#save").button(/*{icons: {secondary: "ui-icon-disk"}}*/);
 
-$("#simulate").button({
-  icons: {
-    secondary: "ui-icon-arrowreturnthick-1-e"
-  }
-});
+$("#simulate").button(/*{icons: {secondary: "ui-icon-arrowreturnthick-1-e"}}*/);
 
 var margin = {top: 20, right: 125, bottom: 30, left: 40},
     width = 1050 - margin.left - margin.right,
@@ -56,7 +48,7 @@ var svg = d3.select("#graph_svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var wrapper = d3.select("#wrapper")
+var wrapper = d3.select("#rocm_wrapper")
     .attr("width", "75%")
     .attr("min-width", width + margin.left + margin.right + 200);
 
@@ -93,7 +85,7 @@ import_constants();
 
 
 
-d3.csv("http://localhost:8888/data/MILKY_WAY_OUTPUT.csv", function(error, data) {
+d3.csv("../../data/velocity/MILKY_WAY_OUTPUT.csv", function(error, data) {
   // Add origin to the data
   var data_keys = Object.keys(data[0]);
   var origin_data = {};
@@ -469,7 +461,7 @@ function legend_name(d) {
 function import_constants() {
   
   // TODO FIX: Import constants without formatting 
-  d3.csv("http://localhost:8888/data/MILKY_WAY_CONSTANTS.csv", function(error, data) {
+  d3.csv("../../data/velocity/MILKY_WAY_CONSTANTS.csv", function(error, data) {
     data = data[0];
 
     //Defines globals r0, sigma0, R0, and N* from the constants CSV
@@ -487,7 +479,7 @@ function import_constants() {
   });
 
   // TODO FIX: Import the formatted constants (html formatting, superscripts, subscripts, etc.)
-  d3.csv("http://localhost:8888/data/MILKY_WAY_CONSTANTS_FORMATTED.csv", function(error, data) {
+  d3.csv("../../data/velocity/MILKY_WAY_CONSTANTS_FORMATTED.csv", function(error, data) {
     data = data[0];
 
     var keys = Object.keys(data);
@@ -808,7 +800,7 @@ function send_to_rocs(galaxy_name) {
     return;
   }
 
-  var rocs_url = "http://localhost:8888/src/interface/RoCS.html#"+galaxy_name+"#"+vrot_name;
+  var rocs_url = "./RoCS.html#"+galaxy_name+"#"+vrot_name;
   window.location.href = rocs_url;
 }
 
@@ -934,6 +926,7 @@ function display(){
   var url=window.location.origin+window.location.pathname+(tex.length?'?'+encodeURIComponent(tex):'');
   $('#link').text(url).attr('href',url);
 } 
+
 $(function(){
   $('#input #tex').on('change keyup',display);
   display();

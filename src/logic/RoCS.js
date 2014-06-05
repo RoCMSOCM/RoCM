@@ -36,7 +36,7 @@ $("#back").button({
 //     var value = this.value + String.fromCharCode(e.keyCode);
 // });
 
-d3.csv("http://localhost:8888/data/MILKY_WAY_OUTPUT.csv", function(error, data) {
+d3.csv("../../data/velocity/MILKY_WAY_OUTPUT.csv", function(error, data) {
   var hash_split = window.location.href.split("#")
   var galaxy_name = hash_split[1];
   var vrot_name = hash_split[2];
@@ -291,7 +291,7 @@ function generate_title(galaxy_name, data_type) {
 }
 
 function back(){
-  var rocm_url = "http://localhost:8888/src/interface/RoCM.html";
+  var rocm_url = "./RoCM.html";
   window.location.href = rocm_url;
 }
 

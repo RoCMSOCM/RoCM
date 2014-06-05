@@ -3,37 +3,49 @@
   <head>
     <meta charset="utf-8">
     
-    <link rel="stylesheet" href="http://localhost:8888/src/style/css/humanity/jquery-ui-1.9.2.custom.css">
-    <link rel="stylesheet" type="text/css" href="http://localhost:8888/src/style/css/github.css">
-    <link rel="stylesheet" type="text/css" href="http://localhost:8888/src/style/css/RoCM_style.css"> 
+    <link rel="stylesheet" href="../style/humanity/jquery-ui-1.9.2.custom.css">
+    <link rel="stylesheet" href="../style/github.css">
+    <link rel="stylesheet" href="../style/SOCMt.css"> 
+    <link rel="stylesheet" href="../style/RoCM.css"> 
+    <link rel="stylesheet" href="../style/jquery.dataTables.css">
 
     <!-- MathJax: Latex equations to HTML (needs to be in the html head) -->
-    <script type="text/javascript" src="http://localhost:8888/src/library/init_mathjax.js"></script>
+    <script type="text/javascript" src="../library/init_mathjax.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
-    <script src="http://localhost:8888/src/library/d3.v3.js"></script>
-    <script src="http://localhost:8888/src/library/jquery-1.9.1.js"></script>
-    <script src="http://localhost:8888/src/library/jquery-ui.js"></script>
+    <script src="../library/d3.v3.js"></script>
+    <!-- <script src="../library/jquery-1.9.1.js"></script> -->
+    <script src="../library/jquery-1.10.2.min.js"></script>
+    <script src="../library/jquery-ui.js"></script>
 
-    <script src="http://localhost:8888/src/library/vkbeautify.js"></script>
-    <script src="http://localhost:8888/src/library/prettify.js"></script>
+    <script src="../library/vkbeautify.js"></script>
+    <script src="../library/prettify.js"></script>
 
-    <script src="http://localhost:8888/src/library/bessel.js"></script>
-    <script src="http://localhost:8888/src/library/integrate.js"></script>
+    <script src="../library/bessel.js"></script>
+    <script src="../library/integrate.js"></script>
 
-    <script src="http://localhost:8888/src/library/FileSaver.js"></script>
-    <script src="http://localhost:8888/src/library/Blob.js"></script>
+    <script src="../library/FileSaver.js"></script>
+    <script src="../library/Blob.js"></script>
+
+    <script src="../library/jquery.dataTables.js"></script>
 
 </head>
 
 <body>
-  <link rel="icon" href="http://localhost:8888/src/library/galaxy.ico">
+  <link rel="icon" href="../library/galaxy.ico">
   
   <title>Rotation Curve Modeler</title>
- 
-  
-  <div id="wrapper" style="max-width:1200px;margin:0 auto">
-   
+
+  <div style="position:absolute;top:0%;left:50%;margin-left:-100px;width:200px;">
+    <button id="display_button">SOCM Table</button>
+  </div>
+
+  <div id="socmt_wrapper" style="display:none;">
+    <h2>Scholarly Observed Celestial Measurements</h2>
+  </div>
+
+  <div id="rocm_wrapper" style="max-width:1200px;margin:0 auto">
+
     <div id="title_div">
       <h1>Rotation Curve Modeler</h1>
       <h2> </h2>   
@@ -133,7 +145,10 @@
 </body>
 </html>
 
-  <script src="http://localhost:8888/src/logic/RoCM.js"></script>
+  <!-- SOCM Table -->
+  <script src="../logic/SOCMt.js"></script>
+
+  <script src="../logic/RoCM.js"></script>
 
 </body>
 </html>
