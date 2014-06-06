@@ -13,6 +13,27 @@ function import_constants() {
   d3.csv("../../data/velocity/MILKY_WAY_CONSTANTS.csv", function(error, data) {
     data = data[0];
 
+    var data_keys = Object.keys(data);
+
+    for(var i=0;i<data_keys.length;i++){
+      var key = data_keys[i];
+
+      // Split the incoming data by delim. Ex: white space, '1.232 kpc'
+      // Splits by first occurance of delim
+      var delim = " ";
+      var split_data = data[key].split(delim);
+      var joined_split = [split_data.shift(), split_data.join(delim)];
+      var value = +joined_split[0];
+      var units = joined_split[1];
+
+      var params_value = new Param(value, units, value/2, value*2);
+
+      PARR.set(key, params_value);
+    }
+
+    println(PARR.getDict());
+
+
     //Defines globals r0, sigma0, R0, and N* from the constants CSV
     PARAMS.r0 = +data.r0.split(" ")[0];
     PARAMS.sigma0 = +data.sigma0.split(" ")[0];

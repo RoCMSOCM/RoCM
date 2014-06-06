@@ -17,8 +17,15 @@ $("#about_button").click(function () {
   }, this_button.data('state') == 'up' ? 1000 : 1000); //TODO: Fix this when scrolling up as it's closing
 });
 
-PARAMS = new Params();
+
+
+PARAMS = new Params(); //Inherit Array into Params
 VDATA = new VData();
+
+PARR = new ParamsDict();
+
+
+
 
 // Params Import
 import_constants();
