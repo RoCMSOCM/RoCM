@@ -1,4 +1,4 @@
-function createDataTable()
+function create_data_table()
 {
 	var table = $("#galaxy_table").DataTable( {
 		"language": {
@@ -35,7 +35,7 @@ function createDataTable()
     } );
 }
 
-function makeTablejQuery(csvFileName) {
+function create_table(csvFileName) {
 	d3.csv(csvFileName, function(error, data) {
 		data.forEach(function(d) {
 			d.Functions = "<button class='plot'>Plot</button> | <button class='download'>Download</button>"
@@ -93,26 +93,34 @@ function makeTablejQuery(csvFileName) {
 		$(".plot").button();
 		$(".download").button();
 		
-		createDataTable();
+		create_data_table();
 	});
 }
 
-function makeDropdownDiv() {
-	var table_button = $("#display_button");
+function create_dropdown_div(div_id, button_id, direction) {
+	var table_button = $("#" + button_id);
 	
+	var compass = "";
+
+	direction == "up" ? compass = "n" : compass = "s";
+
 	table_button.button({
 		icons: {
-			secondary: "ui-icon-triangle-1-s"
+			secondary: "ui-icon-triangle-1-"+compass
 		}
 	});
 	
 	table_button.click(function () {
-		$('#socmt_wrapper').slideToggle('1000');
+		$("#"+div_id).slideToggle({
+			direction: direction
+		},'1000');
 
 		$(this).data('state', ($(this).data('state') == 'up') ? 'down' : 'up');
+		var _compass = "";
+		compass == "s" ? _compass = "n" : _compass = compass;
 		table_button.button({
 			icons: {
-				secondary: ($(this).data('state') == "up") ? "ui-icon-triangle-1-n" : "ui-icon-triangle-1-s"
+				secondary: ($(this).data('state') == "up") ? "ui-icon-triangle-1-"+_compass : "ui-icon-triangle-1-"+compass
 			}
 		});
 	});
@@ -144,20 +152,3 @@ function format ( d ) {
     '</tr>'+
     '</table>';
 }
-
-makeDropdownDiv();
-
-csvFileName = "../../data/params/COMBINED_TABLE.csv";
-
-makeTablejQuery(csvFileName);
-
-
-/* -----------------------------------------
-
-Helper functions
-
------------------------------------------ */
-
-String.prototype.contains = function(it) {
-	return this.indexOf(it) != -1;
-};

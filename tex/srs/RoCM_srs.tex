@@ -56,7 +56,9 @@ for the
 \protect\\
 {\small Version 2.0}}
 
-\author{Robert Moss, Alex Clement}
+\author{Robert Moss, Alex Clement
+\protect\\
+{\small Wentworth Institute of Technology}}
 \maketitle
 
 %%% Document Approval %%%
@@ -70,7 +72,6 @@ The following Software Requirements Specification has been accepted and approved
     \textbf{Signature} & \textbf{Printed Name} & \textbf{Title} & \textbf{Date} \\ \hline
      &  &  &  \\ \hline
      &  &  &  \\ \hline
-     &  &  &  \\ \hline
     \end{tabularx}
 \end{center}
 
@@ -81,70 +82,93 @@ The following Software Requirements Specification has been accepted and approved
 \section{Introduction}
 
 \subsection{Purpose}
-The Software Requirement Specification for the Track and Control System will explain in detail necessary features that the client purposes and the developers provide. The user base will be focused on anyone who will want to use their computer in a more efficient way and take advantage of their full screen space. 
+The Software Requirement Specification for the Rotation Curve Modeler will explain in detail necessary features that the client purposes and the developers provide. Astrophysicists will be the main target for this web application. It will expedite the process of accessing galactic data (from the project Scholarly Observed Celestial Measurements) and provide a tool to model galaxies using many different theories to solve the rotation curve problem.
 
 \subsection{Scope}
 \begin{enumerate}
-	\item Track and Control System
-  \begin{enumerate}
-  	\item The software will track a user's movements and be able to control numerous features around their Desktop with the movement of their head.
-  	\begin{enumerate} 	 	
-  		\item The everyday computer user will utilize this software to organize their cluttered Desktop.  	
-  	\end{enumerate}
-  	\item The application will also act as a security monitor to recognize when you're present at your computer and lock your screen accordingly.
-  	\begin{enumerate}
-  		\item A benefit of this will be a sense of security for the user when they're away from their computer.
-  	\end{enumerate}
+	\item Rotation Curve Modeler
+	
+  \begin{enumerate}	 	
+    \item Interact with SOCM (Scholarly Observed Celestial Measurements)
+	\begin{enumerate}
+		\item Use the repository of observable galactic data to model hundreds/thousands of different galaxies.
+	\end{enumerate}
+    \item Interact with RoCS (Rotation Curve Simulation)
+	\begin{enumerate}
+		\item RoCS visualizes the spin of star clusters around the center of a galaxy. 
+		\item Include scale and legend for the visualization.
+	\end{enumerate}
+    \item Allow users to import their own model (via JavaScript code)
+	\begin{enumerate}
+		\item Following the defined v(R) input/output standard.
+		\item Observable galactic parameters from SOCM will be available as constants.
+		\item User defined constants will need to be implemented in the user's function.
+	\end{enumerate}
+    \item Import LaTeX equation for each model (optional)
+	\begin{enumerate}
+		\item The user can import their own LaTeX equation to be displayed during the data plotting.
+		\item Aids in understanding the behavior of each parameter.
+	\end{enumerate}
+	\item Dynamic parameter sliders
+	\begin{enumerate}
+		\item For every parameter in the individual models, a dynamic slider with user defined ranges can be created.
+	\end{enumerate}
   \end{enumerate} 
+  	\item www.RoCMSOCM.com
+    	\begin{enumerate}
+        	\item The website will host the RoCM, SOCM, and ROCS components.
+        	\begin{enumerate}
+              \item This website, hosted on WIT servers, will allow astrophysicists to access a large database of observed galactic data (via SOCM), plot their own rotation curve models (via RoCM), and simulate their rotation curves (via RoCS).
+        	\end{enumerate}
+        \end{enumerate}
+    
+   
 \end{enumerate}
 
 \subsection{Definitions, Acronyms, and Abbreviations}
 \begin{itemize}
 	\item Application Specific Definitions
 	\begin{itemize}
-		\item TACS - Track and Control System
-		\item TM - Tracking Module
-		\begin{itemize}
-			\item OT - Object Tracker
-			\item FRT - Facial Recognition Tracker
-		\end{itemize}
-		\item WCM - Windows Control Module
-		\item SM - Settings Module
+		\item RoCM - Rotation Curve Modeler
+		\item SOCM - Scholarly Observed Celestial Measurements
+		\item RoCS - Rotation Curve Simulator
 	\end{itemize}
 	\item Industry Definitions
 	\begin{itemize}
+		\item WIT - Wentworth Institute of Technology
 		\item SRS - Software Requirements Specification
-		\item OpenCV - Open Computer Vision: An open source library for object tracking via the camera.
-		\item SQLite - A lightweight, low maintenance, self contained local database.
-		\item DB - Database
-		\item RGB - Red, Green, Blue color values.
-		\item HSV - Hue, Saturation, Value.
-		\item API - Application Programming Interface
-		\item C++ - An object oriented programming language.
-		\item GUI - Graphical User Interface
-		\item QT - An API for building GUIs
+		\item JavaScript - A web based programming language.
+		\item D3 - Data Driven Documents: A JavaScript library for data visualization.
+		\item Ruby on Rails - A web development framework written in the Ruby programming language
+		\item JQuery - A JavaScript library for easy UI development.
+		\item LaTeX - A document preparation system used widely throughout science and mathematics.
+		\item SVG - Scalable Vector Graphics: A loss-less graphics format.
 	\end{itemize}
 	\item Technical Definitions
 	\begin{itemize}
-		\item i:j - The range of integers starting at i, increasing to j by 1.
+        \item MoND - Modification of Newtonian Dynamics
+		\item TeVeS - Tensor-vector-scalar gravity
+		\item MATLAB - A mathematical programming language (MATrix LABoratory) 
+		\item Mathematica - A mathematical programming language.
+		\item DB - Database
+		\item GUI - Graphical User Interface
+		\item HTML - HyperText Markup Language
+		\item div - HTML tag to define a division in a document
 	\end{itemize}
 \end{itemize}
 
 \subsection{References}
 The list of references below are software documentation that we will be using:
 \begin{enumerate}
-	\item OpenCV documentation: \href{http://opencv.org/}{\color{blue} http://opencv.org/}
-	\begin{itemize}
-		\item FaceRecognizer API: \href{http://docs.opencv.org/trunk/modules/contrib/doc/facerec/facerec\_api.html}{\color{blue} http://docs.opencv.org/trunk/modules/contrib/doc/facerec/facerec\_api.html}
-	\end{itemize}
-	\item Windows API Index: \href{http://msdn.microsoft.com/en-us/library/hh920508(v=vs.85).aspx}{\color{blue} http://msdn.microsoft.com/en-us/library/hh920508(v=vs.85).aspx}
-	\item QT C++ documentation: \href{http://qt-project.org/}{\color{blue} http://qt-project.org/}
+	\item Data Driven Documents (D3): \href{http://d3js.org/}{\color{blue} http://d3js.org/}
+	\item JQuery documentation: \href{http://api.jquery.com/}{\color{blue} http://api.jquery.com/}
+	\item JQuery UI documentation: \href{http://api.jqueryui.com/}{\color{blue} http://api.jqueryui.com/}
 \end{enumerate}
 
 \subsection{Overview}
 The rest of the SRS will contain:
 \begin{enumerate}
-	\item Specific features of TACS and their details.
+	\item Specific features RoCM and the RoCMSOCM website
 	\item System Requirements
 	\item Design Constraints for the application.
 	\item Risks within the scope.
@@ -152,18 +176,18 @@ The rest of the SRS will contain:
 \end{enumerate}
 
 \section{General Description}
-This section will explicitly lay out the product's functionality and constraints as well as compare it to existing products. Possible set backs will be discussed. Details about each requirement will be in the \nameref{Specific Requirements} section of the SRS. 
+This section will explicitly lay out the product's functionality and constraints as well as compare it to existing products. Possible set backs will be discussed. Details about each requirement will be laid out in Section \ref{Specific Requirements}: \nameref{Specific Requirements}. 
 
 \subsection{Product Perspective}
-A vast array of other products that utilize OpenCV are available, but no product will control your Desktop with the movement of your head. There has been much research in the field of physical interactions between the user and their computer. However, the application of organizing and securing your Desktop with this interaction is the novel portion of this software.
+Astrophysicists will need to model galaxies in programs like MATLAB or Mathematica, but there doesn't exist a singular tool to expedite this process in a universal format. Currently, scholars must sift through peer-reviewed articles and gather data one-by-one. RoCM will help generalize the work being done on galaxy research.  With observable data as the input, any galaxy can be imported into the tool.
 
 \subsection{Product Functions}
-There will be many available functions the users can utilize. The modular design of the software will allow for additional functions to be easily implemented. \textit{It should be noted that the window functions will be activated with a user-defined hot key.}
+There will be many available functions of RoCM users can utilize. The modular design of the software will allow for additional functions to be easily implemented.
 \begin{enumerate}
-	\item A proportional snap to grid set up for users to place desired windows in five different locations. Namely, left, right, top, bottom, and middle. Once all the windows are selected, the middle window will fill the screen and the user will be able to "peer" in the direction of the four other windows to show a preview of them. 
-	\item The software will organize all open windows into a layered view (with the illusion of 3D windows) for the user to "look" around their desktop and see which window they want to select.
-	\item The software will be able to detect when the user is away from the screen, and with a user defined delay-time, be able to lock or put your computer to sleep (all settings can be changed from the SM).
+	\item A rotation curve plotting tool that overlays different models of the galaxy on top of the observational data. Gives the user the ability to select which curve to plot based on the models available. \textbf{\LARGE TODO}
+	\item Value ranged sliders that can update each individual parameter within specific galactic models. Each slider can be dynamically created with user defined ranges. This enables the user to visualize the behavior of each parameter within the each model. Allows for the testing of uncertainty within the galactic parameters.S
 \end{enumerate}
+
 
 \subsection{User Characteristics}
 Any computer user who has trouble with screen space will find this software useful. The general user will be a laptop owner who has a built in camera. Anyone from developers to web-surfers with a screen space or battery issue will want to use this software.
@@ -183,16 +207,16 @@ This section will explicitly lay out the purposed system design and it's individ
 
 \subsection{External Interface Requirements}
 \subsubsection{User Interfaces}
-A GUI will be built around the two main modules; the TM, and WCM (which both incorporate the SM). It will be written using the open source C++ framework QT 5.2. The GUI will allow the user to change their settings and act as a liaison between each sub-module. Two tabs views for the TM and WCM will give the user a framework for customizing their TACS environment.
+Users must interface with a computer or other device capable of accessing and displaying internet contents. The system will require a cursor device (e.g. mouse or touchpad on a PC or laptop, touch-enabled screen on mobile device). The website and its contents were designed for a modern PC.
 
 \subsubsection{Hardware Interfaces}
-An installed camera will send raw data to the TM to be processed. No other external hardware dependencies are necessary.
+Users will need a device capable of supporting a modern browser and an Internet connection. Experience may depend on hardware capabilities and Internet speeds.
 
 \subsubsection{Software Interfaces}
-The TM will rely on the open source computer vision library, OpenCV 2.4.8, which will be necessary to track the user's movements. For facial recognition, the FRT uses the FaceRecognizer 0.05 API. In addition, the WCM will utilize the easy system calls with the Windows API build date: 3/25/2010.
+The system will require an Internet browser capable of running Javascript.
 
 \subsubsection{Communications Interfaces}
-The SM will have direct communication to the local SQLite 3.8.3 database to save user settings. The DB will contain past window configurations of the user, specified delays and hot keys, as well as TM configurations.
+The system demands an Internet connection to access www.RoCMSOCM.com and the SOCM database.
 
 \subsection{Functional Requirements}
 \subsubsection{Tracking Module (TM)}
@@ -307,19 +331,30 @@ If settings were not specified, a list of initial defaults will be available to 
 
 \subsection{Classes/Objects}
 \begin{enumerate}
-	\item \textless TrackingModule\textgreater
-	\begin{enumerate}
-		\item \textless ObjectTracker\textgreater
-		\item \textless FacialRecognitionTracker\textgreater
-		\item \textless MouseTracker\textgreater
+	\item RoCM.html
+    \begin{enumerate}
+    	\item Curve Plot div
+		\item Parameter Table div
+		\item Parameter Slider div
+        \item LaTeX Equation div
+        \item JavaScript Model Input div
 	\end{enumerate}
-	\item \textless WindowsControlModule\textgreater
+	\item RoCM.js
 	\begin{enumerate}
-		\item \textless WindowsGridOrganizer\textgreater
-		\item \textless WindowsPerspective\textgreater
-		\item \textless SleepManager\textgreater
+    	\item CurvePlot.js
+		\item ParamTable.js
+		\item ParamSlider.js
+        \item TeXEquation.js
+        \item JSModelInput.js
+        \item GalacticModel.js
+        
 	\end{enumerate}
-	\item \textless SettingsModule\textgreater
+	\item RoCMWebApplication Ruby on Rails Application
+	\begin{enumerate}
+		\item RoCMModel.rb
+		\item RoCMView.rb
+		\item RoCMController.rb
+	\end{enumerate}
 \end{enumerate}
 
 \subsection{Non-Functional Requirements}
@@ -354,42 +389,43 @@ A low maintenance database will be used as a simple data storage facility. This 
 
 % TASK DEFINITIONS: Each task has a given name with newlines (\\) and an alternative name (without newlines).
 
-\def \Ta {\shortstack{Research \\ Computer Vision \\  Libraries}}
-\def \TaAlt {Research Computer Vision Libraries}
+\def \Ta {\shortstack{GUI \\ Redesign}}
+\def \TaAlt {GUI Redesign}
 
-\def \Tb {\shortstack{Learn \\ Dependent \\ APIs}}
-\def \TbAlt {Learn Dependent APIs}
+\def \Tb {\shortstack{Modularize \\ Code}}
+\def \TbAlt {Modularize Code}
 
-\def \Tc {\shortstack{Database \\ Design}}
-\def \TcAlt {Database Design}
+\def \Tc {\shortstack{RoCS \\ Integration}}
+\def \TcAlt {RoCS Integration}
 
-\def \Td {\shortstack{Software \\ Design}}
-\def \TdAlt {Software Design}
+\def \Td {\shortstack{SOCM \\ Integration}}
+\def \TdAlt {SOCM Integration}
 
-\def \Te {\shortstack{Database \\ Development}}
-\def \TeAlt {Database Development}
+\def \Te {\shortstack{Model \\ Development}}
+\def \TeAlt {Model Development}
 
-\def \Tf {\shortstack{Software \\ Development}}
-\def \TfAlt {Software Development}
+\def \Tf {\shortstack{Core Functionality \\ Development}}
+\def \TfAlt {Core Functionality Development}
 
-\def \Tg {\shortstack{Analysis \\ and \\ Testing}}
-\def \TgAlt {Analysis and Testing}
+\def \Tg {\shortstack{Run \\ Web Service}}
+\def \TgAlt {Run Web Service}
 
-\def \Th {\shortstack{User \\ Feedback}}
-\def \ThAlt {User Feedback}
+\def \Th {\shortstack{Analysis \\ and \\ Testing}}
+\def \ThAlt {Analysis and Testing}
+
 
 \def \Y {2014}
 \def \Da {1/17}
 \def \Db {2/7}
-\def \Dc {2/14}
-\def \Dd {2/21}
-\def \De {3/7}
-\def \Df {3/28}
-\def \Dg {4/7}
-\def \Dh {4/14}
+\def \Dc {5/19}
+\def \Dd {6/9}
+\def \De {6/16}
+\def \Df {6/23}
+\def \Dg {7/14}
+\def \Dh {8/7}
 
 \subsection{Work Breakdown Structure}
-\begin{adjustwidth}{-1cm}{0pt}
+\begin{center}
 	\begin{tikzpicture}[
 	  gray,
 	  node_style/.style={
@@ -428,20 +464,20 @@ A low maintenance database will be used as a simple data storage facility. This 
 		child[grow=down,first] {node[node_style]{\RoCM}}
 		[edge from parent fork down]
 			% Children
-			child{node[node_style, xshift=-21ex, yshift=-2ex] {Product Research\\and\\Analysis}
-				child[leaftaskshift,second] {node[task_style,xshift=10ex]{\Ta}}
-				child[leaftask,second] {node[task_style,xshift=6ex]{\Tb}}}
-			child{node[node_style, xshift=-7ex] {Design\\Model}
-				child[leaftask,second] {node[task_style,xshift=-3ex,yshift=3ex]{\Tc}}
+			child{node[node_style, xshift=-21ex, yshift=-2ex] {Redesign\\and\\Refactor}
+				child[leaftaskshift,second] {node[task_style,xshift=13ex]{\Ta}}
+				child[leaftask,second] {node[task_style,xshift=5ex]{\Tb}}}
+			child{node[node_style, xshift=-7ex] {External\\Integration}
+				child[leaftask,second] {node[task_style,xshift=-4ex,yshift=3ex]{\Tc}}
 				child[leaftask,second] {node[task_style,xshift=5ex,yshift=-5ex]{\Td}}}
 			child {node[node_style, xshift=7ex] {Application\\Development}
 				child[leaftask,second] {node[task_style,xshift=-6ex,yshift=3ex]{\Te}}
-				child[leaftask,second] {node[task_style,xshift=4ex,yshift=-5ex]{\Tf}}}
-			child {node[node_style, xshift=21ex]{Evaluate\\Application}
-				child[leaftask,second] {node[task_style, xshift=-6ex]{\Tg}}
+				child[leaftask,second] {node[task_style,xshift=4ex,yshift=-6ex]{\Tf}}}
+			child {node[node_style, xshift=21ex, yshift=-2ex]{Deployment\\and\\Evaluatation}
+				child[leaftask,second] {node[task_style, xshift=-7ex, yshift=3ex]{\Tg}}
 				child[leaftask,second] {node[task_style, xshift=8ex]{\Th}}};
 	\end{tikzpicture}
-\end{adjustwidth}
+\end{center}
 
 \subsection{Time Estimation}
 \begin{table}[h]
@@ -474,7 +510,7 @@ A low maintenance database will be used as a simple data storage facility. This 
 
 \subsection{Activity Sequencing Diagram}
 
-\begin{adjustwidth}{-1cm}{0pt}
+\begin{adjustwidth}{-0.5cm}{0pt}
 \tikzstyle{arrow}=[draw, -latex]
 \begin{tikzpicture} [
 	->,
@@ -490,13 +526,13 @@ A low maintenance database will be used as a simple data storage facility. This 
 	}
 	]
 	\node [task, label={[align=center]\Da/\Y}] (task1) at (0, 0) {\Ta}; 
-	\node [task, xshift=-5ex, label={[align=center]\Db/\Y},right=of task1] (task2) {\Tb}; 
+	\node [task, xshift=0ex, label={[align=center]\Db/\Y},right=of task1] (task2) {\Tb}; 
 	\node [task, xshift=5ex, label={[align=center]\Dc/\Y}, minimum width=2.5cm,right=of task2] (task3) at (3,1) {\Tc}; 
 	\node [task, xshift=5ex, label={[align=center,yshift=-10ex]\Dd/\Y}, minimum width=3cm,right=of task3] (task4) at (3,-1) {\Td}; 
 	\node [task, xshift=-4ex, yshift=13.5ex, label={[align=center]\De/\Y}, minimum width=2cm, right=of task4] (task5) {\Te}; 
 	\node [task, xshift=-0.5ex,  yshift=-13.5ex, xshift=-21ex, label={[align=center,yshift=-10ex]\Df/\Y}, minimum width=4cm,right=of task5] (task6) {\Tf}; 
 	\node [task, xshift=-6ex, yshift=13ex, minimum width=3cm, label={[align=center]\Dg/\Y},right=of task6] (task7) {\Tg}; 
-	\node [task, xshift=-15ex, yshift=-13ex, minimum width=2cm, label={[align=center,yshift=-10ex]\Dh/\Y},right=of task7] (task8) {\Th}; 
+	\node [task, xshift=-15ex, yshift=-13ex, minimum width=2cm, label={[align=center,yshift=-13ex]\Dh/\Y},right=of task7] (task8) {\Th}; 
 	
 	\path [arrow] (task1) -- (task2);
 	\path [arrow] (task2) -- (task3);

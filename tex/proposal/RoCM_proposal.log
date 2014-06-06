@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.8.4)  19 MAY 2014 12:50
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.8.4)  5 JUN 2014 18:09
 entering extended mode
 **RoCM_proposal.tex
-("C:\Users\mossr\Desktop\WIT\Physics Research\tex\proposal\RoCM_proposal.tex"
+(C:\Users\mossr\Desktop\WIT\RoCM\tex\proposal\RoCM_proposal.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -15,8 +15,8 @@ an, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, usengl
 ishmax, welsh, loaded.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
-("C:\Program Files\MiKTeX 2.9\tex\latex\base\size12.clo"
-File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\size10.clo"
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@section=\count80
@@ -171,7 +171,7 @@ Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
 )
-("C:\Users\mossr\Desktop\WIT\Physics Research\tex\proposal\gantt.sty"
+(C:\Users\mossr\Desktop\WIT\RoCM\tex\proposal\gantt.sty
 Package: gantt 2011/03/20 Some macros for drawing gantt diagrams using tkiz v.1
 .3
 
@@ -523,7 +523,7 @@ File: pgflibraryarrows.code.tex 2008/10/27 v2.10 (rcs-revision 1.9)
 \pgf@layerbox@foreground=\box37
 \pgf@layerboxsaved@foreground=\box38
 )
-("C:\Users\mossr\Desktop\WIT\Physics Research\tex\proposal\RoCM_proposal.aux")
+(C:\Users\mossr\Desktop\WIT\RoCM\tex\proposal\RoCM_proposal.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
 LaTeX Font Info:    ... okay on input line 18.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
@@ -553,8 +553,8 @@ LaTeX Info: Redefining \ref on input line 18.
 LaTeX Info: Redefining \pageref on input line 18.
 LaTeX Info: Redefining \nameref on input line 18.
 
-("C:\Users\mossr\Desktop\WIT\Physics Research\tex\proposal\RoCM_proposal.out")
-("C:\Users\mossr\Desktop\WIT\Physics Research\tex\proposal\RoCM_proposal.out")
+(C:\Users\mossr\Desktop\WIT\RoCM\tex\proposal\RoCM_proposal.out)
+(C:\Users\mossr\Desktop\WIT\RoCM\tex\proposal\RoCM_proposal.out)
 \@outlinefile=\write4
 
 (C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
@@ -572,25 +572,25 @@ LaTeX Info: Redefining \nameref on input line 18.
 \everyMPtoPDFconversion=\toks27
 ) ABD: EveryShipout initializing macros
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <14.4> on input line 21.
+(Font)              <12> on input line 21.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 21.
+(Font)              <8> on input line 21.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 21.
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 31.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 31.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 40.
+(Font)              <7> on input line 40.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 40.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 40.
+(Font)              <5> on input line 40.
  [1
 
-{C:/Users/mossr/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2]
+{C:/Users/mossr/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 \ganttx=\count131
 \ganttheight=\count132
 Missing character: There is no ; in font nullfont!
@@ -602,45 +602,41 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 
-Overfull \hbox (19.08519pt too wide) in paragraph at lines 123--124
+Overfull \hbox (39.47343pt too wide) in paragraph at lines 123--124
 [] 
  []
 
+[2]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 130.
-[3]
+ [3]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 130.
- ("C:\Users\mossr\Desktop\WIT\Physics Research\tex\proposal\RoCM_proposal.aux")
+ (C:\Users\mossr\Desktop\WIT\RoCM\tex\proposal\RoCM_proposal.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 130.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 130.
-
-
-Package rerunfilecheck Warning: File `RoCM_proposal.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `RoCM_proposal.out':
-(rerunfilecheck)             Before: B24D12E926BDE4AF107449F3A0FE56A6;259
-(rerunfilecheck)             After:  510623EFB852E20938EDEB88686C6804;259.
+Package rerunfilecheck Info: File `RoCM_proposal.out' has not changed.
+(rerunfilecheck)             Checksum: 510623EFB852E20938EDEB88686C6804;259.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 130.
  ) 
 Here is how much of TeX's memory you used:
- 13996 strings out of 493921
- 258727 string characters out of 3147283
- 329066 words of memory out of 3000000
- 17048 multiletter control sequences out of 15000+200000
- 9148 words of font info for 32 fonts, out of 3000000 for 9000
+ 13993 strings out of 493921
+ 258489 string characters out of 3147283
+ 333033 words of memory out of 3000000
+ 17043 multiletter control sequences out of 15000+200000
+ 8233 words of font info for 29 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  63i,6n,57p,1076b,689s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Pr
-ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Fil
-es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX
- 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
-ublic/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
-sfonts/cm/cmti12.pfb>
-Output written on RoCM_proposal.pdf (3 pages, 96382 bytes).
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
+public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
+sfonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
+cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.p
+fb>
+Output written on RoCM_proposal.pdf (3 pages, 118556 bytes).
 PDF statistics:
- 80 PDF objects out of 1000 (max. 8388607)
+ 88 PDF objects out of 1000 (max. 8388607)
  14 named destinations out of 1000 (max. 500000)
  57 words of extra memory for PDF output out of 10000 (max. 10000000)
 
