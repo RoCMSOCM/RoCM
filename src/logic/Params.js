@@ -39,9 +39,10 @@ function ParamsDict(){
    var dictionary = {};
 
    this.set = function(key, val) { 
+   		// Set up mapping for these char
    		if(key.contains("*"))
    			key.replace("*", "star");
-   		
+
    		// Initial value
    		dictionary["_"+key] = val;
    		// Modifiable value

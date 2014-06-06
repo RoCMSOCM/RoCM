@@ -36,7 +36,7 @@ create_curve_plot();
 // SOCM Table
 create_dropdown_div("socmt_wrapper", "display_button", "down");
 
-csvFileName = "../../data/params/COMBINED_TABLE.csv";
+csvFileName = "../data/params/COMBINED_TABLE.csv";
 
 create_table(csvFileName);
 

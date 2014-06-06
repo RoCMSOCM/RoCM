@@ -10,7 +10,7 @@ RoBT.prototype = {
 
 function import_constants() {
   // TODO FIX: Import constants without formatting 
-  d3.csv("../../data/velocity/MILKY_WAY_CONSTANTS.csv", function(error, data) {
+  d3.csv("../data/velocity/MILKY_WAY_CONSTANTS.csv", function(error, data) {
     data = data[0];
 
     var data_keys = Object.keys(data);
@@ -49,7 +49,7 @@ function import_constants() {
   });
 
   // TODO FIX: Import the formatted constants (html formatting, superscripts, subscripts, etc.)
-  d3.csv("../../data/velocity/MILKY_WAY_CONSTANTS_FORMATTED.csv", function(error, data) {
+  d3.csv("../data/velocity/MILKY_WAY_CONSTANTS_FORMATTED.csv", function(error, data) {
     div_id = "constants_table";
   	create_param_table(div_id, data);
 
