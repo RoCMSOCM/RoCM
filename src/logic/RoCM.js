@@ -17,8 +17,15 @@ $("#about_button").click(function () {
   }, this_button.data('state') == 'up' ? 1000 : 1000); //TODO: Fix this when scrolling up as it's closing
 });
 
-PARAMS = new Params();
+
+
+PARAMS = new Params(); //Inherit Array into Params
 VDATA = new VData();
+
+PARR = new ParamsDict();
+
+
+
 
 // Params Import
 import_constants();
@@ -29,7 +36,7 @@ create_curve_plot();
 // SOCM Table
 create_dropdown_div("socmt_wrapper", "display_button", "down");
 
-csvFileName = "../../data/params/COMBINED_TABLE.csv";
+csvFileName = "../data/params/COMBINED_TABLE.csv";
 
 create_table(csvFileName);
 

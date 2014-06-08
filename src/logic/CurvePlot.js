@@ -63,7 +63,7 @@ var hide_legend_labels = true;
 
 
 function create_curve_plot(){
-  d3.csv("../../data/velocity/MILKY_WAY_OUTPUT.csv", function(error, data) {
+  d3.csv("../data/velocity/MILKY_WAY_OUTPUT.csv", function(error, data) {
     // Add origin to the data
     var data_keys = Object.keys(data[0]);
     var origin_data = {};

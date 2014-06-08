@@ -36,7 +36,7 @@ $("#back").button({
 //		 var value = this.value + String.fromCharCode(e.keyCode);
 // });
 
-d3.csv("../../data/velocity/MILKY_WAY_OUTPUT.csv", function(error, data) {
+d3.csv("../data/velocity/MILKY_WAY_OUTPUT.csv", function(error, data) {
   var hash_split = window.location.href.split("#")
   var galaxy_name = hash_split[1];
   var vrot_name = hash_split[2];
