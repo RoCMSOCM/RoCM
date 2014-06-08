@@ -26,24 +26,16 @@ function import_constants() {
       var value = +joined_split[0];
       var units = joined_split[1];
 
-      var params_value = new Param(value, units, value/2, value*2);
+      var params_value = value;//new Param(value, units, value/2, value*2);
 
-      PARR.set(key, params_value);
+      PARAMS[key] = params_value;
+      PARAMS["_" + key] = params_value;
     }
 
-    println(PARR.getDict());
+    // TODO: Include B* or calculate it.
+    // PARAMS.set("B", new Param(1.48, "km"));
 
-
-    //Defines globals r0, sigma0, R0, and N* from the constants CSV
-    PARAMS.r0 = +data.r0.split(" ")[0];
-    PARAMS.sigma0 = +data.sigma0.split(" ")[0];
-    PARAMS.R0kpc = +data.R0.split(" ")[0];
-    PARAMS.Nstar = +data["N*"];
-
-    PARAMS._r0 = PARAMS.r0;
-    PARAMS._sigma0 = PARAMS.sigma0;
-    PARAMS._R0kpc = PARAMS.R0kpc;
-    PARAMS._Nstar = PARAMS.Nstar;
+    // println(PARAMS.getDict());
 
     initialize_sliders();
   });

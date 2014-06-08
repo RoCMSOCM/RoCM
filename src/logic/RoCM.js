@@ -19,10 +19,10 @@ $("#about_button").click(function () {
 
 
 
-PARAMS = new Params(); //Inherit Array into Params
+// PARAMS = new Params(); //Inherit Array into Params
 VDATA = new VData();
 
-PARR = new ParamsDict();
+PARAMS = new ParamsDict();
 
 
 
@@ -42,3 +42,16 @@ create_table(csvFileName);
 
 
 model = new GalacticModel();
+
+
+GMODEL = new GModel();
+
+
+// To add your own model
+// GMODEL["VROT_NAME"] = function(Rkpc) {
+//   var vrot;
+
+//   // Fill
+
+//   return vrot;
+// };

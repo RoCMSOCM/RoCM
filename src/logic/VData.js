@@ -5,7 +5,7 @@ function VData() {
 	this.VROT_GR = 0;
 	this.VROT_DARK = 0;
 	this.VROT_CONFORMAL = 0;
-}
+};
 
 function VData(Rkpc) {
 	this.Rkpc = Rkpc;
@@ -13,8 +13,6 @@ function VData(Rkpc) {
 	this.VROT_GR = 0;
 	this.VROT_DARK = 0;
 	this.VROT_CONFORMAL = 0;
-}
+};
 
-VData.prototype = {
-	
-}
+VData.prototype = {};
