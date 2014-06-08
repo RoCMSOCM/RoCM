@@ -98,13 +98,13 @@ The Software Requirement Specification for the Rotation Curve Modeler will expla
 		\item RoCS visualizes the spin of star clusters around the center of a galaxy. 
 		\item Include scale and legend for the visualization.
 	\end{enumerate}
-    \item Allow users to import their own model (via JavaScript code)
+    \item Allow users to locally import and run their own model (via JavaScript code)
 	\begin{enumerate}
 		\item Following the defined v(R) input/output standard.
 		\item Observable galactic parameters from SOCM will be available as constants.
 		\item User defined constants will need to be implemented in the user's function.
 	\end{enumerate}
-    \item Import LaTeX equation for each model (optional)
+    \item Locally import LaTeX equation for each model (optional)
 	\begin{enumerate}
 		\item The user can import their own LaTeX equation to be displayed during the data plotting.
 		\item Aids in understanding the behavior of each parameter.
@@ -139,7 +139,7 @@ The Software Requirement Specification for the Rotation Curve Modeler will expla
 		\item SRS - Software Requirements Specification
 		\item JavaScript - A web based programming language.
 		\item D3 - Data Driven Documents: A JavaScript library for data visualization.
-		\item Ruby on Rails - A web development framework written in the Ruby programming language
+		\item Ruby on Rails - A web development framework written in the Ruby programming language.
 		\item JQuery - A JavaScript library for easy UI development.
 		\item LaTeX - A document preparation system used widely throughout science and mathematics.
 		\item SVG - Scalable Vector Graphics: A loss-less graphics format.
@@ -148,12 +148,17 @@ The Software Requirement Specification for the Rotation Curve Modeler will expla
 	\begin{itemize}
         \item MoND - Modification of Newtonian Dynamics
 		\item TeVeS - Tensor-vector-scalar gravity
-		\item MATLAB - A mathematical programming language (MATrix LABoratory) 
+		\item MATLAB - A mathematical programming language (MATrix LABoratory).
 		\item Mathematica - A mathematical programming language.
 		\item DB - Database
+        \item UI - User Interface
 		\item GUI - Graphical User Interface
 		\item HTML - HyperText Markup Language
 		\item div - HTML tag to define a division in a document
+        \item DOM - Document Object Model. A convention for representing and interacting with objects in HTML.
+        \item API - Application Programming Interface
+        \item km/s - Kilometers Per Second
+        \item kpc - Kiloparsecs
 	\end{itemize}
 \end{itemize}
 
@@ -179,27 +184,29 @@ The rest of the SRS will contain:
 This section will explicitly lay out the product's functionality and constraints as well as compare it to existing products. Possible set backs will be discussed. Details about each requirement will be laid out in Section \ref{Specific Requirements}: \nameref{Specific Requirements}. 
 
 \subsection{Product Perspective}
-Astrophysicists will need to model galaxies in programs like MATLAB or Mathematica, but there doesn't exist a singular tool to expedite this process in a universal format. Currently, scholars must sift through peer-reviewed articles and gather data one-by-one. RoCM will help generalize the work being done on galaxy research.  With observable data as the input, any galaxy can be imported into the tool.
+Astrophysicists will need to model galaxies in programs like MATLAB or Mathematica, but there doesn't exist a singular tool to expedite this process in a universal format. Currently, scholars must sift through peer-reviewed articles and gather data one-by-one. www.RoCMSOCM.com will help generalize the work being done on galaxy research and provide one central repository for researchers.
+
+RoCM will serve as a visual modeler for our collections of data and contemporary theories within astrophysics. With observable data as the input (via SOCM), any galaxy can be imported into the tool. The tool will plot obervational data and multiple galactic models together as a graph, as well as enable users to import their own galatic models to test against existing theories. Sliders will allow users to control parameters within their models with realtime visual feedback in the generated graph.
 
 \subsection{Product Functions}
 There will be many available functions of RoCM users can utilize. The modular design of the software will allow for additional functions to be easily implemented.
 \begin{enumerate}
 	\item A rotation curve plotting tool that overlays different models of the galaxy on top of the observational data. Gives the user the ability to select which curve to plot based on the models available. \textbf{\LARGE TODO}
-	\item Value ranged sliders that can update each individual parameter within specific galactic models. Each slider can be dynamically created with user defined ranges. This enables the user to visualize the behavior of each parameter within the each model. Allows for the testing of uncertainty within the galactic parameters.S
+	\item Value ranged sliders that can update each individual parameter within specific galactic models. Each slider can be dynamically created with user defined ranges. This enables the user to visualize the behavior of each parameter within the each model. Allows for the testing of uncertainty within the galactic parameters.
 \end{enumerate}
+
+The www.RoCMSOCM.com website will provide a web interface to the RoCM, SOCM, and RoCS modules. The website backend will host galaxy research data, namely through SOCM, which will also provide API endpoints for ease of access and extensibility. RoCMSOCM.com will provide an 'About' section (explaining the purpose of the website), navigational links, and email addresses to contact the developers or Dr. James G. O'Brien.
 
 
 \subsection{User Characteristics}
-Any computer user who has trouble with screen space will find this software useful. The general user will be a laptop owner who has a built in camera. Anyone from developers to web-surfers with a screen space or battery issue will want to use this software.
+The RoCMSOCM website and its constituent modules will be targeted at researching astrophysicists in search of peer-reviewed galaxy data. Users will also benefit from the visualization features for their added clarity and experimental functionalities. 
 
 \subsection{General Constraints}
 \label{General Constraints}
-The main functionality of the TM will rely heavily on the availability of an input camera; preferably stationed at the center-top of the screen. If said camera is unavailable, the user can select the mouse as a functional alternative. When using the TM, visibility of the person in control will be crucial.
+The D3 JavaScript library provides a fast an easy way to manipulate data and generate graphs in real time. Thus, it became our best option for rendering RoCM and RoCS. No detected flaws or deficencies have been relevant to the project at this point, though we will be constrained by its capabilities for the duration of the project.
 
 \subsection{Assumptions and Dependencies}
-A camera is assumed to be installed, due to the main functionality incorporating a computer vision tracking module. However, there are alternatives that have been discussed in the \nameref{General Constraints} section.
-
-The windows control module (WCM) is dependent on C++ due to the Windows API written in that language. It is also assumed that the user is running a Windows operating system.
+Users are expected to have either the most updated versions of Google Chrome, Safari, or Internet Explorer. For the reasons stated in the \nameref{General Constraints} section, the chosen browser must have JavaScript enabled. An Internet connection is obligatory.
 
 \section{Specific Requirements}
 \label{Specific Requirements}
@@ -219,79 +226,40 @@ The system will require an Internet browser capable of running Javascript.
 The system demands an Internet connection to access www.RoCMSOCM.com and the SOCM database.
 
 \subsection{Functional Requirements}
-\subsubsection{Tracking Module (TM)}
+\subsubsection{Rotational Curve Simulator (RoCM)}
 
 \myparagraph{Introduction}
-The TM simply tracks the position of the user. Encapsulating it enables the developers to easily swap alternatives for how the user is tracked. A C++ implementation of OpenCV will be used.
+RoCM will serve as a visual modeler for our collections of data and contemporary theories within astrophysics. With observable data as the input (via SOCM), any galaxy can be imported into the tool. The tool will plot obervational data and multiple galactic models together as a graph, as well as enable users to import their own galatic models to test against existing theories. Sliders will allow users to control parameters within their models with realtime visual feedback in the generated graph.
 
 \myparagraph{Inputs}
-OpenCV will send raw camera data as input to the TM in the form of an $nxm$ matrix that specifies each cell as a pixel with RGB values.
+RoCM will recieve it's galactic data from the SOCM API endpoints. For use of the sliders, users must click and drag JavaScript-generated sliders. The 'LaTeX equation' section will require a properly-formed LaTeX equation (as dictated by the LaTeX standard) if the user desires to use the feature. The 'JavaScript Model Input' section will require a properly-formed JavaScript function in the form v(R). Interaction with SOCM and RoCS will require mouse or cursor input.
 
 \myparagraph{Processing}
-There are several ways in which to process the camera feed. Two main implementations of the TM will be as followed: an object tracker (OT), and a facial recognition tracker (FRT). The OT can apply filters to the matrix of colored pixels coming in as input in a variety of ways. It can filter a specific RGB color in the (0:255, 0:255, 0:255) range and apply a noise reduction algorithm to help pinpoint the target object. The option of HSV filters with the same ranges can yield better results especially in a physical environment that is noisy. The noise tends to increases the uncertainty in the tracked object. The settings for which filter works best in the users physical environment will be sent to the SM to be added to the SQLite DB. The user will have to wear a specific item on their head that can be easily tracked. An alternative to this will be implemented with the FRT.
-
-The FRT, taking advantage of the FaceRecognizer 0.05 API that OpenCV provides, will enable the user to not require any external dependencies for the TM to track. An easy to use API, FaceRecognizer can be a replacement for the OT if the user chooses.  As stated above, all data settings will be saved to the SQLite DB.
-
-If the user does not have a camera, or wished not to have their camera on, they can use the mouse as a suitable replacement for the tracked object. 
+Galactic data will be processed by the D3 JavaScript library, which generates and manipulates elements of the HMTL DOM to produce the graphs, sliders, and tables of RoCM.
 
 \myparagraph{Outputs}
-A simple $(x,y)$ coordinate system of the tracked object, whether it be through the OT, FRT, or by mouse, will be given as output of the TM.
+RoCM produces a graph of Rotational Velocity (in km/s) over Galactocentric Distance (in kpc) with sliders to dynamically manipulate the graph.
 
 \myparagraph{Error Handling}
-Uncertainty in the OT will be minimized using filtering algorithms that reduce the tracked object's noise. If the user selects the FRT, then the uncertainty will be lower, due to light restrictions being less harsh, and the specification of the color of your tracked object not necessary. If a clear tracked object isn't present and the mouse tracking isn't enabled, then the system will assume no object and the TM will not output any coordinates.
+If RoCM is unable to connect to SOCM, the page will detect the problem and issue an error message to the user. Errors resulting from JavaScript being disabled will be handled at a higher level (in the HMTL pages).
 
-\subsubsection{Windows Control Module (WCM)}
+\subsubsection{RoCMSOCM Website (www.RoCMSOCM.com)}
 
 \myparagraph{Introduction}
-The WCM encompasses each real-estate utilizing feature; whether it's space or battery life you're trying to maximize, the WCM will handle everything. All sub-modules will be written in C++ using the Windows API build date: 3/25/2010.
+Astrophysicists will need to model galaxies in programs like MATLAB or Mathematica, but there doesn't exist a singular tool to expedite this process in a universal format. Currently, scholars must sift through peer-reviewed articles and gather data one-by-one. www.RoCMSOCM.com will help generalize the work being done on galaxy research and provide one central repository for researchers.
 
 \myparagraph{Inputs}
-The outputs of the TM will act as direct inputs to the WCM, namely the $(x,y)$ coordinates of the tracked object. The WCM doesn't care about how the coordinates were calculated, it only worries about manipulating the operating system.
+Outside of the constituent modules of RoCMSOCM, the website will only require a user's mouse or cursor input for navigation. The website will be comprised of HTML, JavaScript, and CSS files. 
 
 \myparagraph{Processing}
-There are three sub-modules to the WCM (with additional features easily added by the developers):
-\begin{itemize}
-	\item Windows Grid Organizer
-	\begin{itemize}[label={}]
-		\item The user will be able to select five open windows to be placed in a grid structure around their screen. The top, bottom, left, right, and middle portions will be available for configuration. The user can define the ratio of each window size proportional to the total screen size. This is true for each section except the middle cell; which fills the entire screen once all five windows are chosen. The user can activate the predefined hot-key, defaulted to Alt, and peer in the four outer directions. The middle window will move in the opposite direction to simulate the ``peering'' action of the user. The speed at which the middle cell moves can be altered and saved using the SM.
-	\end{itemize}
-	\item Windows Perspective (3D)
-	\begin{itemize}[label={}]
-		\item This feature will organize all open windows into a layered view (with the illusion of 3D windows) for the user to "look" around their desktop and see which window they want to select. The windows in the back layer will move at a much slower rate than the windows in the front layer; to give the illusion of a 3D perspective.
-	\end{itemize}
-	\item Sleep Manager
-	\begin{itemize}[label={}]
-		\item If the Sleep Manager is on and the user is away from the computer, the TM will detect that nobody is present and relay that message to the Sleep Manager. The Sleep Manager will then assess if the user is in fact away from the keyboard (via the absence of key presses or mouse movements). If all requirements are aligned, the computer will either lock or sleep after a user defined delay. All of the settings for this configuration will be handled by the SM.
-	\end{itemize}
-\end{itemize}
+The web browser will process all necessary web requests and JavaScript will create the necessary navigational buttons on demand.
 
 \myparagraph{Outputs}
-The output of the WCM will be a structure that contains the settings applied to that feature. This structure will be defined in later documents pertaining to design.
+The resulting product will be a full graphical interface for the RoCM, SOCM, and RoCS modules. Users will be able to interact with the graphs and models in realtime, aiding in their understanding and exploration of the topic.
+
 
 \myparagraph{Error Handling}
-Each sub-module will have their own set of error handlers. The key component to all of them will be the integrity of the Desktop. 
-\begin{itemize}
-	\item If the Windows Grid Organizer does not meet all the necessary cells, it will default to empty cells and still be able to function.
-	\item The Windows Perspective will have minimal errors associated with it, due in part to the simplistic nature of the feature; only window resizing and repositioning is being applied. 
-	\item The Sleep Manager will be handled with care and will default to staying awake with any input from the TM, mouse or keyboard (as to minimize intrusive actions).
-\end{itemize}
-
-\subsubsection{Settings Module (SM)}
-
-\myparagraph{Introduction}
-The SM will be written in C++ as a transparent module to deal with organizing and saving users data. A local SQLite DB will hold the user's settings for quick access and increased fidelity in TACS.
-
-\myparagraph{Inputs}
-The output of the WCM will be a structure of settings for each WCM feature. This structure will be taken in as input to the SM.
-
-\myparagraph{Processing}
-The SM, with the predefined structure, will separate the settings by their respective feature. Once separated, the data will be saved to an already created SQLite DB that can be queried at any time.
-
-\myparagraph{Outputs}
-A binary variable output will declare if the transaction between the SM and the SQLite DB was successful.
-
-\myparagraph{Error Handling}
-If settings were not specified, a list of initial defaults will be available to fall back on.
+While the Internet browser will handle any issues regarding connection to the website, site itself will detect and report on any errors regarding JavaScript. A message will appear for users who have JavaScript disabled which will prompt them to enable it for the best experience. Any errors with HTTP will be handled by the web server hosting RoCMSOCM.com.
 
 \subsection{Use Cases}
 
