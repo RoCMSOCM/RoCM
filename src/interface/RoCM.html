@@ -92,33 +92,30 @@
     onmousedown="return false;">
 
 
-    <div id="N*_slider_wrapper" style="margin:0 auto;width:800px">
-      <p> <!-- NSTAR SLIDER -->
+    <!-- <div id="N*_slider_wrapper" style="margin:0 auto;width:800px">
         <label for="N*_amount"><b>N*: </b></label>
         <input type="text" id="N*_amount" onclick="update_original('N*')" style="border:0; color:#f6931f; font-weight:bold;width=700px;">
-      </p>
+      
       <div id="slider_N*" style="width:800px"></div>
     </div>
 
 
     <div id="r0_slider_wrapper" style="margin:0 auto;width:800px">
-      <p> <!-- r0 SLIDER -->
         <label for="r0_amount"><b>r0: </b></label>
         <input type="text" id="r0_amount" onclick="update_original('r0')" style="border:0; color:#f6931f; font-weight:bold;">
-      </p>
+      
       <div id="slider_r0" style="width:800px"></div>
     </div>
 
     <div id="sigma0_slider_wrapper" style="margin:0 auto;width:800px">
-      <p> <!-- sigma0 SLIDER -->
         <label for="sigma0_amount"><b>sigma0: </b></label>
         <input type="text" id="sigma0_amount" onclick="update_original('sigma0')" style="border:0; color:#f6931f; font-weight:bold;">
-      </p>
+      
       <div style="float:left;">
         <div id="slider_sigma0" style="width:800px"></div>
       </div>
     </div>
-
+ -->
 
   </div>
 
@@ -185,8 +182,12 @@
 
 <!-- Helper and Utility Functions -->
   <script type="text/javascript" src="../logic/Helper.js"></script>
-<!-- Global Parameter Object -->
-  <script type="text/javascript" src="../logic/Params.js"></script>
+
+<!-- Parameter Object -->
+  <script type="text/javascript" src="../logic/Param.js"></script>
+
+<!-- Global Parameter Dictionary Object -->
+  <script type="text/javascript" src="../logic/ParamsDict.js"></script>
 
 <!-- Global Velocity Data Object -->
   <script type="text/javascript" src="../logic/VData.js"></script>

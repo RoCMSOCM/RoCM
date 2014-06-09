@@ -7,10 +7,13 @@ SOCMBridge.prototype = {};
 
 function import_constants() {
   // TODO FIX: Import constants without formatting 
-  d3.csv("../data/velocity/MILKY_WAY_CONSTANTS.csv", function(error, data) {
+  d3.csv("../data/params/MILKY_WAY_CONSTANTS.csv", function(error, data) {
     data = data[0];
 
     var data_keys = Object.keys(data);
+
+    // TODO: Handle this better (pregenerated sliders)
+    var gen_sliders = ["N*", "r0", "sigma0"];
 
     for(var i=0;i<data_keys.length;i++){
       var key = data_keys[i];
@@ -22,23 +25,21 @@ function import_constants() {
       var joined_split = [split_data.shift(), split_data.join(delim)];
       var value = +joined_split[0];
       var units = joined_split[1];
+       
+      var param = new Param(value, units);
 
-      var params_value = value;//new Param(value, units, value/2, value*2);
-
-      PARAMS[key] = params_value;
-      PARAMS["_" + key] = params_value; // Original value
+      PARAMS.add(key, param);
     }
 
     // TODO: Include B* or calculate it.
     // PARAMS.set("B", new Param(1.48, "km"));
 
-    // println(PARAMS.getDict());
-
+    // ParamSlider initial sliders
     initialize_sliders();
   });
 
   // TODO FIX: Import the formatted constants (html formatting, superscripts, subscripts, etc.)
-  d3.csv("../data/velocity/MILKY_WAY_CONSTANTS_FORMATTED.csv", function(error, data) {
+  d3.csv("../data/params/MILKY_WAY_CONSTANTS_FORMATTED.csv", function(error, data) {
     div_id = "constants_table";
   	create_param_table(div_id, data);
 

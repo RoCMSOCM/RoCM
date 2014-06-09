@@ -1,18 +1,66 @@
-function ParamSlider(var_name, min, max, num, coeff, units) {
-	this.var_name = var_name;
-	this.min = +min;
-	this.max = +max;
-	this.num = +num;
-	this.coeff = +coeff;
-	this.units = units;
+/*
+
+	ParamSlider
+
+	Input: parameter name and Param Object
+	
+*/
+
+function slide_scale(min, max) {
+	return d3.scale.linear()
+		.domain([min,max])
+		.range([1,10000]);
+}
+
+function slide_scale_inverse(min, max) {
+	return d3.scale.linear()
+		.domain([1,10000])
+		.range([min,max]);
+}
+
+
+function ParamSlider(param_name, param) {
+	this.param_name = param_name;
+	this.param = param;
+
+	// Dynamically create slider
+	var wrapper = $("#sliders");
+	wrapper.append(
+		$("<div>")
+			.attr("id", param_name + "_slider_wrapper")
+			.css("margin", "0 auto")
+			.css("width", "800px")
+			.append($("<label>")
+				.attr("for", param_name + "_amount")
+				.css("font-weight", "bold")
+				.html(param_name + ": " ))
+			.append($("<input>")
+				.attr("type", "text")
+				.attr("id", param_name + "_amount")
+				.attr("onclick", "update_original('" + param_name + "')")
+				.css("border", "0")
+				.css("color", "#f6931f")
+				.css("font-weight", "bold")
+				.css("width", "700px"))
+			.append($("<div>")
+				.attr("id", "slider_" + param_name)
+				.css("width", "800px"))
+			.append($("<p>")));
+
+	var value = this.param.value;
+	var min = this.param.min;
+	var max = this.param.max;
+
+	this.param.scale = slide_scale(min, max);
+	this.param.inverse_scale = slide_scale_inverse(min, max);
 
 	var me = this;
 
-	$("#slider_" + this.getName()).slider({
+	$("#slider_" + this.getFormattedName()).slider({
 		range: "min",
-		min: me.min/me.coeff,
-		max: me.max/me.coeff,
-		value: me.num/me.coeff,
+		min: me.param.scale(min),
+		max: me.param.scale(max),
+		value: me.param.scale(value),
 		slide: function(event, ui) {
 			me.slide(event, ui);
 		},
@@ -20,18 +68,18 @@ function ParamSlider(var_name, min, max, num, coeff, units) {
 			me.slide(event, ui);
 		}
 	});
-	$("#" + this.getName() + "_amount").val(this.num + " " + this.units);
+	$("#" + this.getFormattedName() + "_amount").val(this.param.value + " " + this.param.units);
 }
 
 ParamSlider.prototype = {
 	slide: function(event, ui) {
-		var local = +ui.value*this.coeff;
+		var local = this.param.inverse_scale(+ui.value);
 
-		$("#"+this.getName()+"_amount").val(local + " " + this.units);
+		$("#"+this.getFormattedName()+"_amount").val(local + " " + this.param.units);
 
 		var model = new GalacticModel();
 
-		switch(this.var_name) {
+		switch(this.param_name) {
 			case "r0":
 				PARAMS["r0"] = local;				
 				VDATA.VROT_DARK = model.v_dark();
@@ -74,30 +122,13 @@ ParamSlider.prototype = {
 				break;
 		}
 	},
-	getName: function() {
-		return this.var_name.replace("*", "\\\*");
+	getFormattedName: function() {
+		return formatName(this.param_name);
 	}
 };
 
-function initialize_sliders() {
-	// ParamSlider(var_name, min, max, num, coeff, units)
-	var r0_min = 0.25;
-	var r0_max = 100.0;
-	var r0_num = PARAMS["r0"];
-	var r0_coeff = 1/100;
-	var r0_slider = new ParamSlider("r0", r0_min, r0_max, r0_num, r0_coeff, "kpc");
-
-	var sigma0_min = 1.0*Math.pow(10,-10);
-	var sigma0_max = 1.0*Math.pow(10,-6);
-	var sigma0_num = PARAMS["sigma0"];
-	var sigma0_coeff = sigma0_min;
-	var sigma0_slider = new ParamSlider("sigma0", sigma0_min, sigma0_max, sigma0_num, sigma0_coeff, "GeV cm^-3");
-
-	var Nstar_min = 0.01*Math.pow(10,10);
-	var Nstar_max = 4.0*Math.pow(10,11);
-	var Nstar_num = PARAMS["N*"];
-	var Nstar_coeff = Nstar_min; 
-	var Nstar_slider = new ParamSlider("N*", Nstar_min, Nstar_max, Nstar_num, Nstar_coeff, "stars");
+function formatName(name) {
+	return name.replace("*", "\\\*");
 }
 
 function update_total_velocities() {
@@ -110,33 +141,41 @@ function update_total_velocities() {
 	update_line(".VROT_TOTAL", VDATA.VROT_TOTAL);
 }
 
-function update_original(type) {
-	// var orig_val = 0;
-	// var coeff = 0;
-	// var val_suffix = "";
+function update_original(key) {
+	if(PARAMS[key] !== undefined){
+		var original_value = PARAMS.getOriginal(key).value;
+		var scaled_value = PARAMS.get(key).scale(original_value);
+		var units = PARAMS.get(key).units;
+		
+		key = formatName(key);
 
-	// if(type == "N*"){
-	// 	coeff = Nstar_coeff;
-	// 	orig_val = PARAMS["_N*/coeff"];
-	// 	val_suffix = " stars";
-	// }
-	// else if(type == "r0"){
-	// 	coeff = 1/r0_coeff;
-	// 	orig_val = PARAMS["_r0/coeff"];
-	// 	val_suffix = " kpc";
-	// }
-	// else if(type == "sigma0"){
-	// 	coeff = sigma0_coeff;
-	// 	orig_val = PARAMS["_sigma0/coeff"];
-	// 	val_suffix = "GeV cm^-3";
-	// }
+		var slider_name = "#slider_" + key;
+		$slider = $(slider_name);
+		$slider.slider("value", scaled_value);
+		$slider.trigger("change");
 
-	// var slider_name = "#slider_" + type;
+		$("#"+ key + "_amount").val(original_value + " " + units);
+	}
+}
 
-	// // $("#"+ type + "_amount").val( orig_val*coeff + val_suffix );
+function initialize_sliders() {
+	// Create initial sliders
+	slider_map = {
+		"N*":{min:0.01*Math.pow(10,10), max:4.0*Math.pow(10,11)},
+		"r0":{min:0, max:100},
+		"sigma0":{min:1.0*Math.pow(10,-10), max:1.0*Math.pow(10,-6)}
+	};
 
-	// $slider = $(slider_name);
-	// $slider.slider("value", orig_val);
-	// $slider.trigger("change");
+	slider_keys = Object.keys(slider_map);
 
+
+    for(var i=0;i<slider_keys.length;i++){
+    	var key = slider_keys[i];
+    	var range = slider_map[key];
+
+    	PARAMS.setRange(key, range.min, range.max);
+
+    	var param = PARAMS.get(key);
+   		var slider = new ParamSlider(key, param);
+    }
 }
