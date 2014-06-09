@@ -14,7 +14,7 @@
 \usepackage{colortbl}
 
 
-\usetikzlibrary{arrows, trees, positioning, fit, calc, shadows.blur, shapes.symbols}
+\usetikzlibrary{automata, arrows, trees, positioning, fit, calc, shadows.blur, shapes.symbols}
 
 \usepackage[top=1.5in, bottom=1.5in, left=2in, right=2in]{geometry}
 
@@ -42,6 +42,7 @@
 \def \TACS {Track and Control System}
 \def \RoCM {Rotation Curve Modeler}
 \def \SOCM {Scholarly Observed Celestial Measurements}
+\def \RoCS {Rotation Curve Simulation}
 
 \begin{document}
 
@@ -191,22 +192,20 @@ RoCM will serve as a visual modeler for our collections of data and contemporary
 \subsection{Product Functions}
 There will be many available functions of RoCM users can utilize. The modular design of the software will allow for additional functions to be easily implemented.
 \begin{enumerate}
-	\item A rotation curve plotting tool that overlays different models of the galaxy on top of the observational data. Gives the user the ability to select which curve to plot based on the models available. \textbf{\LARGE TODO}
-	\item Value ranged sliders that can update each individual parameter within specific galactic models. Each slider can be dynamically created with user defined ranges. This enables the user to visualize the behavior of each parameter within the each model. Allows for the testing of uncertainty within the galactic parameters.
+	\item A rotation curve plotting tool that overlays different models of the galaxy on top of the observational data. Gives the user the ability to select which curve to plot based on the models available. Value ranged sliders that can update each individual parameter within specific galactic models. Each slider can be dynamically created with user defined ranges. This enables the user to visualize the behavior of each parameter within the each model. Allows for the testing of uncertainty within the galactic parameters.
+	\item The www.RoCMSOCM.com website will provide a web interface to the RoCM, SOCM, and RoCS modules. The website back-end will host galaxy research data, namely through SOCM, which will also provide API endpoints for ease of access and extensibility. RoCMSOCM.com will provide an `About' section that explains the purpose of the website, and provides the email addresses to contact the contributors.
 \end{enumerate}
-
-The www.RoCMSOCM.com website will provide a web interface to the RoCM, SOCM, and RoCS modules. The website backend will host galaxy research data, namely through SOCM, which will also provide API endpoints for ease of access and extensibility. RoCMSOCM.com will provide an 'About' section (explaining the purpose of the website), navigational links, and email addresses to contact the developers or Dr. James G. O'Brien.
 
 
 \subsection{User Characteristics}
-The RoCMSOCM website and its constituent modules will be targeted at researching astrophysicists in search of peer-reviewed galaxy data. Users will also benefit from the visualization features for their added clarity and experimental functionalities. 
+The RoCMSOCM website and its constituent modules will be targeted at researching astrophysicists in search of peer-reviewed galaxy data. Users will also benefit from the visualization features for their galactic rotation curve research. 
 
 \subsection{General Constraints}
 \label{General Constraints}
-The D3 JavaScript library provides a fast an easy way to manipulate data and generate graphs in real time. Thus, it became our best option for rendering RoCM and RoCS. No detected flaws or deficencies have been relevant to the project at this point, though we will be constrained by its capabilities for the duration of the project.
+The D3 JavaScript library provides a fast an easy way to manipulate data and generate graphs in real time. Thus, it became our best option for rendering RoCM and RoCS. No detected flaws or deficiencies have been relevant to the project at this point, though we will be constrained by its capabilities for the duration of the project.
 
 \subsection{Assumptions and Dependencies}
-Users are expected to have either the most updated versions of Google Chrome, Safari, or Internet Explorer. For the reasons stated in the \nameref{General Constraints} section, the chosen browser must have JavaScript enabled. An Internet connection is obligatory.
+Users are expected to have the most updated versions of Google Chrome, or Mozilla Firefox. For the reasons stated in the \nameref{General Constraints} section, the chosen browser must have JavaScript enabled. An Internet connection is obligatory.
 
 \section{Specific Requirements}
 \label{Specific Requirements}
@@ -214,28 +213,28 @@ This section will explicitly lay out the purposed system design and it's individ
 
 \subsection{External Interface Requirements}
 \subsubsection{User Interfaces}
-Users must interface with a computer or other device capable of accessing and displaying internet contents. The system will require a cursor device (e.g. mouse or touchpad on a PC or laptop, touch-enabled screen on mobile device). The website and its contents were designed for a modern PC.
+A web user interface will be developed to easily use the tools RoCM provides. A clean and clutter free UI will be necessary due to the complex nature of the physics involved (as to not overwhelm the user). If too much is incorporated as a part of the UI, the user will lose focus on the purpose of RoCM.
 
 \subsubsection{Hardware Interfaces}
-Users will need a device capable of supporting a modern browser and an Internet connection. Experience may depend on hardware capabilities and Internet speeds.
+Users will need a device capable of supporting a modern browser and an Internet connection. Experience may depend on hardware capabilities and Internet speeds. No other external hardware dependencies are necessary.
 
 \subsubsection{Software Interfaces}
-The system will require an Internet browser capable of running Javascript.
+RoCM will rely on the open source data visualization library D3.js (v3). A major software interfacing dependency will be JQuery 1.10.2, which will speed up the process of interfacing JavaScript with the HTML DOM elements. A LaTeX equation library, MathJax.js 2.3.1, will be used to convert raw LaTeX code into a formatted mathematical equation. An integration JavaScript library will be used for some of the galactic models. Other mathematical libraries will be added as needed.
 
 \subsubsection{Communications Interfaces}
-The system demands an Internet connection to access www.RoCMSOCM.com and the SOCM database.
+RoCM and RoCS will query data from the SOCM database. A bridge between the tools and the database will be developed to smoothly interface the front-end UI with the back-end data. A standardized format will be defined by SOCM.
 
 \subsection{Functional Requirements}
 \subsubsection{Rotational Curve Simulator (RoCM)}
 
 \myparagraph{Introduction}
-RoCM will serve as a visual modeler for our collections of data and contemporary theories within astrophysics. With observable data as the input (via SOCM), any galaxy can be imported into the tool. The tool will plot obervational data and multiple galactic models together as a graph, as well as enable users to import their own galatic models to test against existing theories. Sliders will allow users to control parameters within their models with realtime visual feedback in the generated graph.
+RoCM will serve as a visual modeler for our collection of data and contemporary theories for the solution to the rotation curve problem. With observable data as the input (via SOCM), any galaxy can be imported into the tool. The tool will plot obervational data and multiple galactic models together as a graph, as well as enable users to import their own galatic models to test against existing theories. Sliders will allow users to control parameters within their models with realtime visual feedback in the generated graph.
 
 \myparagraph{Inputs}
-RoCM will recieve it's galactic data from the SOCM API endpoints. For use of the sliders, users must click and drag JavaScript-generated sliders. The 'LaTeX equation' section will require a properly-formed LaTeX equation (as dictated by the LaTeX standard) if the user desires to use the feature. The 'JavaScript Model Input' section will require a properly-formed JavaScript function in the form v(R). Interaction with SOCM and RoCS will require mouse or cursor input.
+RoCM will recieve it's galactic data from the SOCM API endpoints. For use of the sliders, users must click and drag JavaScript-generated sliders. The `LaTeX equation' section will require a properly-formed LaTeX equation (as dictated by the LaTeX standard) if the user desires to use the feature. The `JavaScript Model Input' section will require a properly-formed JavaScript function in the form v(R). Interaction with SOCM and RoCS will require mouse or cursor input.
 
 \myparagraph{Processing}
-Galactic data will be processed by the D3 JavaScript library, which generates and manipulates elements of the HMTL DOM to produce the graphs, sliders, and tables of RoCM.
+Galactic data will be processed by the D3 JavaScript library, which generates and manipulates elements of the HMTL DOM to produce the graphs, sliders, and tables of RoCM. When the user changes the value of the sliders, each model that uses that parameter will be recalculated on the fly.
 
 \myparagraph{Outputs}
 RoCM produces a graph of Rotational Velocity (in km/s) over Galactocentric Distance (in kpc) with sliders to dynamically manipulate the graph.
@@ -243,10 +242,10 @@ RoCM produces a graph of Rotational Velocity (in km/s) over Galactocentric Dista
 \myparagraph{Error Handling}
 If RoCM is unable to connect to SOCM, the page will detect the problem and issue an error message to the user. Errors resulting from JavaScript being disabled will be handled at a higher level (in the HMTL pages).
 
-\subsubsection{RoCMSOCM Website (www.RoCMSOCM.com)}
+\subsubsection{RoCMSOCM Website}
 
 \myparagraph{Introduction}
-Astrophysicists will need to model galaxies in programs like MATLAB or Mathematica, but there doesn't exist a singular tool to expedite this process in a universal format. Currently, scholars must sift through peer-reviewed articles and gather data one-by-one. www.RoCMSOCM.com will help generalize the work being done on galaxy research and provide one central repository for researchers.
+Currently, scholars must sift through peer-reviewed articles and gather galaxy data one-by-one. The RoCMSOCM website will help generalize the work being done on galaxy research and provide one central repository for researchers.
 
 \myparagraph{Inputs}
 Outside of the constituent modules of RoCMSOCM, the website will only require a user's mouse or cursor input for navigation. The website will be comprised of HTML, JavaScript, and CSS files. 
@@ -259,43 +258,43 @@ The resulting product will be a full graphical interface for the RoCM, SOCM, and
 
 
 \myparagraph{Error Handling}
-While the Internet browser will handle any issues regarding connection to the website, site itself will detect and report on any errors regarding JavaScript. A message will appear for users who have JavaScript disabled which will prompt them to enable it for the best experience. Any errors with HTTP will be handled by the web server hosting RoCMSOCM.com.
+While the Internet browser will handle any issues regarding connection to the website, the website itself will detect and report on any errors regarding JavaScript. A message will appear for users who have JavaScript disabled which will prompt them to enable it for the best experience. Any errors with HTTP will be handled by the web server hosting RoCMSOCM.com.
 
-\subsection{Use Cases}
-
-\subsubsection{Uncooperative/Nonexistent Camera}
-\begin{center}
-\tikzstyle{arrow}=[draw, -latex]
-\begin{tikzpicture} [
-    gray,
-	->,
-	>=stealth',
-	task/.style={
-		rectangle,
-		draw,
-		left color=white,
-		right color=white,
-		color=gray,
-		minimum width=3cm,
-		minimum height=1cm,,
-		text=burgundy,
-		font=\bfseries
-	},	
-	question/.style={
-		text=black,
-	}
-	]
-	\node [task] (task2) at (0, 0) {Null Camera Feed?}; 
-	\node [task, xshift=3ex,right=of task2] (task3) {Is Camera Available?}; 
-	\node [task, xshift=5ex,right=of task3] (task4) at (7, 1.5) {Reinitialize Camera (try once)}; 
-	\node [task, xshift=5ex,right=of task4] (task5) at (7, -1.5) {Track Mouse}; 
-	
-	\path [arrow] (task2) -- node[question, above] {Yes} ++(task3);
-	\path [arrow] (task3) -- node[question, above] {Yes} ++(task4);
-	\path [arrow] (task3) -- node[question, above] {No} ++(task5);
-	\path [arrow] (task4) -| (task2);
-\end{tikzpicture}
-\end{center}
+%\subsection{Use Cases}
+%
+%\subsubsection{Uncooperative/Nonexistent Camera}
+%\begin{center}
+%\tikzstyle{arrow}=[draw, -latex]
+%\begin{tikzpicture} [
+%    gray,
+%	->,
+%	>=stealth',
+%	task/.style={
+%		rectangle,
+%		draw,
+%		left color=white,
+%		right color=white,
+%		color=gray,
+%		minimum width=3cm,
+%		minimum height=1cm,,
+%		text=burgundy,
+%		font=\bfseries
+%	},	
+%	question/.style={
+%		text=black,
+%	}
+%	]
+%	\node [task] (task2) at (0, 0) {Null Camera Feed?}; 
+%	\node [task, xshift=3ex,right=of task2] (task3) {Is Camera Available?}; 
+%	\node [task, xshift=5ex,right=of task3] (task4) at (7, 1.5) {Reinitialize Camera (try once)}; 
+%	\node [task, xshift=5ex,right=of task4] (task5) at (7, -1.5) {Track Mouse}; 
+%	
+%	\path [arrow] (task2) -- node[question, above] {Yes} ++(task3);
+%	\path [arrow] (task3) -- node[question, above] {Yes} ++(task4);
+%	\path [arrow] (task3) -- node[question, above] {No} ++(task5);
+%	\path [arrow] (task4) -| (task2);
+%\end{tikzpicture}
+%\end{center}
 
 \subsection{Classes/Objects}
 \begin{enumerate}
@@ -312,9 +311,12 @@ While the Internet browser will handle any issues regarding connection to the we
     	\item CurvePlot.js
 		\item ParamTable.js
 		\item ParamSlider.js
-        \item TeXEquation.js
+        \item LaTeXEquation.js
         \item JSModelInput.js
         \item GalacticModel.js
+        \item Params.js
+        \item Constants.js
+        \item Conversion.js
         
 	\end{enumerate}
 	\item RoCMWebApplication Ruby on Rails Application
@@ -327,31 +329,33 @@ While the Internet browser will handle any issues regarding connection to the we
 
 \subsection{Non-Functional Requirements}
 \subsubsection{Performance}
-The TM should be able to track an object with a 90\% certainty. This can be monitored via an algorithm that takes the users given position, and compares it to the previous one to look for large deviations. If the variance is above a certain threshold, the percentage of certainty will be marked down. A camera feedback of 1 second will be necessary for the TM to talk to the WCM effectively.
+RoCM should be able to update each model within the curve plot with less than one second of latency. This is to make sure the flow of the tool isn't compromised because of a slow system.
+
+%The TM should be able to track an object with a 90\% certainty. This can be monitored via an algorithm that takes the users given position, and compares it to the previous one to look for large deviations. If the variance is above a certain threshold, the percentage of certainty will be marked down. A camera feedback of 1 second will be necessary for the TM to talk to the WCM effectively.
 
 \subsubsection{Reliability}
-The users customized configuration of their TACS environment will be saved using the SM. This will enable the user to relaunch the program with the same settings as previous sessions.
+Each widely understood galactic model will come standard with RoCM, providing the users with a set of existing models to test against observable data. The user can rely on the models to be fully functional and validated.
 
 \subsubsection{Availability}
-A internet connection is not necessary for TACS to run, allowing the system to be act independently offline. TACS replies heavily on the installation of a camera, but is not completely dependent on one.
+The website and database will be available 24/7, as long as the hosting machine is online. If the machine crashes, the problem will be debugged and the website will be up as soon as possible.
 
 \subsubsection{Security}
-The settings that are saved will not require sensitive personal information, so security is a low priority. The use of the camera is the only vulnerability in TACS; however, the lack of internet connectivity means a secure network connection is not necessary. 
+Security is a low priority for RoCM, but being a web application it is necessary to cover our grounds. If the user imports their own galactic models, RoCM will only use that locally. A injection free system will be developed to minimize security risks.
 
 \subsubsection{Maintainability}
-The modular nature of the design will help developers maintain each encapsulated portion of TACS. Each module can be updated separately, without intruding on it's neighboring modules. Only if there is a redefinition of inputs and outputs will each module need to be updated accordingly.
+The modular nature of the design will help developers maintain each encapsulated portion of RoCM. Each module can be updated separately, without intruding on it's neighboring modules. Only if there is a redefinition of inputs and outputs will each module need to be updated accordingly.
 
 \subsubsection{Portability}
-This software will be built on several machines ranging from Windows 7 (6.1.7601) to Windows 8.1 (6.3.9600). The intended system for use will be a Windows operating system within that range. Because TACS relies heavily on the Windows API, the Linux and Macintosh machine will not be supported.
+This software can be used on any computer with the latest version of Google Chrome or Mozilla Firefox. Even Android smart phones will be able to run RoCM as a web application. This makes it easy for anyone, anywhere to use RoCM.
 
 \subsection{Inverse Requirements}
-TACS stresses that the user shouldn't need to learn any proprietary material in order to use the system. Therefore, TACS does not have any inverse requirements.
+RoCM stresses that the user shouldn't need to learn any proprietary material in order to use the system. Although, an understanding of rotation curves and their implications in the astrophysics community would be highly recommended to gain the full functionality out of RoCM.
 
 \subsection{Design Constraints}
-Given most laptops come standard will a built-in camera, the design behind TACS is safe. The modular design organizes the individual system features so they can be separately worked on.
+The constrains will be directed at the internet browser that the user chooses to run RoCM. Because this software has multiple features, each software module will be encapsulated in a way to be reused elsewhere.
 
 \subsection{Logical Database Requirements}
-A low maintenance database will be used as a simple data storage facility. This SQLite DB won't need any specific size requirements, due to the minimal amount of data that's required to save.
+SOCM will be the database portion of RoCM. \textit{See the SOCM Software Requirements Specification.}
 
 \section{Project Planning and Risk Management}
 
@@ -383,13 +387,13 @@ A low maintenance database will be used as a simple data storage facility. This 
 
 
 \def \Y {2014}
-\def \Da {1/17}
-\def \Db {2/7}
-\def \Dc {5/19}
-\def \Dd {6/9}
-\def \De {6/16}
-\def \Df {6/23}
-\def \Dg {7/14}
+\def \Da {6/9}
+\def \Db {6/16}
+\def \Dc {6/23}
+\def \Dd {6/30}
+\def \De {7/7}
+\def \Df {7/14}
+\def \Dg {7/28}
 \def \Dh {8/7}
 
 \subsection{Work Breakdown Structure}
@@ -458,19 +462,23 @@ A low maintenance database will be used as a simple data storage facility. This 
 		\arrayrulecolor{gray}\hline
 		\arrayrulecolor{gray}\hline
 		&\\
-		\TaAlt\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ & 1.5 \\
-		\TbAlt & 3 \\
+		\TaAlt
+		% Extra whitespace for the table
+		\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+		\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+		& 1.5 \\
+		\TbAlt & 1 \\
 		&\\
 		\TcAlt & 1 \\
 		\TdAlt & 2 \\
 		&\\
-		\TeAlt & 2 \\
-		\TfAlt & 5 \\
+		\TeAlt & 1 \\
+		\TfAlt & 2 \\
 		&\\
 		\TgAlt & 1 \\
 		\ThAlt & 1 \\
 		&\\
-		\textbf{\color{burgundy} Total} & \textbf{\color{burgundy} 16.5} \\
+		\textbf{\color{burgundy} Total} & \textbf{\color{burgundy} 10.5} \\
 		\end{tabular}
 	};
 	\end{tikzpicture}
@@ -519,8 +527,8 @@ A low maintenance database will be used as a simple data storage facility. This 
 	\begin{gantt}{9}{12}
 		\begin{ganttitle}
 	      \titleelement{\Da}{1}
-	      \titleelement{\Db}{1}
-	      \titleelement{\Dc}{2}
+	      \titleelement{\Db}{2}
+	      \titleelement{\Dc}{1}
 	      \titleelement{\Dd}{1}
 	      \titleelement{\De}{2}
 	      \titleelement{\Df}{2}
@@ -528,9 +536,9 @@ A low maintenance database will be used as a simple data storage facility. This 
 	      \titleelement{\Dh}{1}
 		\end{ganttitle}
 		\ganttbar[color=burgundy]{\TaAlt}{0}{1}
-		\ganttbar[color=burgundy]{\TbAlt}{1}{1}
-		\ganttbar[color=burgundy]{\TcAlt}{2}{2}
-		\ganttbar[color=burgundy]{\TdAlt}{2}{3}
+		\ganttbar[color=burgundy]{\TbAlt}{1}{2}
+		\ganttbar[color=burgundy]{\TcAlt}{3}{1}
+		\ganttbar[color=burgundy]{\TdAlt}{3}{2}
 		\ganttbar[color=burgundy]{\TeAlt}{5}{2}
 		\ganttbar[color=burgundy]{\TfAlt}{5}{4}
 		\ganttbar[color=burgundy]{\TgAlt}{9}{2}
@@ -549,9 +557,15 @@ A low maintenance database will be used as a simple data storage facility. This 
 		\arrayrulecolor{gray}\hline
 		\arrayrulecolor{gray}\hline
 		&\\
-		No camera & 1 & 3 & \textbf{\color{green!75!black!100}3} & The user can use the mouse as a replacement for the head tracking. \\
+		Website crash & 1 & 9 & \textbf{\color{red!75!black!100}9} & The team will be responsible for restarting the server. \\
+		&\\		
+		Slow browser & 2 & 2 & \textbf{\color{green!75!black!100}4} & The user can move to a faster computer. \\
+		
 		\end{tabular}
 	};
+	
+	
+	\textbf{\color{green!75!black!100}3}
 	\end{tikzpicture}
 \end{table}
 
@@ -561,53 +575,27 @@ A low maintenance database will be used as a simple data storage facility. This 
 \subsection{Design Concept}
 A tentative conceptual design of the system is as followed:
 \begin{center}
-	\begin{tikzpicture}[
-	  gray,
-	  node_style/.style={
-	  	rectangle,
-	  	draw,
-	  	top color=white,
-	  	bottom color=white,
-	  	align=center,
-	  	text=black,
-	  	node distance=1.5cm,
-	  	%font=\bfseries
-	  },
-	  task_style/.style={
-		  rectangle,
-		  draw,
-		  top color=white,
-		  bottom color=white,
-		  align=center,
-		  font=\bfseries,
-		  text=navyblue
-	  },
-	  leaftaskshift/.style={
-		  grow=down,
-		  xshift=-10em
-	  },
-	  leaftask/.style={grow=down},
-	  first/.style={level distance=-4ex},
-	  second/.style={level distance=15ex},
-	  third/.style={level distance=1ex},
-	  fourth/.style={level distance=24ex},
-	  level 1/.style={sibling distance=5em}]
-	    \coordinate  
-	   	% Root
-		child[grow=down,first] {node[node_style]{\RoCM\\(RoCM)}}
-		[edge from parent fork down]
-			% Children
-			child{node[node_style, xshift=-21ex, yshift=-2ex] {Tracking Module\\(TM)}
-				child[leaftaskshift,second] {node[task_style,xshift=12ex]{Object\\Tracker (OT)}}
-				child[leaftask,second] {node[task_style,yshift=-10ex]{Facial Recognition\\Tracker (FRT)}}
-				child[leaftask,second] {node[task_style,xshift=8ex]{Mouse\\Tracker}}}
-			child{node[node_style,yshift=-2ex] {Windows Control\\Module\\(WCM)}
-				child[leaftask,second] {node[task_style,xshift=-10ex]{Windows\\Grid\\Organizer}}
-				child[leaftask,second] {node[task_style,xshift=0ex, yshift=-9ex]{Windows\\Perspective}}
-				child[leaftask,second] {node[task_style,xshift=12ex]{Sleep Manager}}}
-			child {node[node_style, xshift=21ex, yshift=-2ex] {Settings Module\\(SM)}
-				child[leaftask,second] {node[task_style]{SQLite DB}}};
-	\end{tikzpicture}
+\tikzstyle{arrow}=[draw, -latex]
+\begin{tikzpicture} [
+	->,
+	gray,
+	>=stealth',
+	task/.style={
+		rectangle,
+		draw,
+		left color=white,
+		right color=white,
+        text=black,
+        %font=\bfseries,
+	}
+	]
+	\node [task, xshift=0ex, label={[align=center]SOCM}] (socm) {\SOCM}; 
+	\node [task, xshift=5ex, label={[align=center]RoCM}, minimum width=2.5cm,right=of task2] (rocm) at (3,1) {\RoCM}; 
+	\node [task, xshift=5ex, label={[align=center]RoCS}, minimum width=3cm,right=of task3] (rocs) at (3,-1) {\RoCS}; 
+	
+	\draw (socm) edge[out=0,in=180,->] (rocm);
+	\draw (socm) edge[out=0,in=180,->] (rocs);
+\end{tikzpicture}
 \end{center}
 
 \end{document}

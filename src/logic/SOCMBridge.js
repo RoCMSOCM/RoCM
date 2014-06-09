@@ -1,12 +1,9 @@
-// RoBT.js
-// Rotation Bit Transfer (alt: Reference Object Byte Transfer)
+// SOCMBridge.js
 // The bridge between RoCM, SOCM, and RoCS
 
-function RoBT() {/*Default constructor*/}
+function SOCMBridge() {/*Default constructor*/};
 
-RoBT.prototype = {
-
-}
+SOCMBridge.prototype = {};
 
 function import_constants() {
   // TODO FIX: Import constants without formatting 
@@ -29,7 +26,7 @@ function import_constants() {
       var params_value = value;//new Param(value, units, value/2, value*2);
 
       PARAMS[key] = params_value;
-      PARAMS["_" + key] = params_value;
+      PARAMS["_" + key] = params_value; // Original value
     }
 
     // TODO: Include B* or calculate it.

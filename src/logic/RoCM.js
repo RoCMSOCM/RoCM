@@ -13,7 +13,7 @@ $("#about_button").click(function () {
   this_button.data('state', (this_button.data('state') == 'up') ? 'down' : 'up');
   
   $('html, body').animate({
-    scrollTop: 1000
+    scrollTop: 2000
   }, this_button.data('state') == 'up' ? 1000 : 1000); //TODO: Fix this when scrolling up as it's closing
 });
 

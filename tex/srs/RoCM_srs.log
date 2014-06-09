@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.8.4)  5 JUN 2014 22:21
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.8.4)  8 JUN 2014 21:38
 entering extended mode
 **RoCM_srs.tex
 (C:\Users\mossr\Desktop\WIT\RoCM\tex\srs\RoCM_srs.tex
@@ -621,6 +621,38 @@ Package: changepage 2009/10/20 v1.0c check page and change page layout
 \cp@tempcnt=\count159
 )
 (C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\l
+ibraries\tikzlibraryautomata.code.tex
+File: tikzlibraryautomata.code.tex 2008/07/14 v2.10 (rcs-revision 1.3)
+
+(C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\l
+ibraries\tikzlibraryshapes.multipart.code.tex
+File: tikzlibraryshapes.multipart.code.tex 2008/01/09 v2.10 (rcs-revision 1.1)
+
+(C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\libraries\shapes\pgf
+libraryshapes.multipart.code.tex
+File: pgflibraryshapes.multipart.code.tex 2010/01/07 v2.10 (rcs-revision 1.2)
+\pgfnodepartlowerbox=\box40
+\pgfnodeparttwobox=\box41
+\pgfnodepartthreebox=\box42
+\pgfnodepartfourbox=\box43
+\pgfnodeparttwentybox=\box44
+\pgfnodepartnineteenbox=\box45
+\pgfnodeparteighteenbox=\box46
+\pgfnodepartseventeenbox=\box47
+\pgfnodepartsixteenbox=\box48
+\pgfnodepartfifteenbox=\box49
+\pgfnodepartfourteenbox=\box50
+\pgfnodepartthirteenbox=\box51
+\pgfnodeparttwelvebox=\box52
+\pgfnodepartelevenbox=\box53
+\pgfnodeparttenbox=\box54
+\pgfnodepartninebox=\box55
+\pgfnodeparteightbox=\box56
+\pgfnodepartsevenbox=\box57
+\pgfnodepartsixbox=\box58
+\pgfnodepartfivebox=\box59
+)))
+(C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\generic\pgf\frontendlayer\tikz\l
 ibraries\tikzlibrarytrees.code.tex
 File: tikzlibrarytrees.code.tex 2008/02/24 v2.10 (rcs-revision 1.2)
 )
@@ -675,22 +707,22 @@ Package: geometry 2010/09/12 v5.6 Page Geometry
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.cfg"))
 (C:\Users\mossr\Desktop\WIT\RoCM\tex\srs\RoCM_srs.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-\AtBeginShipoutBox=\box40
-Package hyperref Info: Link coloring OFF on input line 46.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+\AtBeginShipoutBox=\box60
+Package hyperref Info: Link coloring OFF on input line 47.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -700,9 +732,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count163
 )
-LaTeX Info: Redefining \ref on input line 46.
-LaTeX Info: Redefining \pageref on input line 46.
-LaTeX Info: Redefining \nameref on input line 46.
+LaTeX Info: Redefining \ref on input line 47.
+LaTeX Info: Redefining \pageref on input line 47.
+LaTeX Info: Redefining \nameref on input line 47.
 
 (C:\Users\mossr\Desktop\WIT\RoCM\tex\srs\RoCM_srs.out)
 (C:\Users\mossr\Desktop\WIT\RoCM\tex\srs\RoCM_srs.out)
@@ -712,7 +744,7 @@ LaTeX Info: Redefining \nameref on input line 46.
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count164
 \scratchdimen=\dimen172
-\scratchbox=\box41
+\scratchbox=\box61
 \nofMPsegments=\count165
 \nofMParguments=\count166
 \everyMPshowfont=\toks31
@@ -757,11 +789,11 @@ LaTeX Info: Redefining \nameref on input line 46.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 63.
+(Font)              <12> on input line 64.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 63.
+(Font)              <8> on input line 64.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 63.
+(Font)              <6> on input line 64.
 [1
 
 {C:/Users/mossr/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]pdfTeX warni
@@ -769,35 +801,30 @@ ng (ext4): destination with the same identifier (name{page.1}) has been already
  used, duplicate ignored
 <to be read again> 
                    \relax 
-l.78 \newpage
+l.79 \newpage
               [1] (C:\Users\mossr\Desktop\WIT\RoCM\tex\srs\RoCM_srs.toc)
 \tf@toc=\write5
 
 [2]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 130.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 131.
 
  ("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 130.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 131.
  [3] [4] [5]
-[6] [7]
-Overfull \hbox (10.66066pt too wide) in paragraph at lines 329--330
+[6] [7] [8]
+Overfull \hbox (8.4982pt too wide) in paragraph at lines 451--452
  [] 
  []
 
-[8] [9]
-Overfull \hbox (8.4982pt too wide) in paragraph at lines 479--480
- [] 
- []
-
-[10]
-Overfull \hbox (15.7657pt too wide) in paragraph at lines 546--547
+[9]
+Overfull \hbox (13.2657pt too wide) in paragraph at lines 522--523
 [][] 
  []
 
-[11]
+[10]
 \ganttx=\count170
 \ganttheight=\count171
 Missing character: There is no ; in font nullfont!
@@ -811,45 +838,46 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 
-Overfull \hbox (13.46411pt too wide) in paragraph at lines 570--571
+Overfull \hbox (13.46411pt too wide) in paragraph at lines 546--547
 [][] 
  []
 
+Missing character: There is no 3 in font nullfont!
 
-Overfull \hbox (11.49042pt too wide) in paragraph at lines 587--588
+Overfull \hbox (25.21265pt too wide) in paragraph at lines 569--570
  [][] 
  []
 
-[12]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 645.
- [13]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 645.
+[11]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 601.
+ [12]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 601.
  (C:\Users\mossr\Desktop\WIT\RoCM\tex\srs\RoCM_srs.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 645.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 645.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 601.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 601.
 Package rerunfilecheck Info: File `RoCM_srs.out' has not changed.
-(rerunfilecheck)             Checksum: 6F681AEF82413D182EA1F303CE821733;3055.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 645.
+(rerunfilecheck)             Checksum: 62240B6FD42E9967C5887A4230581C40;2818.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 601.
  ) 
 Here is how much of TeX's memory you used:
- 16866 strings out of 493921
- 307113 string characters out of 3147283
- 403077 words of memory out of 3000000
- 19735 multiletter control sequences out of 15000+200000
- 8501 words of font info for 30 fonts, out of 3000000 for 9000
+ 17343 strings out of 493921
+ 324605 string characters out of 3147283
+ 432629 words of memory out of 3000000
+ 20208 multiletter control sequences out of 15000+200000
+ 8847 words of font info for 31 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 63i,13n,81p,899b,1092s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 63i,13n,81p,557b,1095s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Pr
 ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Fi
-les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fo
-nts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
-/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
-msfonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
-/cmsy10.pfb>
-Output written on RoCM_srs.pdf (14 pages, 185853 bytes).
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
+public/amsfonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
+fonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
+/cmti10.pfb>
+Output written on RoCM_srs.pdf (13 pages, 182919 bytes).
 PDF statistics:
- 427 PDF objects out of 1000 (max. 8388607)
- 119 named destinations out of 1000 (max. 500000)
- 463 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 405 PDF objects out of 1000 (max. 8388607)
+ 113 named destinations out of 1000 (max. 500000)
+ 439 words of extra memory for PDF output out of 10000 (max. 10000000)
 
