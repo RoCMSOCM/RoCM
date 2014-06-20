@@ -41,6 +41,9 @@ d3.csv("../data/velocity/MILKY_WAY_OUTPUT.csv", function(error, data) {
   var galaxy_name = hash_split[1];
   var vrot_name = hash_split[2];
 
+  if(galaxy_name === undefined)
+    galaxy_name = "Milky Way"
+
   switch(vrot_name) {
     case "VROT_DATA":
       simulate(data, vrot_name, galaxy_name, "Observational Data");	 
@@ -112,51 +115,60 @@ function simulate(data, velocity, galaxy_name, data_type) {
 
   initialize_legend(min_velocity, max_velocity, velocity_factor);
 
-  container.selectAll("g.star").data(stars).enter().append("g")
-  .attr("class", "star").each(function(d, i) {
-    if(i == 0)
-    {
-      d3.select(this).append("circle")
-      .attr("class", "orbit")
-      .attr("r", max_R)
-      .attr("opacity", 1)
-      .style("fill", "black")
-      .style("stroke", "dimgray")
-      .style("stroke-dasharray", ("3, 3"));
-
-    }
-    d3.select(this).append("circle")
-      .attr("r", size_scale(d.R))// > 20 ? 1 : 0.1)
-        .attr("cx", d.R)
-        .attr("cy", 0)
-        .style("stroke", "none")
-        .style("fill", range_color(d.velocity))
-        .attr("class", "star")	 
-      //.style("filter", "url(#myGlow)");
-
-});
-
-
+  insert_star(container, stars, max_R);
 
   var star_velocity = stars.map(function(d) {
     return d.velocity;
   });
 
-  var rotate_galaxy = true;
-
   star_cluster = svg.selectAll(".star");
   var N_data = star_velocity.length;
 
+
+  var rotate_galaxy = true;
+
+
   if(rotate_galaxy){
     d3.timer(function() {
-      rotate(star_cluster, star_velocity,is3D); 
+
+      rotate(star_cluster, star_velocity, is3D); 
+
     }, 0);
   } 
   else
-    rotate(star_cluster, star_velocity,is3D);
+    rotate(star_cluster, star_velocity, is3D);
 
 
 
+}
+
+function insert_star(container, data, max_x){
+      container.selectAll("g.star").data(data).enter().insert("g")
+        .attr("class", "star").each(function(d, i) {
+          if(i == 0)
+          {
+            d3.select(this).insert("circle")
+              .attr("class", "orbit")
+              .attr("r", max_x)
+              .attr("opacity", 1)
+              .style("fill", "black")
+              .style("stroke", "dimgray")
+              .style("stroke-dasharray", ("3, 3"));
+          }
+          d3.select(this).insert("circle")
+            .attr("r", size_scale(d.R))// > 20 ? 1 : 0.1)
+              .attr("cx", d.R)
+              .attr("cy", 0)
+              .style("stroke", "none")
+              .style("fill", range_color(d.velocity))
+              .attr("class", "star")   
+              .transition()
+                .duration(2000)
+                .ease(Math.sqrt)
+                // .attr("r", 10)
+                // .remove();
+            //.style("filter", "url(#myGlow)");
+});
 }
 
 var t0 = Date.now() - 10000000;
@@ -176,9 +188,10 @@ function rotate(star_cluster, star_velocity, is3D){
       return "-webkit-transform: perspective(800) scale(1) scale3d(1, 1, 2) rotate3d(1, 0, 0, " + a_value + "deg) translate3d(0px, 198px, 0px);stroke:none;fill:" + range_color(d.velocity);
     })
   }
-  star_cluster.attr("transform",	function(d) {
+  star_cluster.attr("transform",  function(d) {
     return "rotate(" + delta * d.velocity/spin_velocity + ")";
-  });
+  })
+
 }
 
 a_init = 55; // global initial 3D perspective angle
@@ -246,7 +259,8 @@ function initialize_legend(vmin, vmax, velocity_factor) {
   $( "#velocity_value_max" ).css('color',range_color(vmax/velocity_factor));
 }
 
-function update_original(type) {
+function update_original_rocs(type) {
+  console.log(type)
   var orig_val = 0;
   var val_suffix = "";
 

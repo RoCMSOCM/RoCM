@@ -28,7 +28,8 @@ function ParamSlider(param_name, param) {
 	wrapper.append(
 		$("<div>")
 			.attr("id", param_name + "_slider_wrapper")
-			.css("margin", "0 auto")
+			// .css("margin", "0 auto")
+			.css("float", "right")
 			.css("width", "800px")
 			.append($("<label>")
 				.attr("for", param_name + "_amount")
@@ -121,6 +122,9 @@ ParamSlider.prototype = {
 			default:
 				break;
 		}
+
+		// TODO: Change where to update bar chart
+		update_bar();
 	},
 	getFormattedName: function() {
 		return formatName(this.param_name);

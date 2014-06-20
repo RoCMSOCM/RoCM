@@ -43,7 +43,7 @@ var wrapper = d3.select("#rocm_wrapper")
   .attr("width", "75%")
   .attr("min-width", width + margin.left + margin.right + 200);
 
-var animate_beginning = true;
+var animate_beginning = false;
 
 var time = animate_beginning ? 7500 : 0;
 
@@ -312,6 +312,7 @@ function create_legend(velocities) {
     .on("click", function(d) { 
       var object_class = is(d, "err") ? "VROT_DATA_ERR" : d.name;
       object_opacity(object_class);
+      update_bar(d.name, get_bar_data(d.name));
     })
     .on("contextmenu", function(d, index) {
       //handle right click
@@ -405,23 +406,15 @@ function create_curve_plot(){
     // TODO: VDATA for ParamsDict
     VDATA.VROT_GR = Array(data_size);
     VDATA.VROT_DARK = Array(data_size);
+    VDATA.VROT_DATA = Array(data_size);
 
     for(var i=0;i<vel_size;i++){
-      if(velocities[i].name == "VROT_GR"){
-        for(var j=0;j<data_size;j++){
-          VDATA.VROT_GR[j] = velocities[i].values[j].v;
-        }
+      VDATA[velocities[i].name] = Array(data_size);
+
+      for(var j=0;j<data_size;j++){
+        VDATA[velocities[i].name][j] = velocities[i].values[j].v
       }
-      else if(velocities[i].name == "VROT_DARK"){
-        for(var j=0;j<data_size;j++){
-          VDATA.VROT_DARK[j] = velocities[i].values[j].v;
-        }
-      }
-      else if(velocities[i].name == "VROT_CONFORMAL"){
-        for(var j=0;j<data_size;j++){
-          VDATA.VROT_CONFORMAL[j] = velocities[i].values[j].v;
-        }
-      }
+      
     }
 
     
@@ -450,6 +443,9 @@ function create_curve_plot(){
     create_legend(velocities);
 
     create_title(SHOW_TITLE = true, ANIMATE_TITLE = false);
+
+    // TODO: move bar chart
+    create_bar_chart("VROT_GR");
   });
 }
 

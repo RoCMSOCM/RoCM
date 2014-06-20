@@ -23,3 +23,7 @@ String.prototype.prefix = function(value) {
 function println(p) {
 	console.log(p);
 }
+
+function difference(a, b) {
+	return Math.abs(a - b);
+}

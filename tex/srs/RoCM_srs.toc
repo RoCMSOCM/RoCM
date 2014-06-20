@@ -24,7 +24,7 @@
 \contentsline {paragraph}{\numberline {3.2.1.3}Processing}{7}{paragraph.3.2.1.3}
 \contentsline {paragraph}{\numberline {3.2.1.4}Outputs}{7}{paragraph.3.2.1.4}
 \contentsline {paragraph}{\numberline {3.2.1.5}Error Handling}{7}{paragraph.3.2.1.5}
-\contentsline {subsubsection}{\numberline {3.2.2}RoCMSOCM Website}{7}{subsubsection.3.2.2}
+\contentsline {subsubsection}{\numberline {3.2.2}rotationcurve.org Website}{7}{subsubsection.3.2.2}
 \contentsline {paragraph}{\numberline {3.2.2.1}Introduction}{7}{paragraph.3.2.2.1}
 \contentsline {paragraph}{\numberline {3.2.2.2}Inputs}{7}{paragraph.3.2.2.2}
 \contentsline {paragraph}{\numberline {3.2.2.3}Processing}{7}{paragraph.3.2.2.3}
