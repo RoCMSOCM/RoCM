@@ -1,0 +1,22 @@
+body {
+  font: 13px sans-serif;
+  background-color: white;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+
+table th{
+  background-color:#f2f2f2;/*#d9cdb5;*/
+}

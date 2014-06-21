@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <link rel="stylesheet" href="../style/humanity/jquery-ui-1.9.2.custom.css">
+  <link rel="stylesheet" href="../style/github.css">
+  <link rel="stylesheet" href="../style/SOCMt.css"> 
+  <link rel="stylesheet" href="../style/RoCM.css"> 
+  <link rel="stylesheet" href="../style/jquery.dataTables.css">
+
+  <!-- MathJax: Latex equations to HTML (needs to be in the html head) -->
+  <script type="text/javascript" src="../library/init-mathjax.js"></script>  
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  <script type="text/javascript" src="../library/d3.v3.js"></script>
+  <!-- <script src="../library/jquery-1.9.1.js"></script> -->
+  <script type="text/javascript" src="../library/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="../library/jquery-ui.js"></script>
+
+  <script type="text/javascript" src="../library/vkbeautify.js"></script>
+  <script type="text/javascript" src="../library/prettify.js"></script>
+
+  <script type="text/javascript" src="../library/bessel.js"></script>
+  <script type="text/javascript" src="../library/integrate.js"></script>
+
+  <!-- Distribution Functions -->
+  <script type="text/javascript" src="../library/Distribution.js"></script>`
+
+
+  <script type="text/javascript" src="../library/FileSaver.js"></script>
+  <script type="text/javascript" src="../library/Blob.js"></script>
+
+  <script type="text/javascript" src="../library/jquery.dataTables.js"></script>
+
+</head>
+
+<body>
+  <div id="about_wrapper" style="display:none;bottom:0;width:100%;padding-bottom:2%;">
+    <h2>About</h2>
+    <p>RoCM, SOCM, and RoCS were delevoped at Wentworth Insitute of Technology in Boston, MA. Their purpose is to expedite the process of solving the rotation curve problem in all classifications of galaxies.
+    </p>
+    <h3>Scholarly Observed Celestial Measurements (SOCM)</h3>
+    <ul class="socm_list">
+      <li>Provides access to peer-reviewed galactic data and makes it widely available in one location.</li>
+      <li>Enables astrophysicists to skip the data collecting process from their galactic research.</li>
+      <li>Sort and select galactic data to use with several different rotation curve models.
+    </ul>
+    <h3>Rotation Curve Modeler (RoCM)</h3>
+    <ul class="rocm_list">
+      <li>Plot obervational data and multiple galactic models together.</li>
+      <li>Sliders enable the user to visualize the behavior of each parameter within the models.</li>
+      <li>Locally import your own galactic model to test against the existing theories.</li>
+    </ul>
+    <h3>Rotation Curve Simulation (RoCS)</h3>
+    <ul class="rocs_list">
+      <li>Simulate the rotation of the galaxy using different models and observational data.</li>
+      <li>Visualize the velocity of the spin with a color scale.</li>
+    </ul>
+    <center>
+      <p>
+        <a href="mailto:mossr@wit.edu">Robert Moss</a> | 
+        <a href="mailto:clementa1@wit.edu">Alex Clement</a> | 
+        <a href="mailto:mcgeep@wit.edu">Patrick McGee</a> | 
+        <a href="mailto:millerd1@wit.edu">Dave Miller</a> | 
+        <a href="mailto:obrienj10@wit.edu">Dr. James G. O'Brien</a>
+      </p>
+      <sup>Wentworth Insitute of Technology</sup>
+    </center>
+  </div>
+
+
+  <div style="float:left;width:100%">
+    <center>
+      <button id="about_button">About</button>
+    </center>
+  </div>
+</div>
+
+</body>
+</html>
+
+<!-- Helper and Utility Functions -->
+  <script type="text/javascript" src="../logic/Helper.js"></script>
+
+<!-- Parameter Object -->
+  <script type="text/javascript" src="../logic/Param.js"></script>
+
+<!-- Global Parameter Dictionary Object -->
+  <script type="text/javascript" src="../logic/ParamsDict.js"></script>
+
+<!-- Global Velocity Data Object -->
+  <script type="text/javascript" src="../logic/VData.js"></script>
+
+<!-- Constants of Nature -->
+  <script type="text/javascript" src="../logic/Constants.js"></script>
+
+<!-- Unit Conversion -->
+  <script type="text/javascript" src="../logic/Conversion.js"></script>
+
+<!-- Galactic Models -->
+  <script type="text/javascript" src="../logic/GalacticModel.js"></script>
+
+<!-- Curve Plotting Tool -->
+  <script type="text/javascript" src="../logic/CurvePlot.js"></script>
+
+<!-- Parameter Table -->
+  <script type="text/javascript" src="../logic/ParamTable.js"></script>
+
+<!-- Parameter Sliders -->
+  <script type="text/javascript" src="../logic/ParamSlider.js"></script>
+
+<!-- LaTeX Equation Viewer -->
+  <script type="text/javascript" src="../logic/LaTeXEquation.js"></script>
+
+<!-- Save to SVG format -->
+  <script type="text/javascript" src="../logic/SVGSave.js"></script>
+
+<!-- SOCM Table -->
+  <script type="text/javascript" src="../logic/SOCMt.js"></script>
+
+<!-- Bridge Between RoCM-SOCM to Import Galactic Parameters and Data -->
+  <script type="text/javascript" src="../logic/SOCMBridge.js"></script>
+
+<!-- RoCM Logic -->
+  <script type="text/javascript" src="../logic/RoCM.js"></script>
+
+<!-- Bar Chart Tool -->
+  <script type="text/javascript" src="../logic/BarChart.js"></script>`
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <link rel="stylesheet" href="../style/humanity/jquery-ui-1.9.2.custom.css">
+  <link rel="stylesheet" href="../style/github.css">
+  <link rel="stylesheet" href="../style/SOCMt.css"> 
+  <link rel="stylesheet" href="../style/RoCM.css"> 
+  <link rel="stylesheet" href="../style/jquery.dataTables.css">
+
+  <!-- MathJax: Latex equations to HTML (needs to be in the html head) -->
+  <script type="text/javascript" src="../library/init-mathjax.js"></script>  
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  <script type="text/javascript" src="../library/d3.v3.js"></script>
+  <!-- <script src="../library/jquery-1.9.1.js"></script> -->
+  <script type="text/javascript" src="../library/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="../library/jquery-ui.js"></script>
+
+  <script type="text/javascript" src="../library/vkbeautify.js"></script>
+  <script type="text/javascript" src="../library/prettify.js"></script>
+
+  <script type="text/javascript" src="../library/bessel.js"></script>
+  <script type="text/javascript" src="../library/integrate.js"></script>
+
+  <!-- Distribution Functions -->
+  <script type="text/javascript" src="../library/Distribution.js"></script>`
+
+
+  <script type="text/javascript" src="../library/FileSaver.js"></script>
+  <script type="text/javascript" src="../library/Blob.js"></script>
+
+  <script type="text/javascript" src="../library/jquery.dataTables.js"></script>
+
+</head>
+
+<body>
+  <link rel="icon" href="../library/galaxy.ico">
+  
+  <title>Rotation Curve Modeler</title>
+
+  <div style="position:absolute;top:0%;left:50%;margin-left:-100px;width:200px;">
+    <button id="display_button">SOCM Table</button>
+  </div>
+
+  <div id="socmt_wrapper" style="display:none;">
+    <h2>Scholarly Observed Celestial Measurements</h2>
+  </div>
+
+  <center>
+    <noscript>
+      For full functionality of this page it is necessary to enable JavaScript. Here are the <a href="http://www.enable-javascript.com" target="_blank"> instructions how to enable JavaScript in your web browser</a>
+    </noscript>
+  </center>
+
+  <div id="rocm_wrapper" style="max-width:1200px;margin:0 auto">
+    <div id="title_div">
+      <h1>Rotation Curve Modeler</h1>
+      <h2> </h2>   
+    </div>
+
+    <div style="float:left;">
+      <button id="save" onclick="saveSVG('graph')" style="float:left">Save to SVG</button>
+
+      <button id="simulate" onclick="send_to_rocs('Milky Way')" style="float:right">Simulate</button>
+    </div>
+
+    <br>
+    
+    <div id="graph" style="fill:white;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;">
+      <br><br>
+      <svg xmlns="http://www.w3.org/2000/svg" id="graph_svg" style="display:block;margin:auto;"></svg>
+    </div>
+
+
+    <br>
+
+    <!-- <h2>Parameters</h2> -->
+    <div id="constants" style="float:left;width:100%">
+      <table id="constants_table" style="margin:0 auto" cellspacing=0>
+      </table>
+    </div>
+
+    
+    <br>
+
+
+    <h2>Sliders</h2>
+    <div id="sliders" style="float:left;width:100%;position:relative;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;" 
+    unselectable="on"
+    onselectstart="return false;" 
+    onmousedown="return false;">
+
+    <div id="chi_graph" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;">
+      <br><br>
+      <svg xmlns="http://www.w3.org/2000/svg" id="chi_graph_svg" style="float:left"></svg>
+    </div>
+
+
+  </div>
+
+
+  <br>
+
+
+  <div id="latex_wrapper" style="float:left;width:100%">
+    <h2>$\LaTeX$ equation:</h2>
+    <div id="input" style="margin:0 auto">
+      <input id="tex" type="text" value="v_{\text{GR}} = \sqrt{\frac{N^*\beta^*c^2R^2}{2R^3_0}\left[I_0\left(\frac{R}{2R_0}\right)K_0\left(\frac{R}{2R_0}\right)-I_1\left(\frac{R}{2R_0}\right)K_1\left(\frac{R}{2R_0}\right)\right]}" style="width:400px;display:block;margin:0 auto"/></p>
+    </div>
+    <div id="output" style="margin:0 auto"></div>
+  </div>
+
+  <br><br><p>
+
+</body>
+</html>
+
+<!-- Helper and Utility Functions -->
+  <script type="text/javascript" src="../logic/Helper.js"></script>
+
+<!-- Parameter Object -->
+  <script type="text/javascript" src="../logic/Param.js"></script>
+
+<!-- Global Parameter Dictionary Object -->
+  <script type="text/javascript" src="../logic/ParamsDict.js"></script>
+
+<!-- Global Velocity Data Object -->
+  <script type="text/javascript" src="../logic/VData.js"></script>
+
+<!-- Constants of Nature -->
+  <script type="text/javascript" src="../logic/Constants.js"></script>
+
+<!-- Unit Conversion -->
+  <script type="text/javascript" src="../logic/Conversion.js"></script>
+
+<!-- Galactic Models -->
+  <script type="text/javascript" src="../logic/GalacticModel.js"></script>
+
+<!-- Curve Plotting Tool -->
+  <script type="text/javascript" src="../logic/CurvePlot.js"></script>
+
+<!-- Parameter Table -->
+  <script type="text/javascript" src="../logic/ParamTable.js"></script>
+
+<!-- Parameter Sliders -->
+  <script type="text/javascript" src="../logic/ParamSlider.js"></script>
+
+<!-- LaTeX Equation Viewer -->
+  <script type="text/javascript" src="../logic/LaTeXEquation.js"></script>
+
+<!-- Save to SVG format -->
+  <script type="text/javascript" src="../logic/SVGSave.js"></script>
+
+<!-- SOCM Table -->
+  <script type="text/javascript" src="../logic/SOCMt.js"></script>
+
+<!-- Bridge Between RoCM-SOCM to Import Galactic Parameters and Data -->
+  <script type="text/javascript" src="../logic/SOCMBridge.js"></script>
+
+<!-- RoCM Logic -->
+  <script type="text/javascript" src="../logic/RoCM.js"></script>
+
+<!-- Bar Chart Tool -->
+  <script type="text/javascript" src="../logic/BarChart.js"></script>`
+
+</body>
+</html>
