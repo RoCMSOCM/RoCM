@@ -1,5 +1,5 @@
 var font = "12px sans-serif";
-document.getElementById("graph").style.font = font;
+//document.getElementById("graph").style.font = font;
 
 $("#save").button();
 
@@ -8,10 +8,10 @@ $("#simulate").button();
 create_dropdown_div("about_wrapper", "about_button", "up");
 
 $("#about_button").click(function () {
-  var this_button = $(this);  
+  var this_button = $(this);
 
   this_button.data('state', (this_button.data('state') == 'up') ? 'down' : 'up');
-  
+
   $('html, body').animate({
     scrollTop: 2000
   }, this_button.data('state') == 'up' ? 1000 : 1000); //TODO: Fix this when scrolling up as it's closing

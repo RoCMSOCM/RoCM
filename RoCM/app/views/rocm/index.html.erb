@@ -38,61 +38,70 @@
     <%= javascript_include_tag 'SOCMBridge.js' %>
     <%= javascript_include_tag 'RoCM.js' %>
     <%= javascript_include_tag 'BarChart.js' %>
+    <%= javascript_include_tag 'oneSimpleTablePaging.js' %>
   <% end %>
 
   <script>
-    function renderSocmTable() {
+    var allGalaxies = null;
+
+    window.onload = populateGalaxies();
+
+    function populateGalaxies(){
       $.ajax({
         type:     "GET",
         url:      "http://socm.herokuapp.com/galaxies.json",
         crossDomain: true,
         dataType: "json",
         success: function(data){
-          console.log(data)
-          var table = "<table>"
-          table += "<tr>"
-          table += "<th>SOCM ID</th>"
-          table += "<th>Galaxy Name</th>"
-          table += "<th>Type</th>"
-          table += "<th>Distance</th>"
-          table += "<th>Luminosity</th>"
-          table += "<th>Scale Length</th>"
-          table += "<th>Hydrogen Mass</th>"
-          table += "<th>Disk Mass</th>"
-          table += "<th>Stars</th>"
-          table += "<th>VCR</th>"
-          table += "</tr>"
-          $.each(data, function( index, value ) {
-            console.log( index + ": " + value.galaxy_name );
-            table += "<tr>"
-            table += "<td>" + value.id + "</td>"
-            table += "<td>" + value.galaxy_name + "</td>"
-            table += "<td>" + value.galaxy_type + "</td>"
-            table += "<td>" + value.distance + "</td>"
-            table += "<td>" + value.luminosity + "</td>"
-            table += "<td>" + value.scale_length + "</td>"
-            table += "<td>" + value.mass_hydrogen + "</td>"
-            table += "<td>" + value.mass_disk + "</td>"
-            table += "<td>" + value.stars + "</td>"
-            table += "<td>" + value.vcr + "</td>"
-            table += "</tr>"
+          allGalaxies = data;
+          $.each(allGalaxies, function(index, galaxy) {
+            row = "<tr id=galaxy_" + index + ">"
+            row += "<td>" + galaxy.id + "</td>"
+            row += "<td>" + galaxy.galaxy_name + "</td>"
+            row += "<td>" + galaxy.galaxy_type + "</td>"
+            row += "<td>" + galaxy.distance + "</td>"
+            row += "<td>" + galaxy.luminosity + "</td>"
+            row += "<td>" + galaxy.scale_length + "</td>"
+            row += "<td>" + galaxy.mass_hydrogen + "</td>"
+            row += "<td>" + galaxy.mass_disk + "</td>"
+            row += "<td>" + galaxy.stars + "</td>"
+            row += "<td>" + galaxy.vcr + "</td>"
+            row += "</tr>"
+            $("#galaxy_table").append(row);
+            //$("#galaxy_table").show()
           });
-
-          table += "</table>"
-          $("#galaxy_table").html(table);
-          //var parsed = JSON.parse(data[0])
         }
       });
+    }
+
+    function showSocmTable() {
+      if(allGalaxies != null){
+        //$("#galaxy_table").oneSimpleTablePagination({rowsPerPage: 1}); //pagination not working well right now
+        $("#galaxy_table").show()
+      }else{
+        console.log("allGalaxies is null");
+      }
     }
   </script>
 </head>
 
-  <div id="galaxy_table">
-
-  </div>
+  <table id="galaxy_table" style="display: none">
+    <tr>
+      <th>SOCM ID</th>
+      <th>Galaxy Name</th>
+      <th>Type</th>
+      <th>Distance</th>
+      <th>Luminosity</th>
+      <th>Scale Length</th>
+      <th>Hydrogen Mass</th>
+      <th>Disk Mass</th>
+      <th>Stars</th>
+      <th>VCR</th>
+    </tr>
+  </table>
 
   <div style="position:absolute;top:0%;left:50%;margin-left:-100px;width:200px;">
-    <button id="display_button" onclick="renderSocmTable()">SOCM Table</button>
+    <button id="display_button" onclick="showSocmTable()">SOCM Table</button>
   </div>
 
   <div id="socmt_wrapper" style="display:none;">
