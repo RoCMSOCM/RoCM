@@ -12,4 +12,10 @@
  *
  *= require_tree .
  *= require_self
+ *= require github.css
+ *= require jquery.dataTables.css
+ *= require markdown.css
+ *= require RoCM.css
+ *= require RoCS.css
+ *= require SOCMt.css
  */

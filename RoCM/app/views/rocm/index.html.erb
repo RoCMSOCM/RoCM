@@ -1,43 +1,27 @@
-<!DOCTYPE html>
-<html>
 <head>
-  <meta charset="utf-8">
-  
-  <link rel="stylesheet" href="../style/humanity/jquery-ui-1.9.2.custom.css">
-  <link rel="stylesheet" href="../style/github.css">
-  <link rel="stylesheet" href="../style/SOCMt.css"> 
-  <link rel="stylesheet" href="../style/RoCM.css"> 
-  <link rel="stylesheet" href="../style/jquery.dataTables.css">
+<!-- MathJax: Latex equations to HTML (needs to be in the html head) -->
+  <%= javascript_include_tag 'init-mathjax.js' %>
+  <%= javascript_include_tag 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' %>
 
-  <!-- MathJax: Latex equations to HTML (needs to be in the html head) -->
-  <script type="text/javascript" src="../library/init-mathjax.js"></script>  
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <%= javascript_include_tag 'd3.v3.js' %>
+  <%= javascript_include_tag 'jquery-1.10.2.min.js' %>
+  <%= javascript_include_tag 'jquery-ui.js' %>
 
-  <script type="text/javascript" src="../library/d3.v3.js"></script>
-  <!-- <script src="../library/jquery-1.9.1.js"></script> -->
-  <script type="text/javascript" src="../library/jquery-1.10.2.min.js"></script>
-  <script type="text/javascript" src="../library/jquery-ui.js"></script>
+  <%= javascript_include_tag 'vkbeautify.js' %>
+  <%= javascript_include_tag 'prettify.js' %>
 
-  <script type="text/javascript" src="../library/vkbeautify.js"></script>
-  <script type="text/javascript" src="../library/prettify.js"></script>
-
-  <script type="text/javascript" src="../library/bessel.js"></script>
-  <script type="text/javascript" src="../library/integrate.js"></script>
+  <%= javascript_include_tag 'bessel.js' %>
+  <%= javascript_include_tag 'integrate.js' %>
 
   <!-- Distribution Functions -->
-  <script type="text/javascript" src="../library/Distribution.js"></script>`
+  <%= javascript_include_tag 'Distribution.js' %>
 
+  <%= javascript_include_tag 'FileSaver.js' %>
+  <%= javascript_include_tag 'Blob.js' %>
 
-  <script type="text/javascript" src="../library/FileSaver.js"></script>
-  <script type="text/javascript" src="../library/Blob.js"></script>
-
-  <script type="text/javascript" src="../library/jquery.dataTables.js"></script>
-
+  <%= javascript_include_tag 'jquery.dataTables.js' %>
 </head>
 
-<body>
-  <link rel="icon" href="../library/galaxy.ico">
-  
   <title>Rotation Curve Modeler</title>
 
   <div style="position:absolute;top:0%;left:50%;margin-left:-100px;width:200px;">
@@ -57,7 +41,7 @@
   <div id="rocm_wrapper" style="max-width:1200px;margin:0 auto">
     <div id="title_div">
       <h1>Rotation Curve Modeler</h1>
-      <h2> </h2>   
+      <h2> </h2>
     </div>
 
     <div style="float:left;">
@@ -67,7 +51,7 @@
     </div>
 
     <br>
-    
+
     <div id="graph" style="fill:white;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;">
       <br><br>
       <svg xmlns="http://www.w3.org/2000/svg" id="graph_svg" style="display:block;margin:auto;"></svg>
@@ -82,14 +66,14 @@
       </table>
     </div>
 
-    
+
     <br>
 
 
     <h2>Sliders</h2>
-    <div id="sliders" style="float:left;width:100%;position:relative;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;" 
+    <div id="sliders" style="float:left;width:100%;position:relative;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;"
     unselectable="on"
-    onselectstart="return false;" 
+    onselectstart="return false;"
     onmousedown="return false;">
 
     <div id="chi_graph" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;">
@@ -112,58 +96,4 @@
     <div id="output" style="margin:0 auto"></div>
   </div>
 
-  <br><br><p>
-
-</body>
-</html>
-
-<!-- Helper and Utility Functions -->
-  <script type="text/javascript" src="../logic/Helper.js"></script>
-
-<!-- Parameter Object -->
-  <script type="text/javascript" src="../logic/Param.js"></script>
-
-<!-- Global Parameter Dictionary Object -->
-  <script type="text/javascript" src="../logic/ParamsDict.js"></script>
-
-<!-- Global Velocity Data Object -->
-  <script type="text/javascript" src="../logic/VData.js"></script>
-
-<!-- Constants of Nature -->
-  <script type="text/javascript" src="../logic/Constants.js"></script>
-
-<!-- Unit Conversion -->
-  <script type="text/javascript" src="../logic/Conversion.js"></script>
-
-<!-- Galactic Models -->
-  <script type="text/javascript" src="../logic/GalacticModel.js"></script>
-
-<!-- Curve Plotting Tool -->
-  <script type="text/javascript" src="../logic/CurvePlot.js"></script>
-
-<!-- Parameter Table -->
-  <script type="text/javascript" src="../logic/ParamTable.js"></script>
-
-<!-- Parameter Sliders -->
-  <script type="text/javascript" src="../logic/ParamSlider.js"></script>
-
-<!-- LaTeX Equation Viewer -->
-  <script type="text/javascript" src="../logic/LaTeXEquation.js"></script>
-
-<!-- Save to SVG format -->
-  <script type="text/javascript" src="../logic/SVGSave.js"></script>
-
-<!-- SOCM Table -->
-  <script type="text/javascript" src="../logic/SOCMt.js"></script>
-
-<!-- Bridge Between RoCM-SOCM to Import Galactic Parameters and Data -->
-  <script type="text/javascript" src="../logic/SOCMBridge.js"></script>
-
-<!-- RoCM Logic -->
-  <script type="text/javascript" src="../logic/RoCM.js"></script>
-
-<!-- Bar Chart Tool -->
-  <script type="text/javascript" src="../logic/BarChart.js"></script>`
-
-</body>
-</html>
+  <br><br>
