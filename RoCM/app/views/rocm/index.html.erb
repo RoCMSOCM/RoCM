@@ -39,10 +39,60 @@
     <%= javascript_include_tag 'RoCM.js' %>
     <%= javascript_include_tag 'BarChart.js' %>
   <% end %>
+
+  <script>
+    function renderSocmTable() {
+      $.ajax({
+        type:     "GET",
+        url:      "http://socm.herokuapp.com/galaxies.json",
+        crossDomain: true,
+        dataType: "json",
+        success: function(data){
+          console.log(data)
+          var table = "<table>"
+          table += "<tr>"
+          table += "<th>SOCM ID</th>"
+          table += "<th>Galaxy Name</th>"
+          table += "<th>Type</th>"
+          table += "<th>Distance</th>"
+          table += "<th>Luminosity</th>"
+          table += "<th>Scale Length</th>"
+          table += "<th>Hydrogen Mass</th>"
+          table += "<th>Disk Mass</th>"
+          table += "<th>Stars</th>"
+          table += "<th>VCR</th>"
+          table += "</tr>"
+          $.each(data, function( index, value ) {
+            console.log( index + ": " + value.galaxy_name );
+            table += "<tr>"
+            table += "<td>" + value.id + "</td>"
+            table += "<td>" + value.galaxy_name + "</td>"
+            table += "<td>" + value.galaxy_type + "</td>"
+            table += "<td>" + value.distance + "</td>"
+            table += "<td>" + value.luminosity + "</td>"
+            table += "<td>" + value.scale_length + "</td>"
+            table += "<td>" + value.mass_hydrogen + "</td>"
+            table += "<td>" + value.mass_disk + "</td>"
+            table += "<td>" + value.stars + "</td>"
+            table += "<td>" + value.vcr + "</td>"
+            table += "</tr>"
+          });
+
+          table += "</table>"
+          $("#galaxy_table").html(table);
+          //var parsed = JSON.parse(data[0])
+        }
+      });
+    }
+  </script>
 </head>
 
+  <div id="galaxy_table">
+
+  </div>
+
   <div style="position:absolute;top:0%;left:50%;margin-left:-100px;width:200px;">
-    <button id="display_button">SOCM Table</button>
+    <button id="display_button" onclick="renderSocmTable()">SOCM Table</button>
   </div>
 
   <div id="socmt_wrapper" style="display:none;">
