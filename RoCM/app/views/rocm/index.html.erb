@@ -1,25 +1,30 @@
 <head>
 <!-- MathJax: Latex equations to HTML (needs to be in the html head) -->
-  <%= javascript_include_tag 'init-mathjax.js' %>
-  <%= javascript_include_tag 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' %>
+  <% content_for :javascript_includes do %>
+    <%= javascript_include_tag 'init-mathjax.js' %>
+    <%= javascript_include_tag 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' %>
 
-  <%= javascript_include_tag 'd3.v3.js' %>
-  <%= javascript_include_tag 'jquery-1.10.2.min.js' %>
-  <%= javascript_include_tag 'jquery-ui.js' %>
+    <%= javascript_include_tag 'd3', :charset => "utf-8" %>
+    <%= javascript_include_tag 'd3.v3.js', :charset => "utf-8" %>
 
-  <%= javascript_include_tag 'vkbeautify.js' %>
-  <%= javascript_include_tag 'prettify.js' %>
+    <%= javascript_include_tag 'jquery-1.10.2.min.js' %>
+    <%= javascript_include_tag 'jquery-ui.js' %>
 
-  <%= javascript_include_tag 'bessel.js' %>
-  <%= javascript_include_tag 'integrate.js' %>
+    <%= javascript_include_tag 'vkbeautify.js' %>
+    <%= javascript_include_tag 'prettify.js' %>
 
-  <!-- Distribution Functions -->
-  <%= javascript_include_tag 'Distribution.js' %>
+    <%= javascript_include_tag 'bessel.js' %>
+    <%= javascript_include_tag 'integrate.js' %>
 
-  <%= javascript_include_tag 'FileSaver.js' %>
-  <%= javascript_include_tag 'Blob.js' %>
+    <!-- Distribution Functions -->
+    <%= javascript_include_tag 'Distribution.js' %>
 
-  <%= javascript_include_tag 'jquery.dataTables.js' %>
+    <%= javascript_include_tag 'FileSaver.js' %>
+    <%= javascript_include_tag 'Blob.js' %>
+
+    <%= javascript_include_tag 'jquery.dataTables.js' %>
+    <%= javascript_include_tag 'LaTeXEquation.js' %>
+  <% end %>
 </head>
 
   <title>Rotation Curve Modeler</title>

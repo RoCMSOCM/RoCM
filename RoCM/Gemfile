@@ -21,6 +21,7 @@ end
 gem 'pg'
 gem 'devise'
 gem 'ransack'
+gem 'd3-rails'
 
 gem 'tzinfo-data'
 
