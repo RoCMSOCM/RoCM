@@ -1,5 +1,4 @@
 <head>
-<!-- MathJax: Latex equations to HTML (needs to be in the html head) -->
   <% content_for :javascript_includes do %>
     <%= javascript_include_tag 'init-mathjax.js' %>
     <%= javascript_include_tag 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' %>
@@ -24,10 +23,24 @@
 
     <%= javascript_include_tag 'jquery.dataTables.js' %>
     <%= javascript_include_tag 'LaTeXEquation.js' %>
+
+    <%= javascript_include_tag 'Helper.js' %>
+    <%= javascript_include_tag 'Param.js' %>
+    <%= javascript_include_tag 'ParamsDict.js' %>
+    <%= javascript_include_tag 'VData.js' %>
+    <%= javascript_include_tag 'Constants.js' %>
+    <%= javascript_include_tag 'Conversion.js' %>
+    <%= javascript_include_tag 'GalacticModel.js' %>
+    <%= javascript_include_tag 'CurvePlot.js' %>
+    <%= javascript_include_tag 'ParamTable.js' %>
+    <%= javascript_include_tag 'ParamSlider.js' %>
+    <%= javascript_include_tag 'SVGSave.js' %>
+    <%= javascript_include_tag 'SOCMt.js' %>
+    <%= javascript_include_tag 'SOCMBridge.js' %>
+    <%= javascript_include_tag 'RoCM.js' %>
+    <%= javascript_include_tag 'BarChart.js' %>
   <% end %>
 </head>
-
-  <title>Rotation Curve Modeler</title>
 
   <div style="position:absolute;top:0%;left:50%;margin-left:-100px;width:200px;">
     <button id="display_button">SOCM Table</button>
