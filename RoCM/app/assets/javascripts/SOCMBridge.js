@@ -6,8 +6,8 @@ function SOCMBridge() {/*Default constructor*/};
 SOCMBridge.prototype = {};
 
 function import_constants() {
-  // TODO FIX: Import constants without formatting 
-  d3.csv("../data/params/MILKY_WAY_CONSTANTS.csv", function(error, data) {
+  // TODO FIX: Import constants without formatting
+  d3.json("../data/params/MILKY_WAY_CONSTANTS.csv", function(error, data) {
     data = data[0];
 
     var data_keys = Object.keys(data);
@@ -25,7 +25,7 @@ function import_constants() {
       var joined_split = [split_data.shift(), split_data.join(delim)];
       var value = +joined_split[0];
       var units = joined_split[1];
-       
+
       var param = new Param(value, units);
 
       PARAMS.add(key, param);
@@ -52,7 +52,7 @@ function send_to_rocs(galaxy_name) {
   var opac = [];
 
   $('.velocity path').each(function () {
-    vel = $(this).attr('class'); 
+    vel = $(this).attr('class');
     op = +$(this).css('opacity');
     if(op == 1)
       vels.push(vel);
@@ -78,7 +78,7 @@ function send_to_rocs(galaxy_name) {
   }
   else if(model_count == 1){
     vrot_name = models[0];
-  } 
+  }
   else
   {
     alert('Select only one model to simulate.\nOr\nSelect only the data.\n\n(click the legend)')
