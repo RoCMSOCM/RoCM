@@ -9,29 +9,51 @@
   <link rel="stylesheet" href="../style/RoCM.css"> 
   <link rel="stylesheet" href="../style/jquery.dataTables.css">
 
-  <!-- MathJax: Latex equations to HTML (needs to be in the html head) -->
-  <script type="text/javascript" src="../library/init-mathjax.js"></script>  
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<% 
+=begin Use this block if About becomes own page
+  <% content_for :javascript_includes do %>
+    <!-- MathJax: Latex equations to HTML (needs to be in the html head) -->
+    <%= javascript_include_tag 'init-mathjax.js' %>
+    <%= javascript_include_tag 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' %>
 
-  <script type="text/javascript" src="../library/d3.v3.js"></script>
-  <!-- <script src="../library/jquery-1.9.1.js"></script> -->
-  <script type="text/javascript" src="../library/jquery-1.10.2.min.js"></script>
-  <script type="text/javascript" src="../library/jquery-ui.js"></script>
+    <%= javascript_include_tag 'd3', :charset => "utf-8" %>
 
-  <script type="text/javascript" src="../library/vkbeautify.js"></script>
-  <script type="text/javascript" src="../library/prettify.js"></script>
+    <%= javascript_include_tag 'jquery-1.10.2.min.js' %>
+    <%= javascript_include_tag 'jquery-ui.js' %>
 
-  <script type="text/javascript" src="../library/bessel.js"></script>
-  <script type="text/javascript" src="../library/integrate.js"></script>
+    <%= javascript_include_tag 'vkbeautify.js' %>
+    <%= javascript_include_tag 'prettify.js' %>
 
-  <!-- Distribution Functions -->
-  <script type="text/javascript" src="../library/Distribution.js"></script>`
+    <%= javascript_include_tag 'bessel.js' %>
+    <%= javascript_include_tag 'integrate.js' %>
 
+    <!-- Distribution Functions -->
+    <%= javascript_include_tag 'Distribution.js' %>
 
-  <script type="text/javascript" src="../library/FileSaver.js"></script>
-  <script type="text/javascript" src="../library/Blob.js"></script>
+    <%= javascript_include_tag 'FileSaver.js' %>
+    <%= javascript_include_tag 'Blob.js' %>
 
-  <script type="text/javascript" src="../library/jquery.dataTables.js"></script>
+    <%= javascript_include_tag 'jquery.dataTables.js' %>
+    <%= javascript_include_tag 'LaTeXEquation.js' %>
+
+    <%= javascript_include_tag 'Helper.js' %>
+    <%= javascript_include_tag 'Param.js' %>
+    <%= javascript_include_tag 'ParamsDict.js' %>
+    <%= javascript_include_tag 'VData.js' %>
+    <%= javascript_include_tag 'Constants.js' %>
+    <%= javascript_include_tag 'Conversion.js' %>
+    <%= javascript_include_tag 'GalacticModel.js' %>
+    <%= javascript_include_tag 'CurvePlot.js' %>
+    <%= javascript_include_tag 'ParamTable.js' %>
+    <%= javascript_include_tag 'ParamSlider.js' %>
+    <%= javascript_include_tag 'SVGSave.js' %>
+    <%= javascript_include_tag 'SOCMt.js' %>
+    <%= javascript_include_tag 'SOCMBridge.js' %>
+    <%= javascript_include_tag 'RoCM.js' %>
+    <%= javascript_include_tag 'BarChart.js' %>
+    <%= javascript_include_tag 'oneSimpleTablePaging.js' %>
+  <% end %>
+=end %>
 
 </head>
 
@@ -79,54 +101,6 @@
 
 </body>
 </html>
-
-<!-- Helper and Utility Functions -->
-  <script type="text/javascript" src="../logic/Helper.js"></script>
-
-<!-- Parameter Object -->
-  <script type="text/javascript" src="../logic/Param.js"></script>
-
-<!-- Global Parameter Dictionary Object -->
-  <script type="text/javascript" src="../logic/ParamsDict.js"></script>
-
-<!-- Global Velocity Data Object -->
-  <script type="text/javascript" src="../logic/VData.js"></script>
-
-<!-- Constants of Nature -->
-  <script type="text/javascript" src="../logic/Constants.js"></script>
-
-<!-- Unit Conversion -->
-  <script type="text/javascript" src="../logic/Conversion.js"></script>
-
-<!-- Galactic Models -->
-  <script type="text/javascript" src="../logic/GalacticModel.js"></script>
-
-<!-- Curve Plotting Tool -->
-  <script type="text/javascript" src="../logic/CurvePlot.js"></script>
-
-<!-- Parameter Table -->
-  <script type="text/javascript" src="../logic/ParamTable.js"></script>
-
-<!-- Parameter Sliders -->
-  <script type="text/javascript" src="../logic/ParamSlider.js"></script>
-
-<!-- LaTeX Equation Viewer -->
-  <script type="text/javascript" src="../logic/LaTeXEquation.js"></script>
-
-<!-- Save to SVG format -->
-  <script type="text/javascript" src="../logic/SVGSave.js"></script>
-
-<!-- SOCM Table -->
-  <script type="text/javascript" src="../logic/SOCMt.js"></script>
-
-<!-- Bridge Between RoCM-SOCM to Import Galactic Parameters and Data -->
-  <script type="text/javascript" src="../logic/SOCMBridge.js"></script>
-
-<!-- RoCM Logic -->
-  <script type="text/javascript" src="../logic/RoCM.js"></script>
-
-<!-- Bar Chart Tool -->
-  <script type="text/javascript" src="../logic/BarChart.js"></script>`
 
 </body>
 </html>
