@@ -35,12 +35,11 @@ function create_data_table()
     } );
 }
 
-function create_table(csvFileName) {
-	d3.csv(csvFileName, function(error, data) {
+function create_table(galaxiesJson) {
+	d3.json(galaxiesJson, function(error, data) {
 		data.forEach(function(d) {
 			d.Functions = "<button class='plot'>Plot</button> | <button class='download'>Download</button>"
 		});
-
 
 		keys = Object.keys(data[0]);
 
@@ -67,13 +66,12 @@ function create_table(csvFileName) {
 					var prefix = "";
 					var suffix = "";
 
-					if(row_data.contains("[")){
-						prefix = "<button class='reference'>";
-						suffix = "</button>";
-	
-					}
+					// if(row_data.contains("[")){
+					// 	prefix = "<button class='reference'>";
+					// 	suffix = "</button>";
+					// }
+
 					row.append($("<td/>").html(prefix + row_data + suffix))
-	
 				}
 			}
 

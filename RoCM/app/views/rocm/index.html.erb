@@ -42,76 +42,57 @@
   <% end %>
 
   <script>
-    var allGalaxies = null;
+    // var allGalaxies = null;
 
-    window.onload = populateGalaxies();
+    // window.onload = populateGalaxies();
 
-    function populateGalaxies(){
-      $.ajax({
-        type:     "GET",
-        url:      "http://socm.herokuapp.com/galaxies.json",
-        crossDomain: true,
-        dataType: "json",
-        success: function(data){
-          allGalaxies = data;
-          $.each(allGalaxies, function(index, galaxy) {
-            row = "<tr id=galaxy_" + index + ">"
-            row += "<td>" + galaxy.id + "</td>"
-            row += "<td>" + galaxy.galaxy_name + "</td>"
-            row += "<td>" + galaxy.galaxy_type + "</td>"
-            row += "<td>" + galaxy.distance + "</td>"
-            row += "<td>" + galaxy.luminosity + "</td>"
-            row += "<td>" + galaxy.scale_length + "</td>"
-            row += "<td>" + galaxy.mass_hydrogen + "</td>"
-            row += "<td>" + galaxy.mass_disk + "</td>"
-            row += "<td>" + galaxy.stars + "</td>"
-            row += "<td>" + galaxy.vcr + "</td>"
-            row += "<td>" + galaxy.n + "</td>"
-            row += "<td>" + galaxy.r0 + "</td>"
-            row += "<td>" + galaxy.n_g + "</td>"
-            row += "<td>" + galaxy.r_0 + "</td>"
-            row += "<td>" + galaxy.sigma0 + "</td>"
-            row += "</tr>"
-            $("#galaxy_table").append(row);
-            //$("#galaxy_table").show()
-          });
-        }
-      });
-    }
+    // function populateGalaxies(){
+    //   $.ajax({
+    //     type:     "GET",
+    //     url:      "http://socm.herokuapp.com/galaxies.json",
+    //     crossDomain: true,
+    //     dataType: "json",
+    //     success: function(data){
+    //       allGalaxies = data;
+    //       $.each(allGalaxies, function(index, galaxy) {
+    //         row = "<tr id=galaxy_" + index + ">"
+    //         row += "<td>" + galaxy.id + "</td>"
+    //         row += "<td>" + galaxy.galaxy_name + "</td>"
+    //         row += "<td>" + galaxy.galaxy_type + "</td>"
+    //         row += "<td>" + galaxy.distance + "</td>"
+    //         row += "<td>" + galaxy.luminosity + "</td>"
+    //         row += "<td>" + galaxy.scale_length + "</td>"
+    //         row += "<td>" + galaxy.mass_hydrogen + "</td>"
+    //         row += "<td>" + galaxy.mass_disk + "</td>"
+    //         row += "<td>" + galaxy.stars + "</td>"
+    //         row += "<td>" + galaxy.vcr + "</td>"
+    //         row += "<td>" + galaxy.n + "</td>"
+    //         row += "<td>" + galaxy.r0 + "</td>"
+    //         row += "<td>" + galaxy.n_g + "</td>"
+    //         row += "<td>" + galaxy.r_0 + "</td>"
+    //         row += "<td>" + galaxy.sigma0 + "</td>"
+    //         row += "</tr>"
+    //         $("#galaxy_table").append(row);
+    //         //$("#galaxy_table").show()
+    //       });
+    //     }
+    //   });
+    // }
 
-    function showSocmTable() {
-      if(allGalaxies != null){
-        //$("#galaxy_table").oneSimpleTablePagination({rowsPerPage: 1}); //pagination not working well right now
-        $("#galaxy_table").show()
-      }else{
-        alert("Failed to fetch Galaxy data from socm.herokuapp.com. Please reload page!")
-      }
-    }
+    // function showSocmTable() {
+    //   if(allGalaxies != null){
+    //     //$("#galaxy_table").oneSimpleTablePagination({rowsPerPage: 1}); //pagination not working well right now
+    //     $("#galaxy_table").show()
+    //   }else{
+    //     alert("Failed to fetch Galaxy data from socm.herokuapp.com. Please reload page!")
+    //   }
+    // }
   </script>
 </head>
 
-  <table id="galaxy_table" style="display: none">
-    <tr>
-      <th>SOCM ID</th>
-      <th>Galaxy Name</th>
-      <th>Type</th>
-      <th>Distance</th>
-      <th>Luminosity</th>
-      <th>Scale Length</th>
-      <th>Hydrogen Mass</th>
-      <th>Disk Mass</th>
-      <th>Stars</th>
-      <th>VCR</th>
-      <th>N*</th>
-      <th>R0</th>
-      <th>N_g</th>
-      <th>r0</th>
-      <th>Sigma0</th>
-    </tr>
-  </table>
-
-  <div style="position:absolute;top:0%;left:50%;margin-left:-100px;width:200px;">
-    <button id="display_button" onclick="showSocmTable()">SOCM Table</button>
+<body>
+<div style="position:absolute;top:0%;left:50%;margin-left:-100px;width:200px;">
+    <button id="display_button">SOCM Table</button>
   </div>
 
   <div id="socmt_wrapper" style="display:none;">
@@ -183,3 +164,6 @@
   </div>
 
   <br><br>
+
+  </div>
+</body>
