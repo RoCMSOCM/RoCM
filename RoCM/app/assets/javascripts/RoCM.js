@@ -5,7 +5,7 @@ $("#save").button();
 
 $("#simulate").button();
 
-create_dropdown_div("about_wrapper", "about_button", "up");
+//create_dropdown_div("about_wrapper", "about_button", "up");
 
 // TODO: Isolate or move this to an 'About' js file
 // $("#about_button").click(function () {
@@ -21,28 +21,30 @@ create_dropdown_div("about_wrapper", "about_button", "up");
 
 
 // PARAMS = new Params(); //Inherit Array into Params
-VDATA = new VData();
+$( document ).ready(function() {
+	VDATA = new VData();
 
-PARAMS = new ParamsDict();
+	PARAMS = new ParamsDict();
 
-// Params Import
-import_constants();
+	// Params Import
+	import_constants();
 
-// CurvePlot
-create_curve_plot();
+	// CurvePlot
+	create_curve_plot();
 
-// SOCM Table
-create_dropdown_div("socmt_wrapper", "display_button", "down");
+	//csvFileName = "../data/params/COMBINED_TABLE.csv";
+	var allGalaxiesEndpoint = "http://socm.herokuapp.com/galaxies.json"
 
-//csvFileName = "../data/params/COMBINED_TABLE.csv";
-var allGalaxiesEndpoint = "http://socm.herokuapp.com/galaxies.json"
+	//create_table(csvFileName);
+	create_table(allGalaxiesEndpoint)
 
-//create_table(csvFileName);
-create_table(allGalaxiesEndpoint)
+	// SOCM Table
+	create_dropdown_div("socmt_wrapper", "display_button", "down");
 
-model = new GalacticModel();
+	model = new GalacticModel();
 
-GMODEL = new GModel();
+	GMODEL = new GModel();
+});
 
 // To add your own model
 // GMODEL["VROT_NAME"] = function(Rkpc) {

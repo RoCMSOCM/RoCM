@@ -97,7 +97,7 @@ function create_table(galaxiesJson) {
 
 function create_dropdown_div(div_id, button_id, direction) {
 	var table_button = $("#" + button_id);
-	
+
 	var compass = "";
 
 	direction == "up" ? compass = "n" : compass = "s";

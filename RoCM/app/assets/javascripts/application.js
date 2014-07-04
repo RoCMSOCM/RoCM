@@ -16,3 +16,4 @@
 //= require d3
 //= require_tree .
 //= require dataTables/jquery.dataTables
+//= require jquery-ui
