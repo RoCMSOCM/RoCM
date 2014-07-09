@@ -42,9 +42,9 @@ function glow(url) {
     color = d3.rgb(value);
     var matrix = "0 0 0 red 0 0 0 0 0 green 0 0 0 0 blue 0 0 0 1 0";
     colorMatrix = matrix
-      .replace("red", color.r)
-      .replace("green", color.g)
-      .replace("blue", color.b);
+      .replace("red", color.r/256)
+      .replace("green", color.g/256)
+      .replace("blue", color.b/256);
 
     return my;
   };

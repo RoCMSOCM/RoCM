@@ -23,9 +23,14 @@ function create_param_table(div_id, data){
     table = $("#" + div_id + " tr:last");
 
     for(var i=0;i<n;i++){    
+        var parameter = data[keys[i]].split(" ");
+        var value = +parameter[0];
+        var units = parameter[1] === undefined ? "" : parameter[1];
+        var html_parameter = formatExponential(value) + " " + units ;
+        html_parameter = "<code>" + html_parameter.trim() + "</code>";
 
         table.append($("<td><em>")
-            .html("<code>" + data[keys[i]] + "</code>")
+            .html(html_parameter)
             );
     }
 }

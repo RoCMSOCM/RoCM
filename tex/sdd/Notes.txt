@@ -1,0 +1,11 @@
+System Overview
+-Difference components
+
+System Architecture
+-Flowchart! (with arrows)
+
+Data Description
+-Data Diagram (with size)
+
+Requirement Matrix
+-Where functional requirements are in the SRS

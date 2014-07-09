@@ -5,7 +5,7 @@
   
   <link rel="stylesheet" href="../style/humanity/jquery-ui-1.9.2.custom.css">
   <link rel="stylesheet" href="../style/github.css">
-  <link rel="stylesheet" href="../style/SOCMt.css"> 
+  <link rel="stylesheet" href="../style/SOCMTable.css"> 
   <link rel="stylesheet" href="../style/RoCM.css"> 
   <link rel="stylesheet" href="../style/jquery.dataTables.css">
 
@@ -17,7 +17,7 @@
   <!-- <script src="../library/jquery-1.9.1.js"></script> -->
   <script type="text/javascript" src="../library/jquery-1.10.2.min.js"></script>
   <script type="text/javascript" src="../library/jquery-ui.js"></script>
-
+  
   <script type="text/javascript" src="../library/vkbeautify.js"></script>
   <script type="text/javascript" src="../library/prettify.js"></script>
 
@@ -60,8 +60,8 @@
       <h2> </h2>   
     </div>
 
-    <div style="float:left;">
-      <button id="save" onclick="saveSVG('graph')" style="float:left">Save to SVG</button>
+    <div style="float:right;">
+      <button id="save" onclick="saveSVG('graph')" style="float:right">Save to SVG</button>
 
       <button id="simulate" onclick="send_to_rocs('Milky Way')" style="float:right">Simulate</button>
     </div>
@@ -82,19 +82,19 @@
       </table>
     </div>
 
-    
+
     <br>
 
 
-    <h2>Sliders</h2>
+    <h2>Parameter Fitting Sliders</h2>
     <div id="sliders" style="float:left;width:100%;position:relative;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;" 
     unselectable="on"
     onselectstart="return false;" 
     onmousedown="return false;">
 
-    <div id="chi_graph" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;">
+    <div id="bar_graph" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;">
       <br><br>
-      <svg xmlns="http://www.w3.org/2000/svg" id="chi_graph_svg" style="float:left"></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" id="bar_graph_svg" style="float:left"></svg>
     </div>
 
 
@@ -185,6 +185,10 @@
 
 <!-- Galactic Models -->
   <script type="text/javascript" src="../logic/GalacticModel.js"></script>
+  <script type="text/javascript" src="../logic/Bulge.js"></script>
+  
+<!-- Bar Chart Tool -->
+  <script type="text/javascript" src="../logic/ChiChart.js"></script>`
 
 <!-- Curve Plotting Tool -->
   <script type="text/javascript" src="../logic/CurvePlot.js"></script>
@@ -202,16 +206,13 @@
   <script type="text/javascript" src="../logic/SVGSave.js"></script>
 
 <!-- SOCM Table -->
-  <script type="text/javascript" src="../logic/SOCMt.js"></script>
+  <script type="text/javascript" src="../logic/SOCMTable.js"></script>
 
 <!-- Bridge Between RoCM-SOCM to Import Galactic Parameters and Data -->
   <script type="text/javascript" src="../logic/SOCMBridge.js"></script>
 
 <!-- RoCM Logic -->
   <script type="text/javascript" src="../logic/RoCM.js"></script>
-
-<!-- Bar Chart Tool -->
-  <script type="text/javascript" src="../logic/BarChart.js"></script>`
 
 </body>
 </html>

@@ -5,9 +5,12 @@ function SOCMBridge() {/*Default constructor*/};
 
 SOCMBridge.prototype = {};
 
-function import_constants() {
+function import_constants(csv_filename) {
   // TODO FIX: Import constants without formatting 
-  d3.csv("../data/params/MILKY_WAY_CONSTANTS.csv", function(error, data) {
+  d3.csv(csv_filename, function(error, data) {
+    div_id = "constants_table";
+    create_param_table(div_id, data);
+
     data = data[0];
 
     var data_keys = Object.keys(data);
@@ -32,18 +35,47 @@ function import_constants() {
     }
 
     // TODO: Include B* or calculate it.
-    // PARAMS.set("B", new Param(1.48, "km"));
+    PARAMS.add("B", new Param(1.48, "km"));
+    var bulge_b = 0.611499 // *10^10
+    var bulge_t = 0.0939927
+    PARAMS.add("BULGE_B", new Param(bulge_b)) // *10^10
+    PARAMS.add("BULGE_T", new Param(bulge_t))
 
     // ParamSlider initial sliders
-    initialize_sliders();
+    slider_map = {
+      "N*":{min:0.01*Math.pow(10,10), max:4.0*Math.pow(10,11)},
+      "r0":{min:0, max:100},
+      "sigma0":{min:1.0*Math.pow(10,-10), max:1.0*Math.pow(10,-6)}
+    };
+    initialize_sliders(slider_map);
+
+    // MOND Parameter fitting sliders
+    var solar_mass = CONST.get("Mo");
+    var M0 = 9.60 * Math.pow(10, 11) * solar_mass;
+    var M0param = new Param(M0, "kg");
+    PARAMS.add("M0", M0param);
+    var M0slider = new ParamSlider("M0", M0param);
+
+
+    var MONDr0 = 4.30*Math.pow(10, 22); // cm
+    var MONDr0param = new Param(MONDr0, "cm");
+    PARAMS.add("MONDr0", MONDr0param);
+    var MONDr0slider = new ParamSlider("MONDr0", MONDr0param);
+    
+
+    var a0 = CONVERT.cm_to_km(6.90*Math.pow(10,-8)); //cm/s^2 -> km/s^2
+    var G0 = (a0*Math.pow(MONDr0,2)) / M0;
+    var G0param = new Param(G0, "kg");
+    PARAMS.add("G0", G0param);
+    var G0slider = new ParamSlider("G0", G0param);
+
   });
 
   // TODO FIX: Import the formatted constants (html formatting, superscripts, subscripts, etc.)
-  d3.csv("../data/params/MILKY_WAY_CONSTANTS_FORMATTED.csv", function(error, data) {
-    div_id = "constants_table";
-  	create_param_table(div_id, data);
-
-  });
+  // d3.csv("../data/params/MILKY_WAY_CONSTANTS_FORMATTED.csv", function(error, data) {
+  //  //  div_id = "constants_table";
+  // 	// create_param_table(div_id, data);
+  // });
 }
 
 function send_to_rocs(galaxy_name) {
