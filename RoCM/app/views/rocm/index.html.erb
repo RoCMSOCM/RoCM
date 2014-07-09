@@ -40,54 +40,13 @@
     <%= javascript_include_tag 'BarChart.js' %>
     <%= javascript_include_tag 'oneSimpleTablePaging.js' %>
   <% end %>
-
-  <script>
-    // var allGalaxies = null;
-
-    // window.onload = populateGalaxies();
-
-    // function populateGalaxies(){
-    //   $.ajax({
-    //     type:     "GET",
-    //     url:      "http://socm.herokuapp.com/galaxies.json",
-    //     crossDomain: true,
-    //     dataType: "json",
-    //     success: function(data){
-    //       allGalaxies = data;
-    //       $.each(allGalaxies, function(index, galaxy) {
-    //         row = "<tr id=galaxy_" + index + ">"
-    //         row += "<td>" + galaxy.id + "</td>"
-    //         row += "<td>" + galaxy.galaxy_name + "</td>"
-    //         row += "<td>" + galaxy.galaxy_type + "</td>"
-    //         row += "<td>" + galaxy.distance + "</td>"
-    //         row += "<td>" + galaxy.luminosity + "</td>"
-    //         row += "<td>" + galaxy.scale_length + "</td>"
-    //         row += "<td>" + galaxy.mass_hydrogen + "</td>"
-    //         row += "<td>" + galaxy.mass_disk + "</td>"
-    //         row += "<td>" + galaxy.stars + "</td>"
-    //         row += "<td>" + galaxy.vcr + "</td>"
-    //         row += "<td>" + galaxy.n + "</td>"
-    //         row += "<td>" + galaxy.r0 + "</td>"
-    //         row += "<td>" + galaxy.n_g + "</td>"
-    //         row += "<td>" + galaxy.r_0 + "</td>"
-    //         row += "<td>" + galaxy.sigma0 + "</td>"
-    //         row += "</tr>"
-    //         $("#galaxy_table").append(row);
-    //         //$("#galaxy_table").show()
-    //       });
-    //     }
-    //   });
-    // }
-
-    // function showSocmTable() {
-    //   if(allGalaxies != null){
-    //     //$("#galaxy_table").oneSimpleTablePagination({rowsPerPage: 1}); //pagination not working well right now
-    //     $("#galaxy_table").show()
-    //   }else{
-    //     alert("Failed to fetch Galaxy data from socm.herokuapp.com. Please reload page!")
-    //   }
-    // }
-  </script>
+  <% content_for :header do %>
+    <%= stylesheet_link_tag 'jquery-ui-1.9.2.custom.css' %>
+    <%= stylesheet_link_tag 'github.css' %>
+    <%= stylesheet_link_tag 'SOCMt.css' %>
+    <%= stylesheet_link_tag 'RoCM.css' %>
+    <%= stylesheet_link_tag 'jquery.dataTables.css' %>
+  <% end %>
 </head>
 
 <body>

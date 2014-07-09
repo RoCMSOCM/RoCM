@@ -1,4 +1,7 @@
 // Our Sun's distance to the galactic center
+var urlPrefix = "http://socm.herokuapp.com/galaxies/"
+var measurementsUrlSuffix = "/measuresments.json"
+
 var d_sun = 8.33 //+- 0.35 kpc
 
 var margin = {top: 20, right: 125, bottom: 30, left: 40},

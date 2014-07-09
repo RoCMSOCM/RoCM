@@ -1,9 +1,11 @@
-var font = "12px sans-serif";
 //document.getElementById("graph").style.font = font;
+$( document ).ready(function() {
+	
+	var font = "12px sans-serif";
 
-$("#save").button();
+	$("#save").button();
 
-$("#simulate").button();
+	$("#simulate").button();
 
 //create_dropdown_div("about_wrapper", "about_button", "up");
 
@@ -21,7 +23,7 @@ $("#simulate").button();
 
 
 // PARAMS = new Params(); //Inherit Array into Params
-$( document ).ready(function() {
+
 	VDATA = new VData();
 
 	PARAMS = new ParamsDict();
@@ -44,6 +46,7 @@ $( document ).ready(function() {
 	model = new GalacticModel();
 
 	GMODEL = new GModel();
+
 });
 
 // To add your own model

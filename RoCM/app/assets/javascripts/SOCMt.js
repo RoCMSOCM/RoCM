@@ -35,6 +35,7 @@ function create_data_table()
     } );
 }
 
+
 function create_table(galaxiesJson) {
 	d3.json(galaxiesJson, function(error, data) {
 		data.forEach(function(d) {
