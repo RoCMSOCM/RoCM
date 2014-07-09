@@ -1,11 +1,11 @@
-function create_data_table()
+function create_data_table(table_id)
 {
-	var table = $("#galaxy_table").DataTable( {
+	var table = $("#" + table_id).DataTable( {
 		"language": {
 			"lengthMenu": "Display _MENU_ galaxies",
 			"info": "Showing _START_-_END_ of _TOTAL_ galaxies"
 		},
-		"aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+		"aLengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
 		columnDefs: [ {
 			targets: [ 0 ],
 			orderData: [ 0, 1 ]
@@ -18,7 +18,7 @@ function create_data_table()
 		} ]
 	} );
 
-	$('#galaxy_table tbody').on('click', '.reference', function () {
+	$("#" + table_id + " tbody").on('click', '.reference', function () {
 		var tr = $(this).closest('tr');
 		var row = table.row( tr );
 
@@ -29,7 +29,7 @@ function create_data_table()
         }
         else {
             // Open this row
-            row.child( format(row.data()) ).show();
+            row.child( format_references(row.data()) ).show();
             tr.addClass('shown');
         }
     } );
@@ -38,7 +38,7 @@ function create_data_table()
 function create_table(csvFileName) {
 	d3.csv(csvFileName, function(error, data) {
 		data.forEach(function(d) {
-			d.Functions = "<button class='plot'>Plot</button> | <button class='download'>Download</button>"
+			d.Functions = "<button class='plot' id='" + d.Galaxy + "-PLOT''>Plot</button> | <button class='download' id='" + d.Galaxy + "-DOWNLOAD'>Download</button>"
 		});
 
 
@@ -47,8 +47,10 @@ function create_table(csvFileName) {
 		rows = data.length;
 		cols = keys.length;
 
+		var table_id = "galaxy_table";
+
 		var table = $("<table/>")
-		.attr("id", "galaxy_table")
+		.attr("id", table_id)
 		.attr("class", "display")
 		.attr("text-align", "right")
 		.attr("cellspacing", 0)
@@ -90,10 +92,15 @@ function create_table(csvFileName) {
 		$("#socmt_wrapper").append(table);	
 
 		$(".reference").button();
-		$(".plot").button();
+		$(".plot").button().click(function() {
+			var id = this.id;
+			var gid = id.split("-PLOT")[0];		
+			var rocm_url = "#GID="+gid;
+			window.location.href = rocm_url;
+		});
 		$(".download").button();
 		
-		create_data_table();
+		create_data_table(table_id);
 	});
 }
 
@@ -127,7 +134,7 @@ function create_dropdown_div(div_id, button_id, direction) {
 }
 
 
-function format ( d ) {
+function format_references( d ) {
     // `d` is the original data object for the row
     return '<table cellpadding="5" cellspacing="0" border-collapse="collapse" style="padding-left:50px;padding-top:10px;">'+
     '<tr>'+

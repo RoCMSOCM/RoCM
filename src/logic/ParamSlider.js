@@ -57,7 +57,7 @@ function ParamSlider(param_name, param) {
 
 	var me = this;
 
-	$("#slider_" + this.getFormattedName()).slider({
+	$("#slider_" + this.get_formatted_name()).slider({
 		range: "min",
 		min: me.param.scale(min),
 		max: me.param.scale(max),
@@ -69,89 +69,57 @@ function ParamSlider(param_name, param) {
 			me.slide(event, ui);
 		}
 	});
-	$("#" + this.getFormattedName() + "_amount").val(this.param.value + " " + this.param.units);
+	$("#" + this.get_formatted_name() + "_amount").val(this.param.value + " " + this.param.units);
 }
 
 ParamSlider.prototype = {
 	slide: function(event, ui) {
 		var local = this.param.inverse_scale(+ui.value);
 
-		$("#"+this.getFormattedName()+"_amount").val(local + " " + this.param.units);
+		$("#"+this.get_formatted_name()+"_amount").val(local + " " + this.param.units);
 
-		var model = new GalacticModel();
 
-		switch(this.param_name) {
-			case "r0":
-				PARAMS["r0"] = local;				
-				VDATA.VROT_DARK = model.v_dark();
+		var data_size = VDATA.VROT_DATA.length;
 
-				update_line(".VROT_DARK", VDATA.VROT_DARK);
-				update_total_velocities();
-				break;
-			case "sigma0":
-				PARAMS["sigma0"] = local;
-				VDATA.VROT_DARK = model.v_dark();
+		PARAMS[this.param_name] = local;
 
-				update_line(".VROT_DARK", VDATA.VROT_DARK);
-				update_total_velocities();
-				break;
-			case "N*":
-				if(typeof PARAMS["N*"] != undefined)
-					PARAMS["prev_N*"] = PARAMS["N*"];
-				else
-					PARAMS["prev_N*"] = PARAMS["_N*"];
 
-				PARAMS["N*"] = local;
+		//TODO:
+		return;
+		for(var model in GMODEL) {
+			PARAMS.resetUsed();
+			// Test model equation to find out which PARAMS are used.
+			var test = GMODEL[model](1);
 
-				VDATA.BULGE = new Bulge(VDATA.Rkpc, bulge_b, bulge_t);				
-				VDATA.VROT_GR = model.v_gr();
-
-				for(var i=0;i<VDATA.VROT_GR.length;i++){
-					VDATA.VROT_GR[i] = 
-						Math.sqrt(VDATA.VROT_GR[i]*VDATA.VROT_GR[i] + VDATA.BULGE[i]);
+			if(PARAMS.used.contains(this.param_name)) {
+				VDATA["VROT_" + model] = new Array(data_size);
+				for(var i = 0; i < data_size; i++){
+					VDATA["VROT_" + model][i] = GMODEL[model](VDATA.R[i]);
 				}
 
-				update_line(".VROT_GR", VDATA.VROT_GR);
-				update_total_velocities();
-
-				// VDATA.VROT_CONFORMAL = get_line_data(".VROT_CONFORMAL");
-				VDATA.VROT_CONFORMAL = model.v_conformal();
-
-				update_line(".VROT_CONFORMAL", VDATA.VROT_CONFORMAL);
-				break;
-			default:
-				break;
+				update_line(".VROT_"+model, VDATA["VROT_" + model]);
+			}
 		}
 
 		// TODO: Change where to update bar chart
 		update_bar();
 	},
-	getFormattedName: function() {
-		return formatName(this.param_name);
+	get_formatted_name: function() {
+		return format_name(this.param_name);
 	}
 };
 
-function formatName(name) {
+function format_name(name) {
 	return name.replace("*", "\\\*");
 }
 
-function update_total_velocities() {
-	VDATA.VROT_TOTAL = Array(VDATA.VROT_GR.length);
-
-	for(var i=0;i<VDATA.VROT_GR.length;i++) {
-		VDATA.VROT_TOTAL[i] = Math.sqrt(VDATA.VROT_GR[i]*VDATA.VROT_GR[i] + VDATA.VROT_DARK[i]*VDATA.VROT_DARK[i]);
-	}
-
-	update_line(".VROT_TOTAL", VDATA.VROT_TOTAL);
-}
-
 function update_original(key) {
-	if(PARAMS[key] !== undefined){
+	if(PARAMS.get(key) !== undefined){
 		var original_value = PARAMS.getOriginal(key).value;
-		var scaled_value = PARAMS.get(key).scale(original_value);
-		var units = PARAMS.get(key).units;
+		var scaled_value = PARAMS.getParam(key).scale(original_value);
+		var units = PARAMS.getParam(key).units;
 		
-		key = formatName(key);
+		key = format_name(key);
 
 		var slider_name = "#slider_" + key;
 		$slider = $(slider_name);
@@ -162,14 +130,8 @@ function update_original(key) {
 	}
 }
 
-function initialize_sliders() {
+function initialize_sliders(slider_map) {
 	// Create initial sliders
-	slider_map = {
-		"N*":{min:0.01*Math.pow(10,10), max:4.0*Math.pow(10,11)},
-		"r0":{min:0, max:100},
-		"sigma0":{min:1.0*Math.pow(10,-10), max:1.0*Math.pow(10,-6)}
-	};
-
 	slider_keys = Object.keys(slider_map);
 
 
@@ -179,7 +141,7 @@ function initialize_sliders() {
 
     	PARAMS.setRange(key, range.min, range.max);
 
-    	var param = PARAMS.get(key);
+    	var param = PARAMS.getParam(key);
    		var slider = new ParamSlider(key, param);
     }
 }

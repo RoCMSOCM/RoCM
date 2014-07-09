@@ -18,33 +18,40 @@ $("#about_button").click(function () {
 });
 
 
-
 // PARAMS = new Params(); //Inherit Array into Params
 VDATA = new VData();
 
 PARAMS = new ParamsDict();
 
-
-
-
 // Params Import
-import_constants();
+import_constants("../data/params/MILKY_WAY_CONSTANTS.csv");
+
+// Galaxy Name
+var galaxy_name;
 
 // CurvePlot
-create_curve_plot();
+var url = window.location.href;
+var gid = "#GID=";
+
+if(url.contains(gid)){
+	galaxy_name = url.split(gid)[1];
+} else {
+	galaxy_name = "NGC-2403";
+}
+
+var rocm_url = "#GID="+galaxy_name;
+window.location.href = rocm_url;
+
+create_curve_plot("../data/velocity/" + galaxy_name + ".csv");
 
 // SOCM Table
 create_dropdown_div("socmt_wrapper", "display_button", "down");
 
-csvFileName = "../data/params/COMBINED_TABLE.csv";
+create_table("../data/params/COMBINED_TABLE.csv");
 
-create_table(csvFileName);
+GMODEL = new GalacticModel();
 
-
-model = new GalacticModel();
-
-
-GMODEL = new GModel();
+CONVERT = new Conversion();
 
 
 // To add your own model

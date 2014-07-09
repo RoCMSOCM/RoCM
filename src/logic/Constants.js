@@ -1,10 +1,19 @@
-function Constants() {};
+function Constants() {
+	this.get = function(key) {
+		return this[key];
+	};
 
-Constants.prototype = {};
+	this.set = function(key, value) {
+		this[key] = value;
+	};
+};
 
 CONST = new Constants();
 
 
 
 // Speed of light
-CONST["c"] = 300000; //km
+CONST.set("c", 300000); //km
+var solar_mass = 1.98855 * Math.pow(10,30)
+CONST.set("Mo", solar_mass) //kg
+CONST.set("solar_mass", solar_mass) //kg
