@@ -6,11 +6,12 @@ var units_map = {
 	scale_length: "R<sub>0</sub> <br> (kpc)",
 	mass_hydrogen: "M<sub>HI</sub> <br> (10<sup>10</sup>M<sub>☉</sub>)",
 	mass_disk: "M<sub>disk</sub> <br> (10<sup>10</sup>M<sub>☉</sub>)",
-	mass_light_ratio: "(M/L)<sub>stars</sub> <br> (M<sub>o</sub>/L<sub>o</sub>)",
-	R_last: "R<sub>last</sub> <br> (kpc)",
+	mass_light_ratio: "(M/L)<sub>stars</sub> <br> (M<sub>☉</sub>/L<sub>☉</sub>)",
+	r_last: "R<sub>last</sub> <br> (kpc)",
 	universal_constant: "(v<sup>2</sup>/c<sup>2</sup>R)<sub>last</sub> <br> (10<sup>-30</sup> cm<sup>-1</sup>)",
-	num_velocities: "Number of <br> Velocities",
-	citations: "Citations"
+	velocities_count: "Number of <br> Velocities",
+	citation_ids_array: "Citations",
+	vrot_data_last: "V<sub>last</sub> <br> (km/s)"
 };
 
 function create_data_table(table_id)
@@ -20,7 +21,8 @@ function create_data_table(table_id)
 			"lengthMenu": "Display _MENU_ galaxies",
 			"info": "Showing _START_-_END_ of _TOTAL_ galaxies"
 		},
-		"aLengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+		"aLengthMenu": [[2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"]],
+		"iDisplayLength": 5,
 		columnDefs: [ {
 			targets: [ 0 ],
 			orderData: [ 0, 1 ]
@@ -51,10 +53,14 @@ function create_data_table(table_id)
 }
 
 
-function create_socm_table(data) {
-	keys = Object.keys(data[0]);
+function create_socm_table(param_data) {
+	param_data.forEach(function(d) {
+		// delete d.id;
+	});
 
-	rows = data.length;
+	keys = Object.keys(param_data[0]);
+
+	rows = param_data.length;
 	cols = keys.length;
 
 	var div_id = "socmt_wrapper";
@@ -76,10 +82,13 @@ function create_socm_table(data) {
 		var row = $("<tr/>");
 		for (var c = 0; c < cols; c++) {
 			if (r == 0) {
-				row.append($("<th/>").html(units_map[keys[c]]));
+				var column_name = units_map[keys[c]];
+				if(column_name === undefined)
+					column_name = keys[c];
+				row.append($("<th/>").html(column_name));
 			} else {
 				// Use [r-1] because d3 already takes the csv header out (the <th> tag)
-				var row_data = data[r-1][keys[c]];
+				var row_data = param_data[r-1][keys[c]];
 				var prefix = "";
 				var suffix = "";
 
@@ -111,6 +120,7 @@ function create_socm_table(data) {
 		var gname = id.split("-PLOT")[0];	
 
 		if(create_curve_plot(gname, false) != -1){
+			close_all_dropdowns();
 			var rocm_url = "#GALAXY="+gname;
 			window.location.href = rocm_url;
 		}
@@ -167,12 +177,7 @@ function create_dropdown_div(div_id, button_id, direction) {
 	
 	button.click(function () {
 
-		var dropdowns = $(".dropdown");
-		for(var i=0;i<dropdowns.length;i++) {
-			if($(dropdowns[i]).attr("id") != div_id){
-				$(dropdowns[i]).css("display", "none");
-			}
-		}
+		close_all_dropdowns(div_id);
 
 		$("#"+div_id).slideToggle({
 			direction: direction
@@ -201,6 +206,15 @@ function create_dropdown_div(div_id, button_id, direction) {
 			}
 		});
 	});
+}
+
+function close_all_dropdowns(div_id) {
+	var dropdowns = $(".dropdown");
+	for(var i=0;i<dropdowns.length;i++) {
+		if($(dropdowns[i]).attr("id") != div_id){
+			$(dropdowns[i]).css("display", "none");
+		}
+	}
 }
 
 

@@ -11,8 +11,6 @@ function import_socm_galaxies(galaxyEndpoint) {
     data.forEach(function(d) {
       d = add_table_elements(d);
       SOCMPARAMS[d.galaxy_name] = d;
-      if(d.galaxy_name == galaxy_name.toUpperCase())
-        import_parameters(d);
     });
 
     create_socm_table(data);
@@ -20,7 +18,7 @@ function import_socm_galaxies(galaxyEndpoint) {
   });
 }
 
-function import_parameters(data) {    
+function import_parameters(data, is_initial) {    
   var table_id = "params_table";    
   var data_keys = Object.keys(data);
 
@@ -38,12 +36,13 @@ function import_parameters(data) {
     var param = new Param(data[key]);//new Param(value, units);
 
     PARAMS.add(key, param);
+
+    if(!is_initial)
+      update_param_table(key);
   }
 
   //TODO: Short name -> Long name parameter mapping
   PARAMS.add("R0", PARAMS.getParam("scale_length"));
-
-  initialize_default_parameters();
 
   // ParamSlider initial sliders
   slider_map = {
@@ -52,7 +51,12 @@ function import_parameters(data) {
     "r0":{min:0, max:100},
     "sigma0":{min:1.0*Math.pow(10,-10), max:1.0*Math.pow(10,-6)}
   };
-  initialize_sliders(slider_map);
+
+  
+  if(is_initial){
+    initialize_default_parameters();
+    initialize_sliders(slider_map);
+  }
 
   // MOND Parameter fitting sliders
   /*  var solar_mass = CONST.get("Mo");
@@ -77,9 +81,10 @@ function import_parameters(data) {
 
   // Filter mutable parameters for the ParamsTable
   data = filter_parameters(data);
-  create_param_table(table_id, data);
 
-  // TODO FIX: Import the formatted constants (html formatting, superscripts, subscripts, etc.)
+
+  if(is_initial)
+    create_param_table(table_id, data);
 }
 
 function send_to_rocs(galaxy_name) {
@@ -125,24 +130,27 @@ function send_to_rocs(galaxy_name) {
   window.location.href = rocs_url;
 }
 
-function add_table_elements(d) {
-  var VROT_DATA = 0;
-  var R = 0;
+function add_table_elements(d) {  
+  var velocities_count = d.velocities_count;
+  delete d.velocities_count;
+
+  var citations = d.citation_ids_array;
+  delete d.citation_ids_array;
+
+  // Rounding last R value
+  d.r_last = Math.round(d.r_last * 1000) / 1000;
 
   // Mass to light ratio
   d.mass_light_ratio = Math.round((d.mass_disk / d.luminosity) * 100) / 100;
 
-  // R last
-  d.R_last = 0;
-
   // Universal constant (Mannheim & O'Brien)
   d.universal_constant = Math.round(universal_constant(108,100) * 1000) / 1000;
 
-  // Number of Velocities
-  d.num_velocities = 100;
+  // Number of velocities
+  d.velocities_count = velocities_count;
 
-  // Citations
-  d.citations = "";
+  // citations
+  d.citation_ids_array = citations;
 
   // Plot and Download buttons
   d.Functions = "<button class='plot' id='" + d.galaxy_name + "-PLOT''>Plot</button> | <button class='download' id='" + d.id + "-DOWNLOAD' name='" + d.galaxy_name + "'>Download</button>"

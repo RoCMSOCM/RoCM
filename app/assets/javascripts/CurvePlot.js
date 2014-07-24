@@ -416,7 +416,7 @@ function create_legend(velocities, SHOW_SUN) {
 
 }
 
-function create_title(SHOW_TITLE, ANIMATE_TITLE) {
+function create_title(galaxy_name, SHOW_TITLE, ANIMATE_TITLE) {
   if(SHOW_TITLE){
     var title = svg.append("text")
       .attr("class", "title")
@@ -470,6 +470,9 @@ function create_curve_plot(galaxy_name, is_initial){
     alert("No velocity data for " + galaxy_name + ".");
     return -1;
   }
+
+  // Call SOCM for galaxy parameters
+  import_parameters(SOCMPARAMS[galaxy_name], is_initial);
 
   var galaxy_id = SOCMPARAMS[galaxy_name].id;
   d3.json(socm_url + "/" + galaxy_id + "/velocities.json?page=false", function(error, data) {
@@ -531,7 +534,7 @@ function create_curve_plot(galaxy_name, is_initial){
     plot_data(data);
     plot_curves(velocities);
     // Create title for the galaxy
-    create_title(SHOW_TITLE = true, ANIMATE_TITLE = false);
+    create_title(galaxy_name, SHOW_TITLE = true, ANIMATE_TITLE = false);
     
     // if(is_initial){
     //   // TODO: move bar chart
@@ -565,12 +568,12 @@ function get_opacity(d) {
   o_data = 1
   o_error = err_op
   o_dark = 0
-  o_total = 0
+  o_total = 1
   o_sun = sun_op
   o_gr = 1
   o_bulge = 0
   o_default = 1
-  o_conformal = 0
+  o_conformal = 1
 
   return is(d, "err") ? o_error : is(d, "data") ? o_data : is(d, "dark") ? o_dark : is(d, "total") ? o_total : is(d, "sun") ? o_sun : is(d, "gr") ? o_gr : is(d, "bulge") ? o_bulge: is(d, "conformal") ? o_conformal : o_default;
 }

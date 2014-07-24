@@ -52,7 +52,7 @@ function chi_squared(obs, exp) {
 }
 
 function formatExponential(exp) {
-	if(typeof(exp) === "string")
+	if(typeof(exp) !== "number")
 		return exp;
 	
 	var exponential = exp.toExponential(2);

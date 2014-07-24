@@ -19,6 +19,7 @@ function Bulge(x, bulge, t) {
 };
 
 function BULGE(x, bulge_b, bulge_t) {
+	return 0;
 	var bulge_contrib = bulge_b*27478.2/x*numerically_integrate(0.00001, x/bulge_t, 1, integral_func);
 	
 	return bulge_contrib;

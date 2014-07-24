@@ -79,7 +79,7 @@
   </div>
 
   <div id="rocm_wrapper" style="max-width:1200px;margin:0 auto">
-    <div style="position:absolute;top:1%;z-index:10"> 
+    <div style="position:absolute;top:0;z-index:10"> 
       <button id="display_button">Galaxies</button>
       <button id="slider_button">Parameter Sliders</button>
       <button id="save" onclick="saveSVG('graph')">Save to SVG</button>
@@ -111,6 +111,13 @@
 
   <br>
 
+  <div id="user_defined_model" style="float:left;width:100%">
+    <h2>User Defined Model:</h2>
+    <div id="user_defined_model_text" style="width:50%"></div>
+    <div id="user_defined_model_input" style="width:50%"></div>
+  </div>
+
+  <br>
 
   <div id="latex_wrapper" style="float:left;width:100%">
     <h2>$\LaTeX$ equation:</h2>

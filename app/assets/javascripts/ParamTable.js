@@ -42,8 +42,11 @@ function add_param(table_id, param_name) {
     
     var table = $("#" + table_id + " thead tr");
         
+    var column_name = units_map[param_name];
+    if(column_name === undefined)
+        column_name = param_name;
     table.append($("<th>")
-        .html(param_name));
+        .html(column_name));
 
     table = $("#" + table_id + " tr:last");
     table.append($("<td><em>")
@@ -74,13 +77,17 @@ function create_chi_table() {
 }
 
 function update_param_table(param_name) {
-    var table_id = format_name(param_name.replace(/\s/, "_")) + "_param_value";
+    if(PARAMS[param_name] === undefined)
+        return;
 
     var param = PARAMS.getParam(param_name);
-    var value = param.value; 
+
+    var table_id = format_name(param_name.replace(/\s/, "_")) + "_param_value";
+
+    valuep = param.value; 
     var units = param.units;
-    var formatted_parameter = formatExponential(value);// + " " + units;
-    // formatted_parameter = formatted_parameter.trim();
+
+    var formatted_parameter = formatExponential(valuep);// + " " + units;
 
     $("#" + table_id).val(formatted_parameter);
 
