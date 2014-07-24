@@ -67,13 +67,15 @@ function formatExponential(exp) {
 }
 
 function arcsec_to_kpc(arcsec, Dkpc) {
+	var DMpc = Dkpc * 1000;
 	var deg2rad = Math.PI/180;
-	return Dkpc * Math.tan(CONVERT.arcsec_to_degree(arcsec) * deg2rad);
+	return DMpc * Math.tan(CONVERT.arcsec_to_degree(arcsec) * deg2rad);
 }
 
 function kpc_to_arcsec(kpc, Dkpc) {
+	var DMpc = Dkpc * 1000;
 	var rad2deg = 180/Math.PI;
-	return CONVERT.degree_to_arcsec(Math.atan(kpc/Dkpc) * rad2deg);
+	return CONVERT.degree_to_arcsec(Math.atan(kpc/DMpc) * rad2deg);
 }
 
 // TODO:
