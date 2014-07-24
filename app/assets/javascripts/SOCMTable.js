@@ -1,3 +1,18 @@
+var units_map = {
+	galaxy_name: "Galaxy",
+	galaxy_type: "Type", 
+	distance: "Distance <br> (Mpc)",
+	luminosity: "L<sub>B</sub> <br> (10<sup>10</sup>L<sub>☉</sub>)",
+	scale_length: "R<sub>0</sub> <br> (kpc)",
+	mass_hydrogen: "M<sub>HI</sub> <br> (10<sup>10</sup>M<sub>☉</sub>)",
+	mass_disk: "M<sub>disk</sub> <br> (10<sup>10</sup>M<sub>☉</sub>)",
+	mass_light_ratio: "(M/L)<sub>stars</sub> <br> (M<sub>o</sub>/L<sub>o</sub>)",
+	R_last: "R<sub>last</sub> <br> (kpc)",
+	universal_constant: "(v<sup>2</sup>/c<sup>2</sup>R)<sub>last</sub> <br> (10<sup>-30</sup> cm<sup>-1</sup>)",
+	num_velocities: "Number of <br> Velocities",
+	citations: "Citations"
+};
+
 function create_data_table(table_id)
 {
 	var table = $("#" + table_id).DataTable( {
@@ -35,6 +50,7 @@ function create_data_table(table_id)
     } );
 }
 
+
 function create_socm_table(data) {
 	keys = Object.keys(data[0]);
 
@@ -60,7 +76,7 @@ function create_socm_table(data) {
 		var row = $("<tr/>");
 		for (var c = 0; c < cols; c++) {
 			if (r == 0) {
-				row.append($("<th/>").html(keys[c]));
+				row.append($("<th/>").html(units_map[keys[c]]));
 			} else {
 				// Use [r-1] because d3 already takes the csv header out (the <th> tag)
 				var row_data = data[r-1][keys[c]];

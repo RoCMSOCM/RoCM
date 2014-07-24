@@ -7,6 +7,7 @@ SOCMBridge.prototype = {};
 
 function import_socm_galaxies(galaxyEndpoint) {
   d3.json(galaxyEndpoint, function(error, data) {
+
     data.forEach(function(d) {
       d = add_table_elements(d);
       SOCMPARAMS[d.galaxy_name] = d;
@@ -125,14 +126,17 @@ function send_to_rocs(galaxy_name) {
 }
 
 function add_table_elements(d) {
+  var VROT_DATA = 0;
+  var R = 0;
+
   // Mass to light ratio
-  d.mass_light_ratio = d.mass_disk / d.luminosity;
+  d.mass_light_ratio = Math.round((d.mass_disk / d.luminosity) * 100) / 100;
 
   // R last
   d.R_last = 0;
 
   // Universal constant (Mannheim & O'Brien)
-  d.universal_constant = universal_constant(1,1);
+  d.universal_constant = Math.round(universal_constant(108,100) * 1000) / 1000;
 
   // Number of Velocities
   d.num_velocities = 100;
