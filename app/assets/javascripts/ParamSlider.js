@@ -114,43 +114,43 @@ ParamSlider.prototype = {
 
 		$("#"+param_name+"_amount").val(formatExponential(local) + " " + this.param.units);
 
-
-		var data_size = VDATA.VROT_DATA.length;
-
 		PARAMS[this.param_name] = local;
 
-		//TODO:
-		// Get the individual galaxy's parameters from SOCM.
-		// (currently Milky Way csv parameters)
-		for(var model in GMODEL) {
-			PARAMS.resetUsed();
-			// Test model equation to find out which PARAMS are used.
-			var test = GMODEL[model](1);
-
-			if(PARAMS.used.contains(this.param_name)) {
-				VDATA["VROT_" + model] = new Array(data_size);
-				for(var i = 0; i < data_size; i++){
-					var vrot_value = GMODEL[model](VDATA.R[i]);
-					if(isNaN(vrot_value))
-						VDATA["VROT_" + model][i] = 0;
-					else
-						VDATA["VROT_" + model][i] = vrot_value;
-				}
-
-				update_line(".VROT_"+model, VDATA["VROT_" + model]);
-			}
-		}
-
-		// TODO: Change where to update bar chart
-		// update_bar();
-		update_chi_squared();
-		update_param_table(this.param_name);
+		update_models(this.param_name);
 
 	},
 	get_formatted_name: function() {
 		return format_name(this.param_name);
 	}
 };
+
+function update_models(param_name) {
+	var data_size = VDATA.VROT_DATA.length;
+
+	for(var model in GMODEL) {
+		PARAMS.resetUsed();
+		// Test model equation to find out which PARAMS are used.
+		var test = GMODEL[model](1);
+
+		if(PARAMS.used.contains(param_name)) {
+			VDATA["VROT_" + model] = new Array(data_size);
+			for(var i = 0; i < data_size; i++){
+				var vrot_value = GMODEL[model](VDATA.R[i]);
+				if(isNaN(vrot_value))
+					VDATA["VROT_" + model][i] = 0;
+				else
+					VDATA["VROT_" + model][i] = vrot_value;
+			}
+
+			update_line(".VROT_"+model, VDATA["VROT_" + model]);
+		}
+	}
+
+	// TODO: Change where to update bar chart
+	// update_bar();
+	update_chi_squared();
+	update_param_table(this.param_name);
+}
 
 function format_name(name) {
 	return name.replace("*", "\\\*");
@@ -202,6 +202,22 @@ function initialize_sliders(slider_map) {
 		.css("margin", "0 auto")
 		.css("cellspacing", "0"));
 
+	
+	$("#sliders").append($("<label/>")
+		.attr("id", "bulge_toggle_label")
+		.html("<b>Bulge</b>"));
+
+	$("#sliders").append($("<input/>")
+		.attr("type", "checkbox")
+		.attr("id", "bulge_toggle"));
+
+	$("#bulge_toggle").change(function() {
+        GLOBAL_BULGE = $(this).is(":checked");
+        update_models("bulge_b");
+    });
+
+    $("#bulge_toggle").prop('checked', true);
+
 	// Create initial sliders
 	slider_keys = Object.keys(slider_map);
 
@@ -218,5 +234,17 @@ function initialize_sliders(slider_map) {
 }
 
 function remove_slider(param_name) {
-	$("#"+ format_name(param_name) +"_slider_wrapper").remove();
+	$("#" + format_name(param_name) +"_slider_wrapper").remove();
+}
+
+// TODO:
+function set_slider_range(param_name, min, max) {
+	var slider = $("#slider_" + format_name(param_name));
+	var scale = slide_scale(min, max);
+
+	slider.slider("option", "min", min*100);
+	slider.slider("option", "max", max*100);
+
+	slider.slider("option", "value", slider.slider("option", "value"));
+
 }

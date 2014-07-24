@@ -1,0 +1,18 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {2}Scope}{2}
+\contentsline {section}{\numberline {3}History}{2}
+\contentsline {section}{\numberline {4}Data Gathering}{2}
+\contentsline {section}{\numberline {5}Computation}{3}
+\contentsline {subsection}{\numberline {5.1}Julia and D3.js}{3}
+\contentsline {subsection}{\numberline {5.2}Data Plot}{3}
+\contentsline {subsubsection}{\numberline {5.2.1}Einstein's General Relativity Prediction}{3}
+\contentsline {subsection}{\numberline {5.3}Dark Matter Fitting}{3}
+\contentsline {subsubsection}{\numberline {5.3.1}Dark Matter Contribution}{4}
+\contentsline {subsubsection}{\numberline {5.3.2}Total Expected Curve}{4}
+\contentsline {section}{\numberline {6}Alternate Methods}{4}
+\contentsline {subsection}{\numberline {6.1}Modified Newtonian Dynamics (MoND)}{4}
+\contentsline {subsection}{\numberline {6.2}Conformal Gravity}{4}
+\contentsline {section}{\numberline {7}Demonstration}{5}
+\contentsline {subsection}{\numberline {7.1}Rotational Curve Modeler (RoCM)}{5}
+\contentsline {section}{\numberline {8}Conclusion}{6}

@@ -1,0 +1,19 @@
+body {
+  font: 12px sans-serif;
+}
+.space {
+  background-color : black;
+  background-image : none;
+}
+.orbit {
+  stroke : none;
+  fill : none;
+}
+.star {
+  stroke : white;
+  fill : black;
+}
+.black_hole {
+  stroke : none;
+  fill : none;
+}

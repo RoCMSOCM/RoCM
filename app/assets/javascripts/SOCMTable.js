@@ -54,10 +54,6 @@ function create_data_table(table_id)
 
 
 function create_socm_table(param_data) {
-	param_data.forEach(function(d) {
-		// delete d.id;
-	});
-
 	keys = Object.keys(param_data[0]);
 
 	rows = param_data.length;
@@ -81,6 +77,9 @@ function create_socm_table(param_data) {
 	for (var r = 0; r < rows + 1; r++) {
 		var row = $("<tr/>");
 		for (var c = 0; c < cols; c++) {
+			if(keys[c] == "id")
+				continue;
+
 			if (r == 0) {
 				var column_name = units_map[keys[c]];
 				if(column_name === undefined)
@@ -151,9 +150,7 @@ function create_socm_table(param_data) {
 			JSON2CSV(data, gname+"-VELOCITY");
 		});
 		d3.json(param_download_url, function(error, data) {
-			data.forEach(function(d) {			
-			    delete d.id;
-			});
+			delete data.id;
 			
 			JSON2CSV([data], gname+"-PARAMETERS");
 		});

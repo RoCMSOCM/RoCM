@@ -1,0 +1,28 @@
+/* line 1, C:/Ruby200/lib/ruby/gems/2.0.0/gems/jquery-datatables-rails-2.1.10.0.2/app/assets/stylesheets/dataTables/extras/dataTables.responsive.css.scss */
+table.has-columns-hidden > tbody > tr > td > span.responsiveExpander {
+  background: url(/assets/dataTables/plus.png) no-repeat 5px center;
+  padding-left: 32px;
+  cursor: pointer;
+}
+
+/* line 7, C:/Ruby200/lib/ruby/gems/2.0.0/gems/jquery-datatables-rails-2.1.10.0.2/app/assets/stylesheets/dataTables/extras/dataTables.responsive.css.scss */
+table.has-columns-hidden > tbody > tr.detail-show > td span.responsiveExpander {
+  background: url(/assets/dataTables/minus.png) no-repeat 5px center;
+}
+
+/* line 11, C:/Ruby200/lib/ruby/gems/2.0.0/gems/jquery-datatables-rails-2.1.10.0.2/app/assets/stylesheets/dataTables/extras/dataTables.responsive.css.scss */
+table.has-columns-hidden > tbody > tr.row-detail > td {
+  background: #eee;
+}
+
+/* line 15, C:/Ruby200/lib/ruby/gems/2.0.0/gems/jquery-datatables-rails-2.1.10.0.2/app/assets/stylesheets/dataTables/extras/dataTables.responsive.css.scss */
+table.has-columns-hidden > tbody > tr.row-detail > td > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* line 21, C:/Ruby200/lib/ruby/gems/2.0.0/gems/jquery-datatables-rails-2.1.10.0.2/app/assets/stylesheets/dataTables/extras/dataTables.responsive.css.scss */
+table.has-columns-hidden > tbody > tr.row-detail > td > ul > li > span.columnTitle {
+  font-weight: bold;
+}

@@ -52,7 +52,7 @@ function import_parameters(data, is_initial) {
     "sigma0":{min:1.0*Math.pow(10,-10), max:1.0*Math.pow(10,-6)}
   };
 
-  
+
   if(is_initial){
     initialize_default_parameters();
     initialize_sliders(slider_map);
@@ -87,7 +87,9 @@ function import_parameters(data, is_initial) {
     create_param_table(table_id, data);
 }
 
-function send_to_rocs(galaxy_name) {
+function send_to_rocs() {
+  var url = window.location.href;
+  var galaxy_name = url.split("#")[1].replace("GALAXY=", "");
   var vrot_name = "";
   var vels = [];
   var opac = [];
@@ -126,7 +128,18 @@ function send_to_rocs(galaxy_name) {
     return;
   }
 
-  var rocs_url = "./RoCS.html#"+galaxy_name+"#"+vrot_name;
+
+  var R = VDATA.R;
+  var VROT = VDATA[vrot_name];
+  localStorage.setItem('R', JSON.stringify(R));
+  localStorage.setItem('VROT', JSON.stringify(VROT));
+
+  vrot_name = vrot_name.replace("VROT_", "");
+
+  localStorage.setItem("vrot_name", vrot_name);
+  localStorage.setItem("galaxy_name", galaxy_name);
+
+  var rocs_url = "rocs/index";
   window.location.href = rocs_url;
 }
 
@@ -138,13 +151,14 @@ function add_table_elements(d) {
   delete d.citation_ids_array;
 
   // Rounding last R value
+  var r_last = d.r_last;
   d.r_last = Math.round(d.r_last * 1000) / 1000;
 
   // Mass to light ratio
   d.mass_light_ratio = Math.round((d.mass_disk / d.luminosity) * 100) / 100;
 
   // Universal constant (Mannheim & O'Brien)
-  d.universal_constant = Math.round(universal_constant(108,100) * 1000) / 1000;
+  d.universal_constant = Math.round(universal_constant(d.vrot_data_last,r_last) * 1000) / 1000;
 
   // Number of velocities
   d.velocities_count = velocities_count;
@@ -157,3 +171,6 @@ function add_table_elements(d) {
 
   return d;
 }
+
+
+//TODO: FIX GALAXYS THAT HAVE A r_last VERY SMALL. ERROR IS CSV.

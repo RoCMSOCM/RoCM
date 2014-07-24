@@ -1,12 +1,10 @@
-var w = 1500, h = w*0.85,
+var w = 1000, h = w*0.85,
 AU = 100,
 days = 36.5, 
 spScale = 100 * 5, 
 dist = 1 / 5, 
 sizeScale = dist,
 black_hole_size = 1;
-
-var myGlow = glow("myGlow").rgb("#ff0").stdDeviation(.2);
 
 var color = d3.scale.linear()
   .range(["gold","firebrick"]);
@@ -25,7 +23,7 @@ var range_color4 = d3.scale.linear()
 
 var radius_scale = d3.scale.linear()
   .domain([0,100])
-  .range([0, 500]);
+  .range([0, 200]);
 
 var size_scale = d3.scale.linear()
   .domain([0,100])
@@ -42,46 +40,53 @@ var velocity_scale = d3.scale.linear()
 
 AU *= dist;
 
-
-// $("input").bind("keyup",function(e){
-//		 var value = this.value + String.fromCharCode(e.keyCode);
-// });
-
-function create_rocs_page(){
-  d3.csv("../data/velocity/MILKY_WAY_OUTPUT.csv", function(error, data) {
-    $("#back").button({
-      icons: {
-        primary: "ui-icon-arrowreturnthick-1-w"
-      }
-    });
-    var hash_split = window.location.href.split("#")
-    var galaxy_name = hash_split[1];
-    var vrot_name = hash_split[2];
-
-    if(galaxy_name === undefined)
-      galaxy_name = "Milky Way"
-
-    switch(vrot_name) {
-      case "VROT_DATA":
-        simulate(data, vrot_name, galaxy_name, "Observational Data");	 
-        break;
-      case "VROT_GR":
-        simulate(data, vrot_name, galaxy_name, "General Relativity");
-        break;
-      case "VROT_TOTAL":
-        simulate(data, vrot_name, galaxy_name, "Lambda Cold Dark Mater");
-        break;
-      case "VROT_CONFORMAL":
-        simulate(data, vrot_name, galaxy_name, "Conformal Gravity");
-        break;
-      default:
-        simulate(data, "VROT_DATA", galaxy_name, "Observational Data");
-    } 
-
-  });
+var model_name_map = {
+  DATA: "Observational Data",
+  GR: "General Relativity",
+  TOTAL: "Lambda Cold Dark Matter",
+  CONFORMAL: "Conformal Gravity"
 }
 
-function simulate(data, velocity, galaxy_name, data_type) {
+
+function create_rocs_page(){
+  var url_hash_split = window.location.href.split("#")
+  var galaxy_name = localStorage.getItem("galaxy_name");
+  // if(galaxy_name === undefined)
+      // galaxy_name = "MILKY-WAY"
+
+
+  var vrot_name = localStorage.getItem("vrot_name");
+
+  $("#back").button({
+    icons: {
+      primary: "ui-icon-arrowreturnthick-1-w"
+    }
+  }).click(function() {
+    back(galaxy_name);
+  });
+
+  var R = JSON.parse(localStorage.getItem("R"));
+  var VROT = JSON.parse(localStorage.getItem("VROT"));
+  var data = [];
+
+  R.forEach(function(d, i) {
+    if(i != 0)
+      data.push({R: R[i], VROT: VROT[i]});
+  });
+
+  var full_model_name = model_name_map[vrot_name];
+
+  if(full_model_name !== undefined)
+      simulate(data, galaxy_name, full_model_name);	 
+  else
+      simulate(data, "DATA", galaxy_name, model_name_map["DATA"]);
+}
+
+$(document).ready(function() {
+  create_rocs_page();
+})
+
+function simulate(data, galaxy_name, data_type) {
 
   generate_title(galaxy_name, data_type);
 
@@ -94,7 +99,7 @@ function simulate(data, velocity, galaxy_name, data_type) {
   var velocity_factor = 50;
 
   var stars = data.map(function(d) {
-    return {R: +d.R * dist_factor, r: 1, velocity: +d[velocity]/velocity_factor, bulge: +d["VROT_BULGE"]};
+    return {R: +d.R * dist_factor, r: 1, velocity: +d.VROT/velocity_factor};
   });
 
   var min_R = d3.min(stars, function(d) { return d.R; });
@@ -107,9 +112,8 @@ function simulate(data, velocity, galaxy_name, data_type) {
   size_scale.domain([0, max_R]);
   radius_scale.domain([0, max_R]);
 
-  var svg = d3.select("#milky_way_galaxy").insert("svg")
-  .attr("width", w/2).attr("height", h/2).style("margin", "auto").style("display","block")
-  .call(myGlow);
+  var svg = d3.select("#rocs_galaxy").insert("svg")
+  .attr("width", w/2).attr("height", h/2).style("margin", "auto").style("display","block");
 
   svg.append("circle").attr("r", black_hole_size * sizeScale).attr("cx", w/4)
   .attr("cy", h/4).attr("class", "black_hole");
@@ -178,13 +182,12 @@ function insert_star(container, data, max_x, is3D){
       for(var i=0;i<1;i++){
         star.insert("circle")
           .attr("r", is3D ? 2 : size_scale(d.R)) // > 20 ? 1 : 0.1)
-            .attr("cx", is3D ? radius_scale(d.R) : d.R)
+            .attr("cx", radius_scale(d.R))
             .attr("cy", 0+i*d.velocity*1.5)
             .style("stroke", "none")
             .style("fill", range_color(d.velocity))
             .attr("class", "star")   
             .attr("opacity", 0.6+i/2)
-          //.style("filter", "url(#myGlow)")
             .transition()
               // .duration(100000)
               // .ease(Math.sqrt)
@@ -326,6 +329,8 @@ function generate_title(galaxy_name, data_type) {
 }
 
 function back(){
-  var rocm_url = "./RoCM.html";
-  window.location.href = rocm_url;
+  var galaxy_name = localStorage.getItem("galaxy_name");
+
+  var rocm_url = window.location.href.replace("rocs/index", "");
+  window.location.href = rocm_url + "#GALAXY=" + galaxy_name;
 }

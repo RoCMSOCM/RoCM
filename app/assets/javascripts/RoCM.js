@@ -6,7 +6,11 @@ SOCMPARAMS = [];
 
 GMODEL = new GalacticModel();
 
+GMODELSTYLE = new GalacticModelStyleDict();
+
 CONVERT = new Conversion();
+
+GLOBAL_BULGE = true;
 
 var font = "12px sans-serif";
 var galaxy_name;
@@ -22,7 +26,11 @@ $( document ).ready(function() {
 
 	$("#save").button();
 
-	$("#simulate").button();
+	$("#simulate").button().click(function(){
+		send_to_rocs();
+	});
+
+	$("#add_model").button();
 
 	create_dropdown_div("about_wrapper", "about_button", "up");
 
@@ -36,6 +44,9 @@ $( document ).ready(function() {
 	  }, this_button.data('state') == 'up' ? 1000 : 1000); //TODO: Fix this when scrolling up as it's closing
 	});
 
+	// Update the GalacticModelStyles for the currently implemented models
+	style_galactic_models();
+
 	// SOCM Table dropdown overlay
 	create_dropdown_div("socmt_wrapper", "display_button", "down");
 
@@ -47,6 +58,7 @@ $( document ).ready(function() {
 
 	// SOCM Parameters Import
 	import_socm_galaxies(allGalaxiesEndpoint); 
+
 
 	// RoCM URL with GID 
 	var url = window.location.href;

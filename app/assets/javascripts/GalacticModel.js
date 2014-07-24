@@ -1,11 +1,3 @@
-// function GalacticModel(model_name, model_fnc, full_name, color, opacity) {
-// 	this.model_name = model_name !== undefined ? model_name : "CUSTOM" + Math.round(new Date().getTime() / 1000);
-// 	this[this.model_name] = model_fnc;
-// 	this.full_name = full_name !== undefined ? full_name : "Custom Model";
-// 	this.color = color !== undefined ? color : "#black";
-// 	this.opacity = opacity !== undefined ? opacity : 1;
-// };
-
 function GalacticModel() {};
 
 GalacticModel.prototype = {

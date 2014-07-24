@@ -1,0 +1,27 @@
+Density vs. Radius: 
+
+Classical analysis of the rotational dynamic of spiral galaxies (http://arxiv.org/ftp/arxiv/papers/0806/0806.0664.pdf)
+
+WHAT IS THE PRIMARY SOURCE OF THE MORPHOLOGICAL SEGREGATION? (http://arxiv.org/pdf/astro-ph/9709241.pdf)
+
+Differential Density Statistics of Galaxy Distribution and the Luminosity Function (http://arxiv.org/pdf/astro-ph/0611032v1.pdf)
+
+Gas and Mass profile:
+
+Stability of Galactic Gas Disks and the Formation of Massive Clusters. (http://arxiv.org/pdf/0808.1280.pdf)
+
+HI IN LOCAL GROUP DWARF GALAXIES AND STRIPPING BY THE GALACTIC HALO (http://arxiv.org/pdf/0901.4975v2.pdf)
+
+Mass models of the Milky Way (http://arxiv.org/pdf/1102.4340v1.pdf)
+
+--------
+
+Luminosity of the Milky Way is 1.6L, where L is 1010 times the luminosity of our sun (solar luminosity = 4x1026 W). Therefore, the luminosity of the Milky Way comes to be 6.4x1036 W.
+ 
+Solar luminosity: http://arxiv.org/pdf/astro-ph/0003044v1.pdf
+
+Milky Way Luminosity data (The most authors for one paper I've ever seen): http://www.mit.edu/~caoj/pub/doc/jcao_j_binary.pdf
+
+The radial scale length of the Milky Way: http://arxiv.org/pdf/astro-ph/9710197v1.pdf (This version actually has the graph: http://articles.adsabs.harvard.edu//full/1998A%26A...330..136P/0000137.000.html)
+
+-----

@@ -53,6 +53,8 @@ var err_op = 1.0; // Error opacity
 
 var sun_op = 1.0;
 
+var sun_color = "cadetblue";
+
 var sun_class = "SUN"
 
 var sun_label = "Sun"
@@ -201,7 +203,7 @@ function create_sun_label() {
     .attr("class", sun_class)
     .attr("d", xy_line)
     .style("stroke-dasharray", ("6, 3"))
-    .style("stroke", get_color("sun"))
+    .style("stroke", sun_color)
     .style("fill", "none")
     .style("opacity", get_opacity("sun"));
   
@@ -212,7 +214,7 @@ function create_sun_label() {
     .attr("text-anchor", "middle")  
     .style("font", font)
     .style("font-size", "0px") 
-    .style("stroke", get_color("sun"))
+    .style("stroke", sun_color)
     .style("opacity", get_opacity("sun"))
     .text(sun_label);
 
@@ -234,7 +236,7 @@ function create_error_bar(data) {
       .attr("class", "VROT_DATA_ERROR")
       .attr("d", xy_line)
       .style("fill", "none")
-      .style("stroke", get_color("err"))
+      .style("stroke", get_color("DATA_ERROR"))
       .style("stroke-width", "1.5px")
       .style("opacity", err_op);   
     }
@@ -248,7 +250,7 @@ function plot_data(data){
       .attr("r", 2)
       .attr("cx", function(d) { return x(d.R); })
       .attr("cy", function(d) { return y(d.VROT_DATA); })
-      .style("fill", get_color("data"))
+      .style("fill", get_color("DATA"))
       .append("title")
         .text(function(d) { return "(" + d.R + ", " + d.VROT_DATA + ")"; });
 }
@@ -341,6 +343,7 @@ function create_legend(velocities, SHOW_SUN) {
     .style("stroke", function(d) { return d3.rgb(get_color(d)).darker(2); })
     .on("click", function(d) { 
       var object_class = is(d, "err") ? "VROT_DATA_ERROR" : d.name;
+
       object_opacity(object_class);
 
       // if(!is(d, "data") && !is(d, "sun"))
@@ -406,13 +409,13 @@ function create_legend(velocities, SHOW_SUN) {
   legend_panel.attr("width", max_width + leg_width);
 
 
-  $( "#legend_panel" )
-    .draggable()
-    .bind('drag', function(event, ui){
-      // update coordinates manually, since top/left style props don't work on SVG
-      event.target.setAttribute('x', ui.position.left - margin.left - margin.right);
-      event.target.setAttribute('y', ui.offset.top - num_elements*legend_item_vertical_offset);
-    });
+  // $( "#legend_panel" )
+  //   .draggable()
+  //   .bind('drag', function(event, ui){
+  //     // update coordinates manually, since top/left style props don't work on SVG
+  //     event.target.setAttribute('x', ui.position.left - margin.left - margin.right);
+  //     event.target.setAttribute('y', ui.offset.top - num_elements*legend_item_vertical_offset);
+  //   });
 
 }
 
@@ -548,52 +551,48 @@ function create_curve_plot(galaxy_name, is_initial){
   });
 }
 
-//TODO: Put this attributes into a dynamic object
-
 function get_color(d) {
-  c_data = "brown"
-  c_error = "#edd4d4"
-  c_dark = "#f6931f"
-  c_total = "black"
-  c_sun = "cadetblue"
-  c_gr = "green"
-  c_bulge = "purple"
-  c_default = "purple"
-  c_conformal = "navy"
+  if(d.name !== undefined){
+    d = d.name;
+  }
 
-  return is(d, "err") ? c_error : is(d, "data") ? c_data : is(d, "dark") ? c_dark : is(d, "total") ? c_total : is(d, "sun") ? c_sun : is(d, "gr") ? c_gr : is(d, "bulge") ? c_bulge: is(d, "conformal") ? c_conformal : c_default;
+  d = d.replace("VROT_", "");
+  
+  return GMODELSTYLE.getModel(d).color;
 }
 
-function get_opacity(d) {
-  o_data = 1
-  o_error = err_op
-  o_dark = 0
-  o_total = 1
-  o_sun = sun_op
-  o_gr = 1
-  o_bulge = 0
-  o_default = 1
-  o_conformal = 1
 
-  return is(d, "err") ? o_error : is(d, "data") ? o_data : is(d, "dark") ? o_dark : is(d, "total") ? o_total : is(d, "sun") ? o_sun : is(d, "gr") ? o_gr : is(d, "bulge") ? o_bulge: is(d, "conformal") ? o_conformal : o_default;
+function get_opacity(d) {
+  if(d.name !== undefined){
+    d = d.name;
+  }
+
+  d = d.replace("VROT_", "");
+  
+  return GMODELSTYLE.getModel(d).opacity;
+}
+
+function set_opacity(model_name, opacity) {
+  if(model_name.name !== undefined){
+    model_name = model_name.name;
+  }
+
+  model_name = model_name.replace("VROT_", "");
+
+  var model = GMODELSTYLE.getModel(model_name);
+  model.opacity = opacity;
+
+  GMODELSTYLE.set(model.model, model);
 }
 
 function legend_name(d) {
-  var lambda = '&#923;';
-  var numeric = /\d+/.exec(lambda);
-  var lambda_decoded = String.fromCharCode(numeric);
+  if(d.name !== undefined){
+    d = d.name;
+  }
 
-  ln_data = "Observed Data"
-  ln_error = "Observed Data Error"
-  ln_dark = "Dark Matter (" + "Λ" + "CDM)"
-  ln_total = "Total = (GR + " + "Λ" + "CDM)"
-  ln_sun = "Sun"
-  ln_gr = "General Relativity (GR)"
-  ln_bulge = "Galactic Bulge"
-  ln_conformal = "Conformal Gravity"
-  ln_default = "User Defined Model"
+  d = d.replace("VROT_", "");
 
-  return is(d, "err") ? ln_error : is(d, "data") ? ln_data : is(d, "dark") ? ln_dark : is(d, "total") ? ln_total : is(d, "sun") ? ln_sun : is(d, "gr") ? ln_gr : is(d, "bulge") ? ln_bulge: is(d, "conformal") ? ln_conformal : ln_default;
+  return GMODELSTYLE.getModel(d).full_name;
 }
 
 function object_opacity(d) {
@@ -608,6 +607,7 @@ function object_opacity(d) {
   else
     new_opacity = 1 - curr_opacity;
   
+  set_opacity(d, new_opacity);
   object.style("opacity", new_opacity); 
 }
 
