@@ -10,9 +10,6 @@ LATEX = {
 
 var new_line = " \\\\\\\\ ";
 
-$("#input #tex").val(LATEX["VROT_GR"] + new_line + LATEX["VROT_CONFORMAL"] + new_line + LATEX["VROT_DARK"] + new_line + LATEX["VROT_TOTAL"]);
-
-
 function display(){
 	var tex=$('#input #tex').val();
 	$('#output').html('\\['+tex+'\\]');
@@ -23,9 +20,14 @@ function display(){
 	$('#link').text(url).attr('href',url);
 } 
 
-$(function(){
-	$('#input #tex').on('change keyup',display);
-	display();
-	if(location.search.length) 
-		$('#input #tex').val(unescape(location.search.slice(1))).change();
+
+$(document).ready(function() {
+	$("#input #tex").val(LATEX["VROT_GR"] + new_line + LATEX["VROT_CONFORMAL"] + new_line + LATEX["VROT_DARK"] + new_line + LATEX["VROT_TOTAL"]);
+
+	$(function(){
+		$('#input #tex').on('change keyup',display);
+		display();
+		if(location.search.length) 
+			$('#input #tex').val(unescape(location.search.slice(1))).change();
+	});
 });

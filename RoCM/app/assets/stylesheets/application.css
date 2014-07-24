@@ -12,12 +12,12 @@
  *
  *= require_tree .
  *= require_self
+ *= require jquery-ui
+ *= require jquery-ui/humanity
  *= require github.css
  *= require jquery.dataTables.css
  *= require RoCM.css
  *= require RoCS.css
  *= require SOCMt.css
  *= require dataTables/jquery.dataTables
- *= require jquery-ui
- *= require jquery-ui-1.9.2.custom.css
  */

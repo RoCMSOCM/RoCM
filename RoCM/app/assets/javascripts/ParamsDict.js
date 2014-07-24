@@ -1,4 +1,4 @@
-ParamsDict.js/* 
+/* ParamsDict.js
 
    ParamsDict is a dictionary of Param Objects
    
@@ -20,26 +20,49 @@ ParamsDict.js/*
 function ParamsDict(){
    var dictionary = {};
 
+   this.used = [];
+   this.resetUsed = function() { this.used = []; }
+
    this.set = function(key, param) { 
    		// Initial value
    		dictionary["_"+key] = param;
+         this["_" + key] = param.value;
 
    		// Modifiable value
    		dictionary[key] = param;
+         this[key] = param.value;         
    	};
 
    // Get just value by Param[key]
    // or   
    // Get the full Param Object
+   this.getParam = function(key) { 
+      // Updates the value in `this` Object
+      if(this[key] !== undefined && this[key] != dictionary[key].value){
+         dictionary[key].value = this[key];
+      }
+      else if(this[key] === undefined){
+         this[key] = 0;
+         dictionary[key] = new Param(this[key]);
+      }
+
+      this.used.push(key);
+      return dictionary[key]; 
+   };
    this.get = function(key) { 
       // Updates the value in `this` Object
       if(this[key] !== undefined && this[key] != dictionary[key].value){
          dictionary[key].value = this[key];
       }
-      return dictionary[key]; 
+      else if(this[key] === undefined){
+         this[key] = 0;
+         dictionary[key] = new Param(this[key]);
+      }
+
+      this.used.push(key);
+      return this[key]; 
    };
-   this.getParam = this.get;
-   this.getOriginal = function(key) { return this.get("_" + key); };
+   this.getOriginal = function(key) { return this.getParam("_" + key); };
 
 
    // Get the entire Params dictionary
@@ -56,18 +79,18 @@ function ParamsDict(){
    this.add = function(key, param) {
       // TODO: Check if not param
 
-      this[key] = param.value;
-      this["_" + key] = param.value;
-
       this.set(key, param);
+
+      
+      // new Para
    };
 
    this.setMin = function(key, min) {
-      this.get(key).min = min;
+      this.getParam(key).min = min;
    };
 
    this.setMax = function(key, max) {
-      this.get(key).max = max;
+      this.getParam(key).max = max;
    };
 
    this.setRange = function(key, min, max) {
