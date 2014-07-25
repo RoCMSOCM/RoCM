@@ -28,6 +28,7 @@ function ParamSlider(param_name, param) {
 		else {
 			params = new Params()
 			PARAMS.initialize(param_name, params);
+			PARAMS.update_localStorage();
 		}
 	}
 
@@ -126,6 +127,7 @@ ParamSlider.prototype = {
 function update_models(param_name) {
 	var data_size = VDATA.VROT_DATA.length;
 
+	PARAMS.setFindUsedParams(true);
 	for(var model in GMODEL) {
 		PARAMS.resetUsed();
 		// Test model equation to find out which PARAMS are used.
@@ -144,6 +146,8 @@ function update_models(param_name) {
 			update_line(".VROT_"+model, VDATA["VROT_" + model]);
 		}
 	}
+	PARAMS.setFindUsedParams(false);
+	PARAMS.resetUsed();
 
 	// TODO: Change where to update bar chart
 	// update_bar();
@@ -158,7 +162,7 @@ function format_name(name) {
 function update_original(key) {
 	if(PARAMS.get(key) !== undefined){
 		var param = PARAMS.getParam(key);
-		var original_value = PARAMS.getOriginal(key).value;
+		var original_value = PARAMS.get("_"+key);
 
 		var scale = slide_scale(param.min, param.max);
 		var scaled_value = scale(original_value);
@@ -177,11 +181,12 @@ function update_original(key) {
 }
 
 function initialize_sliders(slider_keys) {
-	var plus_button_id = "slider_add";
+	// Add button
+	var add_button_id = "slider_add";
 
 	$("#sliders").append($("<button/>")
 		.attr("class", "slider_button")
-		.attr("id", plus_button_id)
+		.attr("id", add_button_id)
 		.text("+") // In case the jquery icon fails
 		.on("click", function(d) {
 			var param_name = "mass_hydrogen";
@@ -190,24 +195,43 @@ function initialize_sliders(slider_keys) {
 				new ParamSlider(param_name);
 		}));
 
-	$("#" + plus_button_id).button({
+	$("#" + add_button_id).button({
       icons: {
         primary: "ui-icon-plus"
       },
       text: false
     });
 
+	// Reset button
+	var reset_button_id = "slider_reset";
+
+    $("#sliders").append($("<button/>")
+		.attr("class", "reset_button")
+		.attr("id", reset_button_id)
+		.css("font-size",".8em")
+		.text("Reset") 
+		.on("click", function(d) {
+			update_parameter_sliders(true);
+		}));
+
+	$("#" + reset_button_id).button();
+	
+
+	// Title
 	$("#sliders").append($("<h2/>")
 		.html("Parameter Fitting Sliders"));
 	
+	// Bulge toggle label
 	$("#sliders").append($("<label/>")
 		.attr("id", "bulge_toggle_label")
 		.html("<b>Bulge</b>"));
 
+	// Bulge toggle
 	$("#sliders").append($("<input/>")
 		.attr("type", "checkbox")
 		.attr("id", "bulge_toggle"));
 
+	// Default to GLOBAL_BULGE
     $("#bulge_toggle").prop('checked', GLOBAL_BULGE);
 
 	$("#bulge_toggle").change(function() {
@@ -241,11 +265,14 @@ function set_slider_range(param_name, min, max) {
 
 }
 
-function update_parameter_sliders() {
+function update_parameter_sliders(is_original_value) {
 	var removed = $("#sliders").find(".slider_wrapper").remove();
 
 	for(var i=0; i<removed.length; i++){
-		new ParamSlider(removed[i].id.replace("_slider_wrapper", ""));
+		var param_name = removed[i].id.replace("_slider_wrapper", "");
+		new ParamSlider(param_name);
+		if(is_original_value !== undefined && is_original_value){
+			update_original(param_name);
+		}
 	}
-
 }

@@ -78,7 +78,7 @@ function create_bar_chart(model_name){
       .attr("class", "label")
       .attr("x", bar_width/2)
       .attr("y", bar_margin.bottom*.75)
-      .style("font", font)
+      .style("font", FONT)
       .style("text-anchor", "middle")
       .text("χ²");
       // .text("Observed vs. Modeled Difference");
@@ -91,7 +91,7 @@ function create_bar_chart(model_name){
 	  .attr("x", -bar_margin.top)
 	  .attr("y", -bar_margin.left/1.25)
 	  .attr("dy", ".71em")
-      .style("font", font)
+      .style("font", FONT)
 	  .style("text-anchor", "end")
 	  .text("Frequency");
 
@@ -211,7 +211,7 @@ function create_bar_title(model_name){
 	      .attr("x", (bar_width / 2))             
 	      .attr("y", -bar_margin.top/2)
 	      .attr("text-anchor", "middle")  
-	      .style("font", font)
+	      .style("font", FONT)
 	      .style("text-decoration", "underline")
 	      .style("fill", "black")
 	      .text(model_string + " Model");	

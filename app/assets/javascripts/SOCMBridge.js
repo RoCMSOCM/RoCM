@@ -5,7 +5,7 @@ function SOCMBridge() {/*Default constructor*/};
 
 SOCMBridge.prototype = {};
 
-function import_socm_galaxies(galaxyEndpoint) {
+function import_socm_galaxies(galaxyEndpoint, galaxy_name) {
   d3.json(galaxyEndpoint, function(error, data) {
 
     data.forEach(function(d) {
@@ -14,7 +14,7 @@ function import_socm_galaxies(galaxyEndpoint) {
     });
 
     create_socm_table(data);
-    create_curve_plot(GALAXY_NAME, true);
+    create_curve_plot(galaxy_name, true);
   });
 }
 
@@ -25,19 +25,12 @@ function import_parameters(data, is_initial) {
   for(var i=0;i<data_keys.length;i++){
     var key = data_keys[i];
 
-    // Split the incoming data by delim. Ex: white space, '1.232 kpc'
-    // Splits by first occurance of delim
-    // var delim = " ";
-    // var split_data = data[key].split(delim);
-    // var joined_split = [split_data.shift(), split_data.join(delim)];
-    // var value = +joined_split[0];
-    // var units = joined_split[1];
-     
-    var param = new Param(data[key]);//new Param(value, units);
+     //TODO: Handle Units for each Param (coming in from SOCM)
+     var param = new Param(data[key]);
 
-    PARAMS.initialize(key, param);
+     PARAMS.initialize(key, param);
 
-    if(!is_initial)
+     if(!is_initial)
       update_param_table(key);
   }
 
@@ -46,24 +39,18 @@ function import_parameters(data, is_initial) {
 
   // ParamSlider initial sliders
   var slider_keys = [
-    "distance",
-    "mass_disk",
-    "scale_length",
-    "dark_halo_radius",
-    "dark_matter_density",
-    "bulge_b",
-    "bulge_t"
-    ];
-
+  "distance",
+  "mass_disk",
+  "scale_length",
+  "dark_halo_radius",
+  "dark_matter_density",
+  "bulge_b",
+  "bulge_t"
+  ];
 
   if(is_initial){
-    if(!localStorage.hasOwnProperty("PARAMS"))
+    if(!update_PARAMS()){
       initialize_default_parameters();
-    else{
-      // From localStorage
-      if(!update_PARAMS()){
-        initialize_default_parameters();
-      }
     }
 
     initialize_sliders(slider_keys);
@@ -95,7 +82,7 @@ function import_parameters(data, is_initial) {
 
 
   if(is_initial){
-    
+
     var chi_table_id = "chi_table";
     $("#parameters").append($("<table/>")
       .attr("id", chi_table_id)
@@ -152,7 +139,7 @@ function send_to_rocs() {
     return;
   }
 
-  localStorage.clear();
+  // localStorage.clear();
 
   var R = VDATA.R;
   var VROT = VDATA[vrot_name];
@@ -182,22 +169,24 @@ function update_session() {
 }
 
 function update_PARAMS() {
- var prev_PARAMS = localStorage.getItem("PARAMS");
- 
-  if(prev_PARAMS != null &&
-     prev_PARAMS != "[object Object]" &&   
-     prev_PARAMS != "{}"){
+  var prev_PARAMS = localStorage.getItem("PARAMS");
 
+  if(jQuery.isEmptyObject(PARAMS.dictionary))
+    return;
+
+  if(prev_PARAMS != null && prev_PARAMS != "[object Object]" && prev_PARAMS != "{}"){
     var parsed_data = JSON.parse(prev_PARAMS);
-  
-    if(parsed_data["galaxy_name"].value == PARAMS.get("galaxy_name"))
+
+    if(parsed_data["galaxy_name"].value !== undefined &&  parsed_data["galaxy_name"].value == PARAMS.get("galaxy_name"))
     {
+      console.log("Updated " + PARAMS.get("galaxy_name") + " with previous parameters.")
       PARAMS.setDict(parsed_data);
+      globalp = parsed_data;
       return true;
     }
   }
-  else
-    localStorage.removeItem("PARAMS");
+  // else
+    // localStorage.removeItem("PARAMS");
 
   return false;
 }

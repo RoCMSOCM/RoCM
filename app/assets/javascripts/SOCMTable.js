@@ -137,18 +137,17 @@ function create_socm_table(param_data) {
 	}).click(function() {
 		localStorage.removeItem("PARAMS");
 		var id = this.id;
-		var gname = id.split("-PLOT")[0];	
+		var galaxy_name = id.split("-PLOT")[0];	
 		
-		GLOBAL_BULGE = default_bulge(gname);
+		GLOBAL_BULGE = default_bulge(galaxy_name);
 
-		if(create_curve_plot(gname, false) != -1){
+		if(create_curve_plot(galaxy_name, false) != -1){
 			close_all_dropdowns();
-			var rocm_url = "#GALAXY="+gname;
+			var rocm_url = "#GALAXY="+galaxy_name;
 			
 			window.location.href = rocm_url;
 			
-			GALAXY_NAME = gname;
-			PARAMS.initialize("galaxy_name", GALAXY_NAME);
+			PARAMS.initialize("galaxy_name", galaxy_name);
 
 			update_parameter_sliders();
 		}

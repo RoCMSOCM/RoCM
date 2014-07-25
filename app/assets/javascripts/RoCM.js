@@ -12,24 +12,24 @@ CONVERT = new Conversion();
 
 GLOBAL_BULGE = true;
 
-var font = "12px sans-serif";
-var GALAXY_NAME;
+var FONT = "12px sans-serif";
 var	socm_url = "http://socm.herokuapp.com/galaxies";
 
 $( document ).ready(function() { 
-
 	// Initial interface formatting
 
-	document.getElementById("graph").style.font = font;
+	document.getElementById("graph").style.font = FONT;
 
 	// RoCM URL with GID 
+	var galaxy_name;
 	var url = window.location.href;
 	var gid = "#GALAXY=";
 
 	if(url.contains(gid))
-		GALAXY_NAME = url.split(gid)[1];
+		galaxy_name = url.split(gid)[1];
 	else{
-		GALAXY_NAME = "MILKY-WAY";
+		galaxy_name = "MILKY-WAY";
+		// update_PARAMS();
 		localStorage.removeItem("PARAMS");
 	}
 
@@ -70,13 +70,13 @@ $( document ).ready(function() {
 	// RoCM and SOCM Logic
 	var allGalaxiesEndpoint = socm_url + ".json?page=false"
 
-	GLOBAL_BULGE = default_bulge(GALAXY_NAME);
+	GLOBAL_BULGE = default_bulge(galaxy_name);
 
-	// SOCM Parameters Import
-	import_socm_galaxies(allGalaxiesEndpoint); 
+	// SOCM Parameters Import for all galaxies (and include the current galaxy_name)
+	import_socm_galaxies(allGalaxiesEndpoint, galaxy_name); 
 
-	var rocm_url = "#GALAXY="+GALAXY_NAME;
+	var rocm_url = "#GALAXY="+galaxy_name;
 	window.location.href = rocm_url;
 
-	PARAMS.initialize("galaxy_name", GALAXY_NAME);
+	PARAMS.initialize("galaxy_name", galaxy_name);
 });

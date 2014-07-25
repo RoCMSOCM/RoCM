@@ -23,10 +23,16 @@ function ParamsDict(){
    this.used = [];
    this.resetUsed = function() { this.used = []; }
 
+   var findUsedParams = true;
+   this.setFindUsedParams = function(tf) { findUsedParams = tf; }
+   this.getFindUsedParams = function() { return findUsedParams; }
+
    this.initialize = function(key, param) {
       // Initial value
-      this.dictionary["_"+key] = param;
-      this["_" + key] = param.value;
+      if(key[0] != "_" && this.dictionary["_" + key] != undefined){
+         this.dictionary["_"+key] = param;
+         this["_" + key] = param.value;
+      }
 
       // Modifiable value
       this.dictionary[key] = param;
@@ -61,43 +67,60 @@ function ParamsDict(){
    // Get the full Param Object
    this.getParam = function(key) { 
       // Updates the value in `this` Object
-      if(this[key] !== undefined && this[key] != this.dictionary[key].value){
+      if(this[key] !== undefined && this[key] != this.dictionary[key].value && this.dictionary[key] !== undefined){
          this.dictionary[key].value = this[key];
       }
       else if(this[key] === undefined){
          this[key] = 0;
          this.dictionary[key] = new Param(this[key]);
       }
+      if(key[0] != "_" && this.dictionary["_" + key] === undefined){
+         this["_" + key] = this[key];
+         this.dictionary["_" + key] = new Param(this[key])
+      }
+
 
       this.used.push(key);
       return this.dictionary[key]; 
    };
    this.get = function(key) { 
       // Updates the value in `this` Object
-      if(this[key] !== undefined && this[key] != this.dictionary[key].value){
+      if(this[key] !== undefined && this[key] != this.dictionary[key].value && this.dictionary[key] !== undefined){
          this.dictionary[key].value = this[key];
       }
       else if(this[key] === undefined){
          this[key] = 0;
          this.dictionary[key] = new Param(this[key]);
       }
+      if(key[0] != "_" && this.dictionary["_" + key] === undefined){
+         this["_" + key] = this[key];
+         this.dictionary["_" + key] = new Param(this[key]);
+      }
+
 
       this.used.push(key);
       return this[key]; 
    };
    this.getOriginal = function(key) { return this.getParam("_" + key); };
 
+   this.updateUsed = function(key) { 
+      // if(this.getFindUsedParams())
+         this.used.push(key);
+   }
+
    // Get the entire Params this.dictionary
    this.getDict = function() { 
+      this.resetUsed();
       return this.dictionary;
    };
    this.setDict = function(dict) { 
-      // this.dictionary = dict;
+      this.resetUsed();
       for(var d in dict){
-         if(d[0] != "_"){
+         console.log(d, dict[d]);
+         // if(d[0] != "_"){
             this.dictionary[d] = dict[d];
             this[d] = dict[d].value;
-         }
+         // }
       }
    };
 

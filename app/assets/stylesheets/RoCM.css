@@ -22,7 +22,13 @@ table th{
 }
 
 .slider_button {
-	width: 25px;
-	height: 20px;
-	float: right;
+  width: 25px;
+  height: 20px;
+  float: right;
+}
+
+.reset_button {
+  /*width: 25px;*/
+  height: 20px;
+  float: right;
 }
