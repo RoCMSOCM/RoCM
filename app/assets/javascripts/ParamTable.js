@@ -81,14 +81,17 @@ function update_param_table(param_name) {
     if(PARAMS[param_name] === undefined)
         return;
 
+    // For derived parameters (ex: mass_light_ratio)
+    update_derived_elements(param_name);
+
     var param = PARAMS.getParam(param_name);
 
     var table_id = format_name(param_name.replace(/\s/, "_")) + "_param_value";
 
-    valuep = param.value; 
+    var value = param.value; 
     var units = param.units;
 
-    var formatted_parameter = formatExponential(valuep);// + " " + units;
+    var formatted_parameter = formatExponential(value);// + " " + units;
 
     $("#" + table_id).val(formatted_parameter);
 

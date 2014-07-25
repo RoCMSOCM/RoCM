@@ -181,7 +181,6 @@ function update_PARAMS() {
     {
       console.log("Updated " + PARAMS.get("galaxy_name") + " with previous parameters.")
       PARAMS.setDict(parsed_data);
-      globalp = parsed_data;
       return true;
     }
   }
@@ -218,6 +217,34 @@ function add_table_elements(d) {
   d.Functions = "<button class='plot' id='" + d.galaxy_name + "-PLOT'' style='font-size: .8em !important;'>Plot</button><button class='download' id='" + d.id + "-DOWNLOAD' name='" + d.galaxy_name + "' style='font-size: .8em !important;'>Download CSV</button>"
 
   return d;
+}
+
+function update_derived_elements(param_name) {
+  // Updates the parameter that is calculated from and dependent upon another parameter.
+  var calculated_param_name;
+  var calculated_param;
+
+  if(param_name == "mass_disk" || param_name == "luminosity"){
+    calculated_param_name = "mass_light_ratio";
+
+    var mass_disk = PARAMS.get("mass_disk");
+    var luminosity = PARAMS.get("luminosity");
+    
+    calculated_param = Math.round((mass_disk / luminosity) * 100) / 100;    
+  }
+  else if(param_name == "r_last"){ 
+    calculated_param_name = "universal_constant";
+ 
+    var vrot_data_last = PARAMS.get("vrot_data_last");
+    var r_last = PARAMS.get("r_last");
+
+    calculated_param = Math.round(universal_constant(vrot_data_last,r_last) * 1000) / 1000;
+  }
+  else
+    return;
+
+  PARAMS.setValue(calculated_param_name, calculated_param);
+  update_param_table(calculated_param_name);
 }
 
 

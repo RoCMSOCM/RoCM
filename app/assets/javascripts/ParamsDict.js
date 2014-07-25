@@ -116,11 +116,8 @@ function ParamsDict(){
    this.setDict = function(dict) { 
       this.resetUsed();
       for(var d in dict){
-         console.log(d, dict[d]);
-         // if(d[0] != "_"){
-            this.dictionary[d] = dict[d];
-            this[d] = dict[d].value;
-         // }
+         this.dictionary[d] = dict[d];
+         this[d] = dict[d].value;
       }
    };
 

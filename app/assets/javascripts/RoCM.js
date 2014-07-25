@@ -38,9 +38,17 @@ $( document ).ready(function() {
 
 	$("#slider_button").button();
 
-	$("#save").button();
+	$("#save").button({
+		icons:{
+			secondary: "ui-icon-disk"
+		}
+	});
 
-	$("#simulate").button().click(function(){
+	$("#simulate").button({
+		icons:{
+			secondary: "ui-icon-refresh"
+		}
+	}).click(function(){
 		send_to_rocs();
 	});
 

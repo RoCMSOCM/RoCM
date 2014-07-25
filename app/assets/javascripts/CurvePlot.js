@@ -665,10 +665,6 @@ function children_length(velocity, i) {
 }
 
 function zoomed() {
-
-
-  // console.log(x.domain())
-
   if(x.domain()[0] < 0){
     var xdom1 = x.domain()[1];
     if(xdom1 < 0)
