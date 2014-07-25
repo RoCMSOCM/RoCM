@@ -14,7 +14,7 @@ function import_socm_galaxies(galaxyEndpoint) {
     });
 
     create_socm_table(data);
-    create_curve_plot(galaxy_name, true);
+    create_curve_plot(GALAXY_NAME, true);
   });
 }
 
@@ -35,27 +35,38 @@ function import_parameters(data, is_initial) {
      
     var param = new Param(data[key]);//new Param(value, units);
 
-    PARAMS.add(key, param);
+    PARAMS.initialize(key, param);
 
     if(!is_initial)
       update_param_table(key);
   }
 
   //TODO: Short name -> Long name parameter mapping
-  PARAMS.add("R0", PARAMS.getParam("scale_length"));
+  PARAMS.initialize("R0", PARAMS.getParam("scale_length"));
 
   // ParamSlider initial sliders
-  slider_map = {
-    "mass_disk":{min:0.01, max:20},
-    // "N*":{min:0.01*Math.pow(10,10), max:4.0*Math.pow(10,11)},
-    "r0":{min:0, max:100},
-    "sigma0":{min:1.0*Math.pow(10,-10), max:1.0*Math.pow(10,-6)}
-  };
+  var slider_keys = [
+    "distance",
+    "mass_disk",
+    "scale_length",
+    "dark_halo_radius",
+    "dark_matter_density",
+    "bulge_b",
+    "bulge_t"
+    ];
 
 
   if(is_initial){
-    initialize_default_parameters();
-    initialize_sliders(slider_map);
+    if(!localStorage.hasOwnProperty("PARAMS"))
+      initialize_default_parameters();
+    else{
+      // From localStorage
+      if(!update_PARAMS()){
+        initialize_default_parameters();
+      }
+    }
+
+    initialize_sliders(slider_keys);
   }
 
   // MOND Parameter fitting sliders
@@ -83,8 +94,21 @@ function import_parameters(data, is_initial) {
   data = filter_parameters(data);
 
 
-  if(is_initial)
+  if(is_initial){
+    
+    var chi_table_id = "chi_table";
+    $("#parameters").append($("<table/>")
+      .attr("id", chi_table_id)
+      .css("float", "left")
+      .css("cellspacing", "0"));
+
+    $("#parameters").append($("<table/>")
+      .attr("id", table_id)
+      .css("float", "right")
+      .css("cellspacing", "0"));
+
     create_param_table(table_id, data);
+  }
 }
 
 function send_to_rocs() {
@@ -128,9 +152,11 @@ function send_to_rocs() {
     return;
   }
 
+  localStorage.clear();
 
   var R = VDATA.R;
   var VROT = VDATA[vrot_name];
+
   localStorage.setItem('R', JSON.stringify(R));
   localStorage.setItem('VROT', JSON.stringify(VROT));
 
@@ -139,8 +165,41 @@ function send_to_rocs() {
   localStorage.setItem("vrot_name", vrot_name);
   localStorage.setItem("galaxy_name", galaxy_name);
 
+  localStorage.setItem("STYLE_dictionary", JSON.stringify(STYLE.getDict()));
+
+  localStorage.setItem("PARAMS", JSON.stringify(PARAMS.getDict()));
+
   var rocs_url = "rocs/index";
   window.location.href = rocs_url;
+}
+
+function update_session() {
+  var prev_galaxy_style = localStorage.getItem("STYLE_dictionary");
+
+  if(prev_galaxy_style != null && prev_galaxy_style != "[object Object]" && prev_galaxy_style != "{}"){
+    STYLE.setDict(JSON.parse(prev_galaxy_style));
+  }
+}
+
+function update_PARAMS() {
+ var prev_PARAMS = localStorage.getItem("PARAMS");
+ 
+  if(prev_PARAMS != null &&
+     prev_PARAMS != "[object Object]" &&   
+     prev_PARAMS != "{}"){
+
+    var parsed_data = JSON.parse(prev_PARAMS);
+  
+    if(parsed_data["galaxy_name"].value == PARAMS.get("galaxy_name"))
+    {
+      PARAMS.setDict(parsed_data);
+      return true;
+    }
+  }
+  else
+    localStorage.removeItem("PARAMS");
+
+  return false;
 }
 
 function add_table_elements(d) {  
@@ -167,7 +226,7 @@ function add_table_elements(d) {
   d.citation_ids_array = citations;
 
   // Plot and Download buttons
-  d.Functions = "<button class='plot' id='" + d.galaxy_name + "-PLOT''>Plot</button> | <button class='download' id='" + d.id + "-DOWNLOAD' name='" + d.galaxy_name + "'>Download</button>"
+  d.Functions = "<button class='plot' id='" + d.galaxy_name + "-PLOT'' style='font-size: .8em !important;'>Plot</button><button class='download' id='" + d.id + "-DOWNLOAD' name='" + d.galaxy_name + "' style='font-size: .8em !important;'>Download CSV</button>"
 
   return d;
 }

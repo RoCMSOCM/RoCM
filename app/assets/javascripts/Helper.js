@@ -51,19 +51,21 @@ function chi_squared(obs, exp) {
 	return Math.pow(obs - exp, 2) / exp;
 }
 
+//TODO: Numbers between 0-1 (starting at 0.001 or 1.0e-3)
 function formatExponential(exp) {
 	if(typeof(exp) !== "number")
 		return exp;
 	
 	var exponential = exp.toExponential(2);
 	if(!exponential.contains("e-") && exp < 10000 && exp >= 0)
-		return Math.round(exp * 100) / 100;
-	else if(exponential.contains("e")) {
-		exponential = exponential.replace("+", "");
-		return exponential.replace("e", "x10<sup>") + "</sup>";
+		return Math.round(exp * 10000) / 10000;
+	else if(exponential.contains("e+")) {
+		return exponential.replace("e+", "x10<sup>") + "</sup>";
 	}
+	else if(exponential.contains("e-") && exp < 0.01 && exp >= 0)
+		return exponential.replace("e-", "x10<sup>-") + "</sup>";
 	else
-		return exp;
+		return Math.round(exp * 100000) / 100000;
 }
 
 function arcsec_to_kpc(arcsec, Dkpc) {

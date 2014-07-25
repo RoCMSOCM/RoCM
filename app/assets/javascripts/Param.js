@@ -12,6 +12,6 @@
 function Param(value, units, min, max) {
 	this.value = value === undefined ? 0 : value;	
 	this.units = units === undefined ? "" : units;
-	this.min = min === undefined ? value/2 : min;
-	this.max = max === undefined ? value*2 : max;
+	this.min = min === undefined ? 0 : min;
+	this.max = max === undefined ? value*10 : max;
 };

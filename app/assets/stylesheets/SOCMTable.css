@@ -18,6 +18,16 @@ table {
 }
 
 .socm_dropdown {
-	left:1%;
-	width:96%;
+	left: 1%;
+	width: 96%;
+}
+
+.plot {
+    width: 100%;
+    height: 20px;
+}
+
+.download {
+    width: 100%;
+    height: 20px;
 }

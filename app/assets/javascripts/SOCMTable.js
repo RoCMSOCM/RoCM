@@ -1,4 +1,4 @@
-var units_map = {
+var formatted_map = {
 	galaxy_name: "Galaxy",
 	galaxy_type: "Type", 
 	distance: "Distance <br> (Mpc)",
@@ -9,10 +9,23 @@ var units_map = {
 	mass_light_ratio: "(M/L)<sub>stars</sub> <br> (M<sub>☉</sub>/L<sub>☉</sub>)",
 	r_last: "R<sub>last</sub> <br> (kpc)",
 	universal_constant: "(v<sup>2</sup>/c<sup>2</sup>R)<sub>last</sub> <br> (10<sup>-30</sup> cm<sup>-1</sup>)",
-	velocities_count: "Number of <br> Velocities",
+	velocities_count: "Number of <br> Observed Points",
 	citation_ids_array: "Citations",
-	vrot_data_last: "V<sub>last</sub> <br> (km/s)"
+	vrot_data_last: "V<sub>last</sub> <br> (km/s)",
+	dark_halo_radius: "r<sub>0</sub> <br> kpc",
+	dark_matter_density: "σ<sub>0</sub> <br> GeV cm<sup>-3</sup>"
 };
+
+// function display_formatted_map() {
+// 	var arrow = "→";
+// 	var parameter_map = "";
+
+// 	for(var formatted_name in formatted_map) {
+// 		parameter_map += formatted_map[formatted_name] + " " + arrow + " " + formatted_name + "<br>";
+// 	}
+
+// 	$("#user_defined_model_text").html(parameter_map);
+// }
 
 function create_data_table(table_id)
 {
@@ -77,13 +90,16 @@ function create_socm_table(param_data) {
 	for (var r = 0; r < rows + 1; r++) {
 		var row = $("<tr/>");
 		for (var c = 0; c < cols; c++) {
-			if(keys[c] == "id")
+			// Filtered data from the SOCMTable
+			if(keys[c] == "id" || keys[c] == "vrot_data_last")
 				continue;
 
 			if (r == 0) {
-				var column_name = units_map[keys[c]];
+				var column_name = formatted_map[keys[c]];
 				if(column_name === undefined)
 					column_name = keys[c];
+				else
+					column_name = column_name + "<br><font size='1'>(" + keys[c] + ")</font>";
 				row.append($("<th/>").html(column_name));
 			} else {
 				// Use [r-1] because d3 already takes the csv header out (the <th> tag)
@@ -114,17 +130,35 @@ function create_socm_table(param_data) {
 	$("#socmt_wrapper").append(table);	
 
 	$(".reference").button();
-	$(".plot").button().click(function() {
+	$(".plot").button({
+		icons: {
+	        primary: "ui-icon-image"
+	      }
+	}).click(function() {
+		localStorage.removeItem("PARAMS");
 		var id = this.id;
 		var gname = id.split("-PLOT")[0];	
+		
+		GLOBAL_BULGE = default_bulge(gname);
 
 		if(create_curve_plot(gname, false) != -1){
 			close_all_dropdowns();
 			var rocm_url = "#GALAXY="+gname;
+			
 			window.location.href = rocm_url;
+			
+			GALAXY_NAME = gname;
+			PARAMS.initialize("galaxy_name", GALAXY_NAME);
+
+			update_parameter_sliders();
 		}
 	});
-	$(".download").button().click(function() {
+
+	$(".download").button({
+		icons: {
+	        primary: "ui-icon-disk"
+	      }
+	}).click(function() {
 		var id = this.id;
 		var gid = id.split("-DOWNLOAD")[0];	
 		var gname = this.name;

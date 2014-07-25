@@ -108,6 +108,14 @@ function set_curve_domain(data, velocities) {
   y.domain([ymin, ymax + ymax/4]);
 }
 
+function set_curve_y_domain(min, max) {
+  y.domain([min, max]);
+}
+
+function set_curve_x_domain(min, max) {
+  x.domain([min, max]);
+}
+
 function create_axes() {
 
   create_xaxis()
@@ -557,8 +565,8 @@ function get_color(d) {
   }
 
   d = d.replace("VROT_", "");
-  
-  return GMODELSTYLE.getModel(d).color;
+
+  return STYLE.get(d).color;
 }
 
 
@@ -569,7 +577,7 @@ function get_opacity(d) {
 
   d = d.replace("VROT_", "");
   
-  return GMODELSTYLE.getModel(d).opacity;
+  return STYLE.get(d).opacity;
 }
 
 function set_opacity(model_name, opacity) {
@@ -579,10 +587,11 @@ function set_opacity(model_name, opacity) {
 
   model_name = model_name.replace("VROT_", "");
 
-  var model = GMODELSTYLE.getModel(model_name);
+  var model = STYLE.get(model_name);
   model.opacity = opacity;
 
-  GMODELSTYLE.set(model.model, model);
+  STYLE.set(model.model, model);
+  localStorage.setItem("STYLE_dictionary", JSON.stringify(STYLE.getDict()));
 }
 
 function legend_name(d) {
@@ -592,7 +601,7 @@ function legend_name(d) {
 
   d = d.replace("VROT_", "");
 
-  return GMODELSTYLE.getModel(d).full_name;
+  return STYLE.get(d).full_name;
 }
 
 function object_opacity(d) {

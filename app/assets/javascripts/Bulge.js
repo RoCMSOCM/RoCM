@@ -1,6 +1,16 @@
 // Bulge
-// TODO: Check Julia for v_bulge_b (conformal) 
 
+function default_bulge(galaxy_name){
+	var defaults = ["MILKY-WAY"];
+
+	for(var i=0;i<defaults.length; i++) {
+		if(defaults[i] == galaxy_name){
+			return true;
+		}
+	}
+
+	return false;
+}
 
 //Numerical integration function
 var integral_func = function(z) {

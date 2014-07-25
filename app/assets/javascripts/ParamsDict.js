@@ -18,45 +18,68 @@
  */
 
 function ParamsDict(){
-   var dictionary = {};
+   this.dictionary = {};
 
    this.used = [];
    this.resetUsed = function() { this.used = []; }
 
-   this.set = function(key, param) { 
-   		// Initial value
-   		dictionary["_"+key] = param;
-         this["_" + key] = param.value;
+   this.initialize = function(key, param) {
+      // Initial value
+      this.dictionary["_"+key] = param;
+      this["_" + key] = param.value;
 
-   		// Modifiable value
-   		dictionary[key] = param;
-         this[key] = param.value;         
-   	};
+      // Modifiable value
+      this.dictionary[key] = param;
+      this[key] = param.value;       
+   };
+
+   this.set = function(key, param) { 
+		// Modifiable value
+		this.dictionary[key] = param;
+      this[key] = param.value;       
+
+      this.update_localStorage();
+	};
+
+   this.setValue = function(key, value) {
+      // Modifiable value
+      this.dictionary[key].value = value;
+      this[key] = value;       
+
+      this.update_localStorage();
+   };
+
+   this.update_localStorage = function() {
+      this.resetUsed();
+      localStorage.removeItem("PARAMS");
+      localStorage.setItem("PARAMS", JSON.stringify(this.dictionary));
+   };
+
 
    // Get just value by Param[key]
    // or   
    // Get the full Param Object
    this.getParam = function(key) { 
       // Updates the value in `this` Object
-      if(this[key] !== undefined && this[key] != dictionary[key].value){
-         dictionary[key].value = this[key];
+      if(this[key] !== undefined && this[key] != this.dictionary[key].value){
+         this.dictionary[key].value = this[key];
       }
       else if(this[key] === undefined){
          this[key] = 0;
-         dictionary[key] = new Param(this[key]);
+         this.dictionary[key] = new Param(this[key]);
       }
 
       this.used.push(key);
-      return dictionary[key]; 
+      return this.dictionary[key]; 
    };
    this.get = function(key) { 
       // Updates the value in `this` Object
-      if(this[key] !== undefined && this[key] != dictionary[key].value){
-         dictionary[key].value = this[key];
+      if(this[key] !== undefined && this[key] != this.dictionary[key].value){
+         this.dictionary[key].value = this[key];
       }
       else if(this[key] === undefined){
          this[key] = 0;
-         dictionary[key] = new Param(this[key]);
+         this.dictionary[key] = new Param(this[key]);
       }
 
       this.used.push(key);
@@ -64,9 +87,19 @@ function ParamsDict(){
    };
    this.getOriginal = function(key) { return this.getParam("_" + key); };
 
-
-   // Get the entire Params dictionary
-   this.getDict = function() { return dictionary };
+   // Get the entire Params this.dictionary
+   this.getDict = function() { 
+      return this.dictionary;
+   };
+   this.setDict = function(dict) { 
+      // this.dictionary = dict;
+      for(var d in dict){
+         if(d[0] != "_"){
+            this.dictionary[d] = dict[d];
+            this[d] = dict[d].value;
+         }
+      }
+   };
 
    this.getParams = this.getDict;
 
@@ -77,12 +110,7 @@ function ParamsDict(){
 
    // Input: parameter name, and Param Object.
    this.add = function(key, param) {
-      // TODO: Check if not param
-
       this.set(key, param);
-
-      
-      // new Para
    };
 
    this.setMin = function(key, min) {

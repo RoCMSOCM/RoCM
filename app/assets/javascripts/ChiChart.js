@@ -177,7 +177,7 @@ function get_bar_data(model_name){
 	var total = 0;
 
 	for(var i=0;i<vel_size;i++){
-		var X2 = Math.round(chi_squared(vel_data[i], model_data[i]));
+		var X2 = chi_squared(vel_data[i], model_data[i]);
 
 		if(data[X2] === undefined){
 			data.push({chi_squared: X2, frequency: 1, color: get_color(model_name)})

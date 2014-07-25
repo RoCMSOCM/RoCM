@@ -6,7 +6,8 @@ function filter_parameters(data){
     luminosity: data.luminosity,
     scale_length: data.scale_length,
     mass_hydrogen: data.mass_hydrogen,
-    mass_disk: data.mass_disk
+    mass_disk: data.mass_disk,
+    mass_light_ratio: data.mass_light_ratio
     }
 
     return filtered_data;
@@ -42,7 +43,7 @@ function add_param(table_id, param_name) {
     
     var table = $("#" + table_id + " thead tr");
         
-    var column_name = units_map[param_name];
+    var column_name = formatted_map[param_name];
     if(column_name === undefined)
         column_name = param_name;
     table.append($("<th>")
@@ -66,7 +67,7 @@ function create_chi_table() {
     for(var model in GMODEL) {
         if(model != "DARK"){
             var chi_model = model + " χ²";
-            PARAMS.add(chi_model, 0);
+            PARAMS.initialize(chi_model, 0);
             data[chi_model] = 0;
         }
     }
@@ -97,9 +98,9 @@ function update_param_table(param_name) {
 
 function test_setting() {
 
-    PARAMS.set("N*", new Param(4.1));
+    // PARAMS.set("N*", new Param(4.1));
 
-    add_param("chi_table", "N*");
+    // add_param("chi_table", "N*");
 
     
 }

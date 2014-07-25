@@ -6,14 +6,14 @@ SOCMPARAMS = [];
 
 GMODEL = new GalacticModel();
 
-GMODELSTYLE = new GalacticModelStyleDict();
+STYLE = new GalacticModelStyleDict();
 
 CONVERT = new Conversion();
 
 GLOBAL_BULGE = true;
 
 var font = "12px sans-serif";
-var galaxy_name;
+var GALAXY_NAME;
 var	socm_url = "http://socm.herokuapp.com/galaxies";
 
 $( document ).ready(function() { 
@@ -21,6 +21,20 @@ $( document ).ready(function() {
 	// Initial interface formatting
 
 	document.getElementById("graph").style.font = font;
+
+	// RoCM URL with GID 
+	var url = window.location.href;
+	var gid = "#GALAXY=";
+
+	if(url.contains(gid))
+		GALAXY_NAME = url.split(gid)[1];
+	else{
+		GALAXY_NAME = "MILKY-WAY";
+		localStorage.removeItem("PARAMS");
+	}
+
+	// Coming in from RoCS or just hit "Back" on the browser, update function.
+	update_session();
 
 	$("#slider_button").button();
 
@@ -56,21 +70,13 @@ $( document ).ready(function() {
 	// RoCM and SOCM Logic
 	var allGalaxiesEndpoint = socm_url + ".json?page=false"
 
+	GLOBAL_BULGE = default_bulge(GALAXY_NAME);
+
 	// SOCM Parameters Import
 	import_socm_galaxies(allGalaxiesEndpoint); 
 
-
-	// RoCM URL with GID 
-	var url = window.location.href;
-	var gid = "#GALAXY=";
-
-	if(url.contains(gid)){
-		galaxy_name = url.split(gid)[1];
-	} else {
-		galaxy_name = "MILKY-WAY";
-	}
-
-	var rocm_url = "#GALAXY="+galaxy_name;
+	var rocm_url = "#GALAXY="+GALAXY_NAME;
 	window.location.href = rocm_url;
 
+	PARAMS.initialize("galaxy_name", GALAXY_NAME);
 });

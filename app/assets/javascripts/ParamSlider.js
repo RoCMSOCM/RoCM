@@ -27,7 +27,7 @@ function ParamSlider(param_name, param) {
 		}
 		else {
 			params = new Params()
-			PARAMS.add(param_name, params);
+			PARAMS.initialize(param_name, params);
 		}
 	}
 
@@ -35,17 +35,16 @@ function ParamSlider(param_name, param) {
 
 	// Dynamically create slider
 	var sliders_width = 700; // px
-	var left_offset = +($("#sliders").parent().css("width").replace("px", "")) - sliders_width*1.75;
 
 	var wrapper = $("#sliders")
-					.css("width", sliders_width + "px")
-					.css("left", left_offset + "px");
+					.css("width", sliders_width + "px");
 
 	var minus_button_id = "slider_" + param_name + "_remove";
 
 	wrapper.append(
 		$("<div>")
 			.attr("id", param_name + "_slider_wrapper")
+			.attr("class", "slider_wrapper")
 			.css("margin", "0 auto")
 			.css("float", "right")
 			.css("width", "100%")
@@ -114,7 +113,7 @@ ParamSlider.prototype = {
 
 		$("#"+param_name+"_amount").val(formatExponential(local) + " " + this.param.units);
 
-		PARAMS[this.param_name] = local;
+		PARAMS.setValue(this.param_name, local);
 
 		update_models(this.param_name);
 
@@ -132,7 +131,7 @@ function update_models(param_name) {
 		// Test model equation to find out which PARAMS are used.
 		var test = GMODEL[model](1);
 
-		if(PARAMS.used.contains(param_name)) {
+		if(param_name === undefined || PARAMS.used.contains(param_name)) {
 			VDATA["VROT_" + model] = new Array(data_size);
 			for(var i = 0; i < data_size; i++){
 				var vrot_value = GMODEL[model](VDATA.R[i]);
@@ -149,7 +148,7 @@ function update_models(param_name) {
 	// TODO: Change where to update bar chart
 	// update_bar();
 	update_chi_squared();
-	update_param_table(this.param_name);
+	update_param_table(param_name);
 }
 
 function format_name(name) {
@@ -158,8 +157,12 @@ function format_name(name) {
 
 function update_original(key) {
 	if(PARAMS.get(key) !== undefined){
+		var param = PARAMS.getParam(key);
 		var original_value = PARAMS.getOriginal(key).value;
-		var scaled_value = PARAMS.getParam(key).scale(original_value);
+
+		var scale = slide_scale(param.min, param.max);
+		var scaled_value = scale(original_value);
+
 		var units = PARAMS.getParam(key).units;
 		
 		key = format_name(key);
@@ -173,7 +176,7 @@ function update_original(key) {
 	}
 }
 
-function initialize_sliders(slider_map) {
+function initialize_sliders(slider_keys) {
 	var plus_button_id = "slider_add";
 
 	$("#sliders").append($("<button/>")
@@ -196,12 +199,6 @@ function initialize_sliders(slider_map) {
 
 	$("#sliders").append($("<h2/>")
 		.html("Parameter Fitting Sliders"));
-
-	$("#sliders").append($("<table/>")
-		.attr("id", "chi_table")
-		.css("margin", "0 auto")
-		.css("cellspacing", "0"));
-
 	
 	$("#sliders").append($("<label/>")
 		.attr("id", "bulge_toggle_label")
@@ -211,22 +208,17 @@ function initialize_sliders(slider_map) {
 		.attr("type", "checkbox")
 		.attr("id", "bulge_toggle"));
 
+    $("#bulge_toggle").prop('checked', GLOBAL_BULGE);
+
 	$("#bulge_toggle").change(function() {
         GLOBAL_BULGE = $(this).is(":checked");
         update_models("bulge_b");
     });
 
-    $("#bulge_toggle").prop('checked', true);
 
 	// Create initial sliders
-	slider_keys = Object.keys(slider_map);
-
-
     for(var i=0;i<slider_keys.length;i++){
     	var key = slider_keys[i];
-    	var range = slider_map[key];
-
-    	PARAMS.setRange(key, range.min, range.max);
 
     	var param = PARAMS.getParam(key);
    		var slider = new ParamSlider(key, param);
@@ -246,5 +238,14 @@ function set_slider_range(param_name, min, max) {
 	slider.slider("option", "max", max*100);
 
 	slider.slider("option", "value", slider.slider("option", "value"));
+
+}
+
+function update_parameter_sliders() {
+	var removed = $("#sliders").find(".slider_wrapper").remove();
+
+	for(var i=0; i<removed.length; i++){
+		new ParamSlider(removed[i].id.replace("_slider_wrapper", ""));
+	}
 
 }
