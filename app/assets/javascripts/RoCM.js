@@ -80,6 +80,9 @@ $( document ).ready(function() {
 
 	GLOBAL_BULGE = default_bulge(galaxy_name);
 
+	// Create the CurvePlot svg before drawing to it (Firefox NS_ERROR_FAILURE)
+	create_curve_plot_svg();
+
 	// SOCM Parameters Import for all galaxies (and include the current galaxy_name)
 	import_socm_galaxies(allGalaxiesEndpoint, galaxy_name); 
 

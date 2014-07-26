@@ -266,13 +266,67 @@ function set_slider_range(param_name, min, max) {
 }
 
 function update_parameter_sliders(is_original_value) {
-	var removed = $("#sliders").find(".slider_wrapper").remove();
+	var sliders = find_parameter_sliders();
+	var removed = sliders.remove();
 
 	for(var i=0; i<removed.length; i++){
 		var param_name = removed[i].id.replace("_slider_wrapper", "");
 		new ParamSlider(param_name);
-		if(is_original_value !== undefined && is_original_value){
+
+		var galaxy_name = PARAMS.get("galaxy_name");
+		// First check if the param is within SOCM 
+		// (meaning the default should be reset if the galaxy doesn't have the observed parameter)
+		// Ex: dark_matter_density, bulge_b
+		if(SOCMPARAMS[galaxy_name][param_name] === undefined || (is_original_value !== undefined && is_original_value)){
 			update_original(param_name);
 		}
 	}
+}
+
+function find_parameter_sliders() {
+	return $("#sliders").find(".slider_wrapper");
+}
+
+function find_parameter_slider_names() {
+	var sliders = find_parameter_sliders();
+	var param_names = [];
+
+	for(var i=0; i<sliders.length; i++){
+		var param_name = sliders[i].id.replace("_slider_wrapper", "");
+		param_names.push(param_name);
+	}
+
+	return param_names;
+}
+
+function find_all_parameters(exclude_sliders) {
+	exclude_sliders === undefined ? exclude_sliders = false : exclude_sliders = exclude_sliders;
+
+	var parameters = PARAMS.getDict();
+
+	var slider_params;
+	if(exclude_sliders)
+		slider_params = find_parameter_slider_names();
+
+	var return_params = [];
+
+	for(var param in parameters) {
+		if(param[0] != "_"
+			&& !param.contains("χ²") 
+			&& param != "galaxy_name" 
+			&& param != "galaxy_type"
+			&& param != "id"
+			&& param != "citation_ids_array"
+			&& param != "Functions"){
+
+			if(exclude_sliders){
+				if(!slider_params.contains(param))
+					return_params.push(param);
+			}
+			else
+				return_params.push(param);
+		}
+	}
+
+	return return_params;
 }

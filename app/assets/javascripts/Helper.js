@@ -97,6 +97,16 @@ function mass_to_stars(mass_disk) {
 	return mass_disk / solar_mass;
 }
 
+function calculate_schwarzschild_radius(mass_disk) {
+	var G = CONST.get("G"); // Gravitational constant in N(m/kg)^2
+	var c = CONVERT.km_to_m(CONST.get("c")); // Speed of light in m
+
+	var m = mass_disk; // Mass of galaxy in kg
+
+	var s_radius = (2 * m * G) / Math.pow(c, 2);
+
+	return s_radius;
+}
 
 /////////////////// True SOCM Values ///////////////////
 // Conversion from formatted SOCM table value, to true value

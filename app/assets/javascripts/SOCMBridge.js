@@ -35,7 +35,7 @@ function import_parameters(data, is_initial) {
   }
 
   //TODO: Short name -> Long name parameter mapping
-  PARAMS.initialize("R0", PARAMS.getParam("scale_length"));
+  // PARAMS.initialize("R0", PARAMS.getParam("scale_length"));
 
   // ParamSlider initial sliders
   var slider_keys = [

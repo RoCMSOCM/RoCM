@@ -23,6 +23,9 @@ Conversion.prototype = {
 	km_to_cm: function(km) {
 		return km * 100000;
 	},
+	km_to_m: function(km) {
+		return km * 1000;
+	},
 	cm_to_kpc: function(cm) {
 		return cm * 3.24077929 * Math.pow(10,-22);
 	},	

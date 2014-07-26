@@ -45,9 +45,11 @@ var xy_line = d3.svg.line()
 
 var svg;
 
-var animate_beginning = false;
+var ANIMATE_BEGINNING = false;
 
-var time = animate_beginning ? 7500 : 0;
+var TIME = ANIMATE_BEGINNING ? 7500 : 0;
+
+var DASHED_CURVES = false;
 
 var err_op = 1.0; // Error opacity
 
@@ -165,7 +167,7 @@ function create_xaxis() {
       .style("fill", "black")
       .text("Galactocentric Distance (kpc)")
       .transition()
-        .duration(time*(3/4))    
+        .duration(TIME*(3/4))    
         .attr("x", width);
 
 }
@@ -194,7 +196,7 @@ function create_yaxis() {
       .style("fill", "black")
       .text("Rotation Velocity (km/s)")
       .transition()
-        .duration(time*(3/4))    
+        .duration(TIME*(3/4))    
         .attr("x", 0);
 
 
@@ -227,7 +229,7 @@ function create_sun_label() {
     .text(sun_label);
 
   sun_text.transition()
-    .duration(time*(3/4)) 
+    .duration(TIME*(3/4)) 
     .style("font-size", "12px");
 }
 
@@ -269,33 +271,27 @@ function remove_data() {
 }
 
 function plot_curves(velocities){
-  velocity = svg.append("g").attr("id", "velocities").selectAll(".velocity")
+  var velocity = svg.append("g").attr("id", "velocities").selectAll(".velocity")
     .data(velocities)
     .enter().append("g")
       .attr("class", "velocity");
 
+  var path = velocity.append("path");
 
-  velocity.append("path")
-    .attr("class", function(d) { return d.name; })
+  path.attr("class", function(d) { return d.name; })
     .attr("d", function(d) { return d.name.contains("DATA") ? null : curve(d.values); })
-    .attr("stroke-dasharray", function(d,i) { return is(d, "data") ? "0 0" : children_length(velocity, i) + " " + children_length(velocity, i)*2; } )
-    .attr("stroke-dashoffset", function(d,i) {return is(d, "data") ? "0 0" :  children_length(velocity, i); } )
+    .attr("stroke-dasharray", function(d,i) { return is(d, "data") || !ANIMATE_BEGINNING ? "0 0" : children_length(velocity, i) + " " + children_length(velocity, i)*2; } )
+    .attr("stroke-dashoffset", function(d,i) {return is(d, "data") || !ANIMATE_BEGINNING ? "0 0" :  children_length(velocity, i); } )
     .style("stroke", function(d) { return get_color(d); })
     .style("stroke-width", 1.5)
     .style("fill", "none")
     .style("opacity", function(d) { return get_opacity(d); })
     .transition()
-      .duration(time)
+      .duration(TIME)
       .ease("monotone")
       .style("fill", function(d, i) { return is(d, "err") ? "red" : "none"; })
-      .attr("stroke-dasharray", function(d,i) { return is(d, "data") ? "0 0" :  children_length(velocity, i) + " " + children_length(velocity, i)*2; } )
+      .attr("stroke-dasharray", function(d,i) { return is(d, "data") || !ANIMATE_BEGINNING ? "0 0" :  children_length(velocity, i) + " " + children_length(velocity, i)*2; } )
       .attr("stroke-dashoffset", function(d,i) { return 0; })
-      .each("end", function(d, i) { var dash_o = d.name.contains("vel") ? 8 : 0;
-   
-  var dash_a = d.name.contains("vel") ? ("9","3") : children_length(velocity, i);;
-
-  this.setAttribute("stroke-dasharray", dash_a); 
-  this.setAttribute("stroke-dashoffset", dash_o); } )
 }
 
 function remove_curves(){
@@ -442,7 +438,7 @@ function create_title(galaxy_name, SHOW_TITLE, ANIMATE_TITLE) {
 
     if(ANIMATE_TITLE){
       title.transition()
-        .duration(time*(3/4)) 
+        .duration(TIME*(3/4)) 
         .style("font-size", "14px") 
         .attr("y", 0);
     }
@@ -453,30 +449,30 @@ function remove_title() {
   svg.selectAll(".title").remove();
 }
 
+function create_curve_plot_svg() {
+  // D3 graph set-up
+  svg = d3.select("#graph_svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      // .call(zoom);
+
+  svg.append("rect")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .style("fill", "blue")
+    .attr("opacity", 0);
+
+
+  d3.select("#rocm_wrapper")
+    .attr("width", "75%")
+    .attr("min-width", width + margin.left + margin.right + 200);
+}
+
 function create_curve_plot(galaxy_name, is_initial){
   // Generate the D3 plot with the velocity data (red data points)
   // and compute each model from GMODEL (colored curved lines)
-  if(is_initial) {
-    // D3 graph set-up
-    svg = d3.select("#graph_svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        // .call(zoom);
-
-    svg.append("rect")
-      .attr("width", "100%")
-      .attr("height", "100%")
-      .style("fill", "blue")
-      .attr("opacity", 0);
-
-
-    d3.select("#rocm_wrapper")
-      .attr("width", "75%")
-      .attr("min-width", width + margin.left + margin.right + 200);
-  }
-
   if(!SOCMPARAMS[galaxy_name]){
     alert("No velocity data for " + galaxy_name + ".");
     return -1;
@@ -541,6 +537,8 @@ function create_curve_plot(galaxy_name, is_initial){
     if(SHOW_ERR_BAR){
       create_error_bar(data);
     }
+
+    // svg.attr("display", "block");
 
     plot_data(data);
     plot_curves(velocities);

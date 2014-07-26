@@ -8,7 +8,7 @@ function initialize_default_parameters(){
 
 	// TODO: Calculate it.
 	// Schwarzchild radius
-	PARAMS.initialize("B", new Param(1.48, "km"));
+	PARAMS.initialize("schwarzschild_radius", new Param(1.48, "km"));
 
 	var bulge_b = 0.611499 // *10^10
 	var bulge_t = 0.0939927

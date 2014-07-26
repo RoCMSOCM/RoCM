@@ -28,6 +28,10 @@ function ParamsDict(){
    this.getFindUsedParams = function() { return findUsedParams; }
 
    this.initialize = function(key, param) {
+      if(typeof(param) != "object"){
+         param = new Param(param);
+      }
+
       // Initial value
       if(key[0] != "_" && this.dictionary["_" + key] != undefined){
          this.dictionary["_"+key] = param;
@@ -39,7 +43,16 @@ function ParamsDict(){
       this[key] = param.value;       
    };
 
+   // Input: parameter name, and Param Object.
+   this.add = function(key, param) {
+      this.set(key, param);
+   };
+
    this.set = function(key, param) { 
+      if(typeof(param) != "object"){
+         param = new Param(param);
+      }
+
 		// Modifiable value
 		this.dictionary[key] = param;
       this[key] = param.value;       
@@ -126,11 +139,6 @@ function ParamsDict(){
    this.self = function() { 
       var keys = Object.keys(this);
       console.log(keys);
-   };
-
-   // Input: parameter name, and Param Object.
-   this.add = function(key, param) {
-      this.set(key, param);
    };
 
    this.setMin = function(key, min) {
