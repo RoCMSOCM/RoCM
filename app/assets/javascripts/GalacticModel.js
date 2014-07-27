@@ -32,7 +32,7 @@ GalacticModel.prototype = {
 		return rotation_velocity;
 	},
 	DARK: function(R) {
-		var sigma0 = PARAMS.get("dark_matter_density");
+		var sigma0 = true_dark_matter_density(PARAMS.get("dark_matter_density"));
 		var sigma0_si = CONVERT.GeVcm3_to_kgkms2(sigma0);
 
 		var r0 = PARAMS.get("dark_halo_radius");

@@ -116,8 +116,20 @@ function true_mass(table_mass) {
 	return table_mass * Math.pow(10,10) * CONST.get("solar_mass");
 }
 
+function true_mass_disk(table_mass_disk) {
+	return true_mass(table_mass_disk);
+}
+
+function true_mass_hydrogen(table_mass_hydrogen) {
+	return true_mass(table_mass_hydrogen);
+}
+
 function true_luminosity(table_luminosity) {
 	return table_luminosity * Math.pow(10,10) * CONST.get("solar_luminosity");
+}
+
+function true_dark_matter_density(table_dark_matter_density) {
+	return table_dark_matter_density * Math.pow(10,-7);
 }
 
 

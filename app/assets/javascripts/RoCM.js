@@ -1,6 +1,6 @@
 VDATA = new VData();
 
-PARAMS = new ParamsDict();
+PARAMS = new ParamDict();
 
 SOCMPARAMS = [];
 
@@ -82,6 +82,9 @@ $( document ).ready(function() {
 
 	// Create the CurvePlot svg before drawing to it (Firefox NS_ERROR_FAILURE)
 	create_curve_plot_svg();
+
+	// The list of parameters to add as sliders
+	create_parameter_list_dialog();
 
 	// SOCM Parameters Import for all galaxies (and include the current galaxy_name)
 	import_socm_galaxies(allGalaxiesEndpoint, galaxy_name); 

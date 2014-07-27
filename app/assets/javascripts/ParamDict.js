@@ -1,9 +1,9 @@
-/* ParamsDict.js
+/* ParamDict.js
 
-   ParamsDict is a dictionary of Param Objects
+   ParamDict is a dictionary of Param Objects
    
    Use: 
-      PARAMS = new ParamsDict();
+      PARAMS = new ParamDict();
       PARAMS.add("N", new Param(value, value, units, min, max));
 
       // Get only the value by:
@@ -17,7 +17,7 @@
 
  */
 
-function ParamsDict(){
+function ParamDict(){
    this.dictionary = {};
 
    this.used = [];
@@ -32,7 +32,7 @@ function ParamsDict(){
          param = new Param(param);
       }
 
-      // Initial value
+      // Initial value (but preserve previous state's original value)
       if(key[0] != "_" && this.dictionary["_" + key] != undefined){
          this.dictionary["_"+key] = param;
          this["_" + key] = param.value;
@@ -49,8 +49,14 @@ function ParamsDict(){
    };
 
    this.set = function(key, param) { 
-      if(typeof(param) != "object"){
+      if(param.value == undefined || typeof(param) != "object"){
          param = new Param(param);
+      }
+
+      // Initial value if undefined
+      if(key[0] != "_" && this.dictionary["_" + key] == undefined){
+         this.dictionary["_"+key] = param;
+         this["_" + key] = param.value;
       }
 
 		// Modifiable value

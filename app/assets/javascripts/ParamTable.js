@@ -28,13 +28,13 @@ function create_param_table(table_id, data){
     table.append($("<tbody><tr>"));
 
     for(var i=0;i<n;i++){   
-        add_param(table_id, keys[i]);
+        add_param_to_table(table_id, keys[i]);
 
     }
     $("input").superScript();
 }
 
-function add_param(table_id, param_name) {
+function add_param_to_table(table_id, param_name) {
 
     var value = PARAMS.get(param_name);
     var units = PARAMS.getParam(param_name).units;
@@ -43,20 +43,25 @@ function add_param(table_id, param_name) {
     
     var table = $("#" + table_id + " thead tr");
         
-    var column_name = formatted_map[param_name];
-    if(column_name === undefined)
-        column_name = param_name;
+    var column_name = get_formatted_parameter(param_name);
+
     table.append($("<th>")
-        .html(column_name));
+        .html(column_name)
+        .on("click", function() {
+            update_original(param_name);
+        }));
 
     table = $("#" + table_id + " tr:last");
     table.append($("<td><em>")
         .append($("<input>")
             .attr("type", "text")
             .attr("id", param_name.replace(/\s/, "_") + "_param_value")
-            .attr("onclick", "update_original('" + param_name + "')")
             .css("border", "0")
             .css("width", "75px")
+            .keyup(resizeInput)
+            .keypress(function(e) {
+                handle_input_keypress(this, e, param_name);
+            })
             .val(html_parameter)
         ));
 }
@@ -103,7 +108,7 @@ function test_setting() {
 
     // PARAMS.set("N*", new Param(4.1));
 
-    // add_param("chi_table", "N*");
+    // add_param_to_table("chi_table", "N*");
 
     
 }

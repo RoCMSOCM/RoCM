@@ -38,22 +38,30 @@ function import_parameters(data, is_initial) {
   // PARAMS.initialize("R0", PARAMS.getParam("scale_length"));
 
   // ParamSlider initial sliders
-  var slider_keys = [
-  "distance",
-  "mass_disk",
-  "scale_length",
-  "dark_halo_radius",
-  "dark_matter_density",
-  "bulge_b",
-  "bulge_t"
-  ];
+  // Load sliders from previous session
+  var slider_configuration = get_slider_configuration();
+
+  if(slider_configuration == null || slider_configuration.length == 0){
+    // Default sliders if no previous session
+    slider_configuration = [
+      "distance",
+      "mass_disk",
+      "scale_length",
+      "dark_halo_radius",
+      "dark_matter_density",
+      "bulge_b",
+      "bulge_t"
+      ];
+    }
+
+
 
   if(is_initial){
     if(!update_PARAMS()){
       initialize_default_parameters();
     }
 
-    initialize_sliders(slider_keys);
+    initialize_sliders(slider_configuration);
   }
 
   // MOND Parameter fitting sliders

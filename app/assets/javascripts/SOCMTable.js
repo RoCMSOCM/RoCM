@@ -1,32 +1,3 @@
-var formatted_map = {
-	galaxy_name: "Galaxy",
-	galaxy_type: "Type", 
-	distance: "Distance <br> (Mpc)",
-	luminosity: "L<sub>B</sub> <br> (10<sup>10</sup>L<sub>☉</sub>)",
-	scale_length: "R<sub>0</sub> <br> (kpc)",
-	mass_hydrogen: "M<sub>HI</sub> <br> (10<sup>10</sup>M<sub>☉</sub>)",
-	mass_disk: "M<sub>disk</sub> <br> (10<sup>10</sup>M<sub>☉</sub>)",
-	mass_light_ratio: "(M/L)<sub>stars</sub> <br> (M<sub>☉</sub>/L<sub>☉</sub>)",
-	r_last: "R<sub>last</sub> <br> (kpc)",
-	universal_constant: "(v<sup>2</sup>/c<sup>2</sup>R)<sub>last</sub> <br> (10<sup>-30</sup> cm<sup>-1</sup>)",
-	velocities_count: "Number of <br> Observed Points",
-	citation_ids_array: "Citations",
-	vrot_data_last: "V<sub>last</sub> <br> (km/s)",
-	dark_halo_radius: "r<sub>0</sub> <br> kpc",
-	dark_matter_density: "σ<sub>0</sub> <br> GeV cm<sup>-3</sup>"
-};
-
-// function display_formatted_map() {
-// 	var arrow = "→";
-// 	var parameter_map = "";
-
-// 	for(var formatted_name in formatted_map) {
-// 		parameter_map += formatted_map[formatted_name] + " " + arrow + " " + formatted_name + "<br>";
-// 	}
-
-// 	$("#user_defined_model_text").html(parameter_map);
-// }
-
 function create_data_table(table_id)
 {
 	var table = $("#" + table_id).DataTable( {
@@ -95,10 +66,8 @@ function create_socm_table(param_data) {
 				continue;
 
 			if (r == 0) {
-				var column_name = formatted_map[keys[c]];
-				if(column_name === undefined)
-					column_name = keys[c];
-				else
+				var column_name = get_formatted_parameter(keys[c]);
+				if(column_name != keys[c])
 					column_name = column_name + "<br><font size='1'>(" + keys[c] + ")</font>";
 				row.append($("<th/>").html(column_name));
 			} else {

@@ -22,7 +22,9 @@
 
     <!-- RoCM Functions -->
     <%= javascript_include_tag 'Param.js' %>
-    <%= javascript_include_tag 'ParamsDict.js' %>
+    <%= javascript_include_tag 'ParamDict.js' %>
+    <%= javascript_include_tag 'ParamList.js' %>
+    <%= javascript_include_tag 'ParamFormatting.js' %>
     <%= javascript_include_tag 'VData.js' %>
     <%= javascript_include_tag 'Constants.js' %>
     <%= javascript_include_tag 'Conversion.js' %>
@@ -88,10 +90,7 @@
 
     <div id="socmt_wrapper" class="dropdown socm_dropdown"></div> <!--  -->
     
-    <div id="sliders" class="dropdown" style="left:50px;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;" 
-      unselectable="on"
-      onselectstart="return false;" 
-      onmousedown="return false;">
+    <div id="sliders" class="dropdown sliders_dropdown" style="left:50px;">
 
       <!-- <div id="bar_graph" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;">
         <br><br>

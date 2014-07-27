@@ -5,20 +5,6 @@
 	Input: parameter name and Param Object
 	
 */
-
-function slide_scale(min, max) {
-	return d3.scale.linear()
-		.domain([min,max])
-		.range([1,10000]);
-}
-
-function slide_scale_inverse(min, max) {
-	return d3.scale.linear()
-		.domain([1,10000])
-		.range([min,max]);
-}
-
-
 function ParamSlider(param_name, param) {
 	this.param_name = param_name;
 	if(param == undefined){
@@ -55,22 +41,30 @@ function ParamSlider(param_name, param) {
 				.text("-") // In case the jquery icon fails
 				.on("click", function(d) {
 					remove_slider(param_name);
+					update_slider_configuration();
 				}))
 			.append($("<label>")
 				.attr("for", param_name + "_amount")
-				.css("font-weight", "bold")
-				.html(param_name + ": " ))
+				.css("background-color", "white")
+				.html(get_both_parameter_formats(param_name) + " = " )
+				.on("click", function() {
+		            update_original(param_name);
+		        }))
 			.append($("<input>")
 				.attr("type", "text")
 				.attr("id", param_name + "_amount")
-				.attr("onclick", "update_original('" + param_name + "')")
 				.css("border", "0")
+				.css("opacity", "1")
 				.css("color", "#f6931f")
 				.css("font-weight", "bold")
-				.css("width", "50%"))
+				.keyup(resizeInput)
+				.keypress(function(e) {
+	                handle_input_keypress(this, e, param_name);
+	            }))
 			.append($("<div>")
 				.attr("id", "slider_" + param_name)
-				.css("width", "100%"))
+				.css("width", "100%")
+				.css("opacity", 0.8))
 			.append($("<p>")));
 
 	$("#" + minus_button_id).button({
@@ -84,17 +78,15 @@ function ParamSlider(param_name, param) {
 	var min = this.param.min;
 	var max = this.param.max;
 
-	this.param.scale = slide_scale(min, max);
-	this.param.inverse_scale = slide_scale_inverse(min, max);
-
 	var me = this;
 
 	$("#slider_" + this.get_formatted_name()).slider({
 		// orientation: "vertical",
 		range: "min",
-		min: me.param.scale(min),
-		max: me.param.scale(max),
-		value: me.param.scale(value),
+		step: 0.00001,
+		min: min,
+		max: max,
+		value: value,
 		slide: function(event, ui) {
 			me.slide(event, ui);
 		},
@@ -103,21 +95,33 @@ function ParamSlider(param_name, param) {
 		}
 	});
 
-	$("#" + this.get_formatted_name() + "_amount").val(formatExponential(this.param.value) + " " + this.param.units);
+	$("#" + this.get_formatted_name() + "_amount").val(formatExponential(this.param.value));
 	update_param_table(this.get_formatted_name());
+
+
+	$('input[type="text"]')
+	    .keyup(resizeInput)
+	    .each(resizeInput);
+
 }
 
 ParamSlider.prototype = {
 	slide: function(event, ui) {
-		var local = this.param.inverse_scale(+ui.value);
+		var local = +ui.value;
 		var param_name = this.get_formatted_name();
 
-		$("#"+param_name+"_amount").val(formatExponential(local) + " " + this.param.units);
+		$("#"+param_name+"_amount").val(formatExponential(local));
+
+		$("#"+param_name+"_amount")
+		    .keyup(resizeInput)
+		    .each(resizeInput);
 
 		PARAMS.setValue(this.param_name, local);
 
 		update_models(this.param_name);
 
+
+		
 	},
 	get_formatted_name: function() {
 		return format_name(this.param_name);
@@ -163,20 +167,16 @@ function update_original(key) {
 	if(PARAMS.get(key) !== undefined){
 		var param = PARAMS.getParam(key);
 		var original_value = PARAMS.get("_"+key);
-
-		var scale = slide_scale(param.min, param.max);
-		var scaled_value = scale(original_value);
-
-		var units = PARAMS.getParam(key).units;
 		
 		key = format_name(key);
 
 		var slider_name = "#slider_" + key;
 		$slider = $(slider_name);
-		$slider.slider("value", scaled_value);
+		$slider.slider("value", original_value);
 		$slider.trigger("change");
 
-		$("#"+ key + "_amount").html(formatExponential(original_value) + " " + units);
+		$("#"+ key + "_amount").html(formatExponential(original_value));
+		$("#"+ key + "_param_value").val(formatExponential(original_value));
 	}
 }
 
@@ -188,11 +188,9 @@ function initialize_sliders(slider_keys) {
 		.attr("class", "slider_button")
 		.attr("id", add_button_id)
 		.text("+") // In case the jquery icon fails
-		.on("click", function(d) {
-			var param_name = "mass_hydrogen";
-
-			if($("#" + param_name + "_slider_wrapper").length == 0)
-				new ParamSlider(param_name);
+		.on("click", function() {
+			update_parameter_list_dialog();
+			fire_parameter_list_dialog();
 		}));
 
 	$("#" + add_button_id).button({
@@ -256,7 +254,6 @@ function remove_slider(param_name) {
 // TODO:
 function set_slider_range(param_name, min, max) {
 	var slider = $("#slider_" + format_name(param_name));
-	var scale = slide_scale(min, max);
 
 	slider.slider("option", "min", min*100);
 	slider.slider("option", "max", max*100);
@@ -299,34 +296,36 @@ function find_parameter_slider_names() {
 	return param_names;
 }
 
-function find_all_parameters(exclude_sliders) {
-	exclude_sliders === undefined ? exclude_sliders = false : exclude_sliders = exclude_sliders;
+function update_slider_configuration() {
+	var slider_parameters = find_parameter_slider_names();
 
-	var parameters = PARAMS.getDict();
+	localStorage.setItem("slider_configuration", JSON.stringify(slider_parameters));
+}
 
-	var slider_params;
-	if(exclude_sliders)
-		slider_params = find_parameter_slider_names();
+function get_slider_configuration() {
+	var slider_parameters = localStorage.getItem("slider_configuration");
 
-	var return_params = [];
-
-	for(var param in parameters) {
-		if(param[0] != "_"
-			&& !param.contains("χ²") 
-			&& param != "galaxy_name" 
-			&& param != "galaxy_type"
-			&& param != "id"
-			&& param != "citation_ids_array"
-			&& param != "Functions"){
-
-			if(exclude_sliders){
-				if(!slider_params.contains(param))
-					return_params.push(param);
-			}
-			else
-				return_params.push(param);
-		}
+	if(slider_parameters != null){
+		slider_parameters = JSON.parse(slider_parameters);
 	}
+	return slider_parameters;
+}
 
-	return return_params;
+function resizeInput() {
+	var len = $(this).val().length;
+    $(this).attr('size', len - 2);
+}
+
+function handle_input_keypress(input, e, param_name) {
+	var value = $(input).val();
+	var keyCode = e.keyCode;
+	var input_value = String.fromCharCode(keyCode);
+
+	if(isNaN(value + input_value))
+	    e.preventDefault();
+	else if(keyCode === 13){
+		PARAMS.setValue(param_name, +(value + input_value));
+
+		update_models(param_name);
+	}
 }
