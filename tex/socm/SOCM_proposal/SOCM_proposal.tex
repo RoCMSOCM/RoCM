@@ -1,0 +1,90 @@
+\documentclass[12pt]{article}
+\title{SOCM: Scholarly Observed Celestial Measurements}
+
+\author{David Miller, Patrick McGee}
+\date{\today}
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{gantt}
+\usepackage{tikz}
+
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Abstract}
+One of the major problems in the astrophysics field is the scarcity and dispersed nature of publicly available astrophysics data. Our proposed solution is to centralize this data and make it accessible and open. In order to do this we will make an open sourced Ruby On Rails Application to act as the service layer for the companion project RoCM (Rotational Curve Modeler). This service will provide a set of APIs (Application Programming Interface) that will be consumed by the RoCM client. The set of SOCM API's will also be publicly available to be consumed by other clients or websites that are interested in using the SOCM data.
+
+\section{Objectives}
+
+%\subsection{}
+\begin{itemize}
+    \item{Provide a web API for Galaxy data:}
+    \begin{itemize}
+      \item{creating}
+      \item{reading}
+      \item{updating}
+      \item{destroying}
+    \end{itemize}
+	\item Automated deployment process using Chef
+	\item Provide a help page for API consumers - helpful for people who don't already know how to use a web API
+\end{itemize}	
+
+\section{Results}
+\begin{itemize}
+	\item{Fully functional Service Layer for Galaxy data and RoCM UI}
+    \item{Provide Wentworth Physics department with a collaborative database that other universities will be encouraged to use}
+\end{itemize}
+
+\section{Implementation and Management}
+We plan to use Chef to automate deployment and builds, Ruby on Rails as our framework, RSpec as our unit test suite, and PostreSQL for the database. This web application will run on either Wentworth's CS/Physics server or a remotely hosted server like Amazon Web Services.
+\begin{itemize}
+	\item{Chef: automated deployment and build processes}
+    \item{Ruby on Rails: framework for API}
+    \item{RSpec: Ruby test suite for unit testing}
+    \item{PostreSQL: database}
+\end{itemize}
+
+\section{Plan}
+\begin{gantt}{8}{13}
+	\begin{ganttitle}
+      \titleelement{5/19}{2}
+      \titleelement{6/9}{3}
+      \titleelement{6/16}{2}
+      \titleelement{6/23}{2}
+      \titleelement{7/14}{2}
+      \titleelement{8/7}{2}
+	\end{ganttitle}
+	\ganttbar[color=red]{Proposal}{0}{2}
+	\ganttbar{Software Reqmt. Spec. (SRS)}{2}{3}
+	\ganttbar{Software Design Desc. (SDD)}{5}{2}
+	\ganttbar{Object Design Doc. (ODD)}{7}{2}
+	\ganttbar{Design Prototype}{8}{3}
+	\ganttbar{Testing}{10}{2}
+	\ganttbar[color=blue]{Report/Presentation}{11}{2}
+	\node[fill=white,draw] at ([yshift=-12pt]current bounding box.south){
+{\color{red}Red} = current | {\color{blue} Blue} = final};
+\end{gantt}
+
+\section{Resources and Budget}
+SOCM will be a collaborative API used across multiple universities, but will be hosted by Wentworth. Further information is needed in deciding where to host the application. If hosted on a remote server like Amazon Web Services, Wentworth will need to pay for hosting until the project is no longer necessary. Otherwise, we can host it for free on Wentworth's CS or Physics department servers.
+\begin{itemize}
+    \item{All Resources needed:}
+    \begin{itemize}
+      \item{Ruby on Rails}
+      \item{RSpec}
+      \item{PostreSQL}
+      \item{Chef}
+      \item{\$1000 for AWS or similar services if needed}
+    \end{itemize}
+\end{itemize}	
+
+\end{document}

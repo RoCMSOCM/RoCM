@@ -1,0 +1,424 @@
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.8.4)  1 JUL 2014 20:17
+entering extended mode
+**RoCM_ODD.tex
+(C:\Users\mossr\Desktop\WIT\RoCM\tex\odd\RoCM_ODD.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
+abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
+croatian, czech, danish, dutch, esperanto, estonian, farsi, finnish, french, ga
+lician, german, german-x-2012-05-30, greek, gujarati, hindi, hungarian, iceland
+ic, indonesian, interlingua, irish, italian, kannada, kurmanji, latin, latvian,
+ lithuanian, malayalam, marathi, mongolian, mongolianlmc, monogreek, ngerman, n
+german-x-2012-05-30, nynorsk, oriya, panjabi, pinyin, polish, portuguese, roman
+ian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swissgerm
+an, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, usengl
+ishmax, welsh, loaded.
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\size10.clo"
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\babel\babel.sty"
+Package: babel 2008/07/08 v3.8m The Babel package
+
+*************************************
+* Local config file bblopts.cfg used
+*
+("C:\Program Files\MiKTeX 2.9\tex\latex\00miktex\bblopts.cfg"
+File: bblopts.cfg 2006/07/31 v1.0 MiKTeX 'babel' configuration
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\babel\english.ldf"
+Language: english 2005/03/30 v3.3o English support from the babel system
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\babel\babel.def"
+File: babel.def 2008/07/08 v3.8m Babel common definitions
+\babel@savecnt=\count87
+\U@D=\dimen103
+)
+\l@canadian = a dialect from \language\l@american 
+\l@australian = a dialect from \language\l@british 
+\l@newzealand = a dialect from \language\l@british 
+))
+(C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\latex\pdfpages\pdfpages.sty
+Package: pdfpages 2013/08/25 v0.4v Insert pages of external PDF documents (AM)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\ifthen.sty"
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\tools\calc.sty"
+Package: calc 2007/08/22 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count88
+\calc@Bcount=\count89
+\calc@Adimen=\dimen104
+\calc@Bdimen=\dimen105
+\calc@Askip=\skip43
+\calc@Bskip=\skip44
+LaTeX Info: Redefining \setlength on input line 76.
+LaTeX Info: Redefining \addtolength on input line 77.
+\calc@Ccount=\count90
+\calc@Cskip=\skip45
+)
+(C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\latex\eso-pic\eso-pic.sty
+Package: eso-pic 2013/10/06 v2.0d eso-pic (RN)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\atbegshi.sty"
+Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+))
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\latex\xcolor\xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\00miktex\color.cfg"
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\pdftex-def\pdftex.def"
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+\Gread@gobject=\count91
+)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+))
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty"
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+)
+\Gin@req@height=\dimen106
+\Gin@req@width=\dimen107
+)
+(C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\latex\pdfpages\pppdftex.def
+File: pppdftex.def 2013/08/25 v0.4v Pdfpages driver for pdfTeX (AM)
+)
+\AM@pagebox=\box26
+\AM@toc@title=\toks15
+\c@AM@survey=\count92
+\AM@templatesizebox=\box27
+)
+(C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\latex\sidecap\sidecap.sty
+Package: sidecap 2003/06/06 v1.6f SideCap Package (RN/HjG)
+\SC@BOXWD=\dimen108
+\SC@CAPWD=\dimen109
+\SC@tempdima=\dimen110
+\SC@tempdimb=\dimen111
+\c@SC@C=\count93
+\SC@BOX=\box28
+)
+(C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\latex\wrapfig\wrapfig.sty
+\wrapoverhang=\dimen112
+\WF@size=\dimen113
+\c@WF@wrappedlines=\count94
+\WF@box=\box29
+\WF@everypar=\toks16
+Package: wrapfig 2003/01/31  v 3.6
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.sty"
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifvtex.sty"
+Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\ifxetex\ifxetex.sty"
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count95
+\Gm@cntv=\count96
+\c@Gm@tempcnt=\count97
+\Gm@bindingoffset=\dimen114
+\Gm@wd@mp=\dimen115
+\Gm@odd@mp=\dimen116
+\Gm@even@mp=\dimen117
+\Gm@layoutwidth=\dimen118
+\Gm@layoutheight=\dimen119
+\Gm@layouthoffset=\dimen120
+\Gm@layoutvoffset=\dimen121
+\Gm@dimlist=\toks17
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.cfg"))
+(C:\Users\mossr\Desktop\WIT\RoCM\tex\odd\RoCM_ODD.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+\AtBeginShipoutBox=\box30
+
+(C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\context\base\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count98
+\scratchdimen=\dimen122
+\scratchbox=\box31
+\nofMPsegments=\count99
+\nofMParguments=\count100
+\everyMPshowfont=\toks18
+\MPscratchCnt=\count101
+\MPscratchDim=\dimen123
+\MPnumerator=\count102
+\makeMPintoPDFobject=\count103
+\everyMPtoPDFconversion=\toks19
+) (C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\latex\ms\ragged2e.sty
+Package: ragged2e 2009/05/21 v2.1 ragged2e Package (MS)
+
+(C:\Users\mossr\AppData\Roaming\MiKTeX\2.9\tex\latex\ms\everysel.sty
+Package: everysel 2011/10/28 v1.2 EverySelectfont Package (MS)
+
+ABD: EverySelectfont initializing macros
+LaTeX Info: Redefining \selectfont on input line 126.
+)
+\CenteringLeftskip=\skip46
+\RaggedLeftLeftskip=\skip47
+\RaggedRightLeftskip=\skip48
+\CenteringRightskip=\skip49
+\RaggedLeftRightskip=\skip50
+\RaggedRightRightskip=\skip51
+\CenteringParfillskip=\skip52
+\RaggedLeftParfillskip=\skip53
+\RaggedRightParfillskip=\skip54
+\JustifyingParfillskip=\skip55
+\CenteringParindent=\skip56
+\RaggedLeftParindent=\skip57
+\RaggedRightParindent=\skip58
+\JustifyingParindent=\skip59
+)
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(144.54pt, 325.21501pt, 144.54pt)
+* v-part:(T,H,B)=(108.405pt, 578.15999pt, 108.405pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=451.6875pt
+* \textheight=578.15999pt
+* \oddsidemargin=9.03377pt
+* \evensidemargin=9.03377pt
+* \topmargin=-0.86499pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 34.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 34.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 34.
+[1
+
+{C:/Users/mossr/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+(C:\Users\mossr\Desktop\WIT\RoCM\tex\odd\RoCM_ODD.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 3.
+)
+\tf@toc=\write3
+ [1]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 63.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 63.
+ [2]
+<package_diagram.pdf, id=20, 614.295pt x 794.97pt>
+File: package_diagram.pdf Graphic file (type pdf)
+ <use package_diagram.pdf>
+Package pdftex.def Info: package_diagram.pdf used on input line 118.
+(pdftex.def)             Requested size: 528.93547pt x 368.1778pt.
+
+Overfull \hbox (77.24797pt too wide) in paragraph at lines 118--119
+ [] 
+ []
+
+[3] [4 <C:/Users/mossr/Desktop/WIT/RoCM/tex/odd/package_diagram.pdf>]
+<model_package.pdf, id=104, 180.675pt x 180.675pt>
+File: model_package.pdf Graphic file (type pdf)
+ <use model_package.pdf>
+Package pdftex.def Info: model_package.pdf used on input line 129.
+(pdftex.def)             Requested size: 180.67455pt x 180.67455pt.
+
+<controller_package.pdf, id=105, 180.675pt x 180.675pt>
+File: controller_package.pdf Graphic file (type pdf)
+
+<use controller_package.pdf>
+Package pdftex.def Info: controller_package.pdf used on input line 142.
+(pdftex.def)             Requested size: 180.67455pt x 180.67455pt.
+ <rocs_package.pdf, id=106, 180.675pt x 180.675pt>
+File: rocs_package.pdf Graphic file (type pdf)
+
+<use rocs_package.pdf>
+Package pdftex.def Info: rocs_package.pdf used on input line 155.
+(pdftex.def)             Requested size: 180.67455pt x 180.67455pt.
+ [5 <C:/Users/mossr/Desktop/WIT/RoCM/tex/odd/model_package.pdf> <C:/Users/mossr
+/Desktop/WIT/RoCM/tex/odd/controller_package.pdf
+
+pdfTeX warning: pdflatex (file C:/Users/mossr/Desktop/WIT/RoCM/tex/odd/controll
+er_package.pdf): PDF inclusion: multiple pdfs with page group included in a sin
+gle page
+> <C:/Users/mossr/Desktop/WIT/RoCM/tex/odd/rocs_package.pdf
+
+pdfTeX warning: pdflatex (file C:/Users/mossr/Desktop/WIT/RoCM/tex/odd/rocs_pac
+kage.pdf): PDF inclusion: multiple pdfs with page group included in a single pa
+ge
+>] <socm_package.pdf, id=218, 180.675pt x 180.675pt>
+File: socm_package.pdf Graphic file (type pdf)
+ <use socm_package.pdf>
+Package pdftex.def Info: socm_package.pdf used on input line 168.
+(pdftex.def)             Requested size: 180.67455pt x 180.67455pt.
+
+<decomposition_description_SOCMRoCMRoCS.pdf, id=219, 1011.78pt x 794.97pt>
+File: decomposition_description_SOCMRoCMRoCS.pdf Graphic file (type pdf)
+
+<use decomposition_description_SOCMRoCMRoCS.pdf>
+Package pdftex.def Info: decomposition_description_SOCMRoCMRoCS.pdf used on inp
+ut line 178.
+(pdftex.def)             Requested size: 451.69962pt x 354.90685pt.
+
+<decomposition_description_GalacticModel.pdf, id=220, 578.16pt x 867.24pt>
+File: decomposition_description_GalacticModel.pdf Graphic file (type pdf)
+
+<use decomposition_description_GalacticModel.pdf>
+Package pdftex.def Info: decomposition_description_GalacticModel.pdf used on in
+put line 180.
+(pdftex.def)             Requested size: 578.15858pt x 867.2379pt.
+File: decomposition_description_GalacticModel.pdf Graphic file (type pdf)
+
+<use decomposition_description_GalacticModel.pdf>
+Package pdftex.def Info: decomposition_description_GalacticModel.pdf used on in
+put line 180.
+(pdftex.def)             Requested size: 578.15858pt x 867.2379pt.
+ [6 <C:/Users/mossr/Desktop/WIT/RoCM/tex/odd/socm_package.pdf> <C:/Users/mossr/
+Desktop/WIT/RoCM/tex/odd/decomposition_description_SOCMRoCMRoCS.pdf
+
+pdfTeX warning: pdflatex (file C:/Users/mossr/Desktop/WIT/RoCM/tex/odd/decompos
+ition_description_SOCMRoCMRoCS.pdf): PDF inclusion: multiple pdfs with page gro
+up included in a single page
+>]
+<decomposition_description_GalacticModel.pdf, id=261, page=1, 578.16pt x 867.24
+pt>
+File: decomposition_description_GalacticModel.pdf Graphic file (type pdf)
+ <use decomposition_description_GalacticModel.pdf, page 1>
+Package pdftex.def Info: decomposition_description_GalacticModel.pdf, page1 use
+d on input line 180.
+(pdftex.def)             Requested size: 578.15858pt x 867.2379pt.
+File: decomposition_description_GalacticModel.pdf Graphic file (type pdf)
+
+<use decomposition_description_GalacticModel.pdf, page 1>
+Package pdftex.def Info: decomposition_description_GalacticModel.pdf, page1 use
+d on input line 180.
+(pdftex.def)             Requested size: 433.61893pt x 650.42842pt.
+File: decomposition_description_GalacticModel.pdf Graphic file (type pdf)
+
+<use decomposition_description_GalacticModel.pdf, page 1>
+Package pdftex.def Info: decomposition_description_GalacticModel.pdf, page1 use
+d on input line 180.
+(pdftex.def)             Requested size: 433.61893pt x 650.42842pt.
+File: decomposition_description_GalacticModel.pdf Graphic file (type pdf)
+
+<use decomposition_description_GalacticModel.pdf, page 1>
+Package pdftex.def Info: decomposition_description_GalacticModel.pdf, page1 use
+d on input line 180.
+(pdftex.def)             Requested size: 433.61893pt x 650.42842pt.
+File: decomposition_description_GalacticModel.pdf Graphic file (type pdf)
+
+<use decomposition_description_GalacticModel.pdf, page 1>
+Package pdftex.def Info: decomposition_description_GalacticModel.pdf, page1 use
+d on input line 180.
+(pdftex.def)             Requested size: 433.61893pt x 650.42842pt.
+ [7 <C:/Users/mossr/Desktop/WIT/RoCM/tex/odd/decomposition_description_Galactic
+Model.pdf>] [8]
+(C:\Users\mossr\Desktop\WIT\RoCM\tex\odd\RoCM_ODD.aux) ) 
+Here is how much of TeX's memory you used:
+ 3471 strings out of 493921
+ 49117 string characters out of 3147283
+ 118867 words of memory out of 3000000
+ 6718 multiletter control sequences out of 15000+200000
+ 9206 words of font info for 32 fonts, out of 3000000 for 9000
+ 841 hyphenation exceptions out of 8191
+ 39i,19n,45p,775b,435s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
+1/public/amsfonts/cm/cmbxti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publ
+ic/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfo
+nts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
+r12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><
+C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program
+ Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files/MiK
+TeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/
+fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on RoCM_ODD.pdf (9 pages, 1697943 bytes).
+PDF statistics:
+ 317 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 57 words of extra memory for PDF output out of 10000 (max. 10000000)
+
