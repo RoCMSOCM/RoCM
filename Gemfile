@@ -33,3 +33,7 @@ gem 'underscore-rails'
 
 #garbage
 gem 'sqlite3'
+
+#heroku
+gem 'rails_12factor', group: :production
+ruby "2.0.0"
