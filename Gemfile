@@ -31,12 +31,7 @@ gem 'jquery-ui-themes'
 
 gem 'underscore-rails'
 
-#garbage
-gem 'sqlite3', :group => [:development, :test]
-
-group :production do
-  gem 'thin'
-end
+gem 'sqlite3-ruby', :require => 'sqlite3'
 
 #heroku
 gem 'rails_12factor', group: :production
