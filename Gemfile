@@ -18,7 +18,14 @@ group :test do
   gem 'factory_girl_rails', '~> 4.0'
 end
 
-gem 'pg'
+group :production do
+  gem 'pg'
+end        
+
+group :development, :test do
+  gem 'sqlite3'
+end
+
 gem 'devise'
 gem 'ransack'
 gem 'd3-rails'
@@ -31,7 +38,6 @@ gem 'jquery-ui-themes'
 
 gem 'underscore-rails'
 
-gem 'sqlite3-ruby', :require => 'sqlite3'
 
 #heroku
 gem 'rails_12factor', group: :production
