@@ -1,0 +1,46 @@
+/*
+ * Namespace: DTS (DataTables Scroller)
+ */
+/* line 8, C:/Ruby200/lib/ruby/gems/2.0.0/gems/jquery-datatables-rails-2.1.10.0.2/app/assets/stylesheets/dataTables/extras/dataTables.scroller.css.scss */
+div.DTS tbody th,
+div.DTS tbody td {
+  white-space: nowrap;
+}
+
+/* line 12, C:/Ruby200/lib/ruby/gems/2.0.0/gems/jquery-datatables-rails-2.1.10.0.2/app/assets/stylesheets/dataTables/extras/dataTables.scroller.css.scss */
+div.DTS tbody tr.even {
+  background-color: white;
+}
+
+/* line 16, C:/Ruby200/lib/ruby/gems/2.0.0/gems/jquery-datatables-rails-2.1.10.0.2/app/assets/stylesheets/dataTables/extras/dataTables.scroller.css.scss */
+div.DTS div.DTS_Loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 20px;
+  margin-top: -20px;
+  margin-left: -100px;
+  z-index: 1;
+  border: 1px solid #999;
+  padding: 20px 0;
+  text-align: center;
+  background-color: white;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* line 34, C:/Ruby200/lib/ruby/gems/2.0.0/gems/jquery-datatables-rails-2.1.10.0.2/app/assets/stylesheets/dataTables/extras/dataTables.scroller.css.scss */
+div.DTS div.dataTables_scrollHead,
+div.DTS div.dataTables_scrollFoot {
+  background-color: white;
+}
+
+/* line 38, C:/Ruby200/lib/ruby/gems/2.0.0/gems/jquery-datatables-rails-2.1.10.0.2/app/assets/stylesheets/dataTables/extras/dataTables.scroller.css.scss */
+div.DTS div.dataTables_scrollBody {
+  z-index: 2;
+}
+
+/* line 42, C:/Ruby200/lib/ruby/gems/2.0.0/gems/jquery-datatables-rails-2.1.10.0.2/app/assets/stylesheets/dataTables/extras/dataTables.scroller.css.scss */
+div.DTS div.dataTables_scroll {
+  background: url(/assets/dataTables/extras/loading-background.png) repeat 0 0;
+}

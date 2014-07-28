@@ -1,0 +1,64 @@
+body {
+  font: 13px sans-serif;
+  background-color: white;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+
+table th{
+  background-color:#f2f2f2;/*#d9cdb5;*/
+}
+
+.slider_button {
+  width: 25px;
+  height: 20px;
+  float: right;
+}
+
+.reset_button {
+  width: auto;
+  height: 20px;
+  float: right;
+}
+
+/* Parameter list (From clicking the '+' button) */
+#param_list .ui-selecting { 
+  background: #FECA40;
+}
+
+#param_list .ui-selected { 
+  background: #F39814;
+  color: white;
+}
+
+#param_list { 
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+#param_list li { 
+  margin: 3px;
+  padding: 0.4em;
+  /*height: 18px;*/
+}
+
+
+.sliders_dropdown {
+    /* Set the opacity level of the background and of the child elements */
+    opacity: 0.95; /* Child elements */
+    background-color: rgba(255,255,255,0.5); /* Background */
+}

@@ -1,0 +1,55 @@
+body {
+  font: 13px sans-serif;
+  background-color: white;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+
+table th{
+  background-color:#f2f2f2;/*#d9cdb5;*/
+}
+
+.slider_button {
+  width: 25px;
+  height: 20px;
+  float: right;
+}
+
+.reset_button {
+  /*width: 25px;*/
+  height: 20px;
+  float: right;
+}
+
+/* Parameter list */
+#feedback { 
+  font-size: 1.4em;
+}
+
+#param_list .ui-selecting { 
+  background: #FECA40;
+}
+
+#param_list .ui-selected { 
+  background: #F39814; color: white;
+}
+
+#param_list { 
+  list-style-type: none; margin: 0; padding: 0; width: 60%;
+}
+
+#param_list li { 
+  margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px;
+}
