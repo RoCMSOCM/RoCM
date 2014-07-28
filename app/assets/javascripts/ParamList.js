@@ -9,7 +9,7 @@ $(document).ready(function() {
 	};
 
 	// The list of parameters to add as sliders
-	create_dialog("param_list_dialog", add_func);
+	create_dialog("param_list_dialog", "Parameters", add_func);
 
 });
 
@@ -53,12 +53,12 @@ function find_all_parameters(exclude_sliders) {
 
 // List of parameters dialog menu.
 // Activates when user clicks the + button in the Parameter Fitting Sliders section
-function create_dialog(dialog_id, button_fnc) {
+function create_dialog(dialog_id, title, button_fnc) {
 
 	$("#sliders").append(
 		$("<div>")
 			.attr("id", dialog_id)
-			.attr("title", "Parameters")
+			.attr("title", title)
 	);
 
 	$("#" + dialog_id).dialog({

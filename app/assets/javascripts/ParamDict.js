@@ -27,6 +27,9 @@ function ParamDict(){
    this.setFindUsedParams = function(tf) { findUsedParams = tf; }
    this.getFindUsedParams = function() { return findUsedParams; }
 
+   this.uninitialized = [];
+   this.reset_uninitialized = function() { this.uninitialized = []; };
+
    this.initialize = function(key, param) {
       if(typeof(param) != "object"){
          param = new Param(param);
@@ -89,15 +92,14 @@ function ParamDict(){
       if(this[key] !== undefined && this[key] != this.dictionary[key].value && this.dictionary[key] !== undefined){
          this.dictionary[key].value = this[key];
       }
-      else if(this[key] === undefined){
-         this[key] = 0;
-         this.dictionary[key] = new Param(this[key]);
+      else if(this[key] === undefined || this.dictionary[key] === undefined){
+         this.uninitialized.push(key);
+         return null;
       }
       if(key[0] != "_" && this.dictionary["_" + key] === undefined){
          this["_" + key] = this[key];
          this.dictionary["_" + key] = new Param(this[key])
       }
-
 
       this.used.push(key);
       return this.dictionary[key]; 
@@ -107,15 +109,14 @@ function ParamDict(){
       if(this[key] !== undefined && this[key] != this.dictionary[key].value && this.dictionary[key] !== undefined){
          this.dictionary[key].value = this[key];
       }
-      else if(this[key] === undefined){
-         this[key] = 0;
-         this.dictionary[key] = new Param(this[key]);
+      else if(this[key] === undefined || this.dictionary[key] === undefined){
+         this.uninitialized.push(key);
+         return null;
       }
       if(key[0] != "_" && this.dictionary["_" + key] === undefined){
          this["_" + key] = this[key];
          this.dictionary["_" + key] = new Param(this[key]);
       }
-
 
       this.used.push(key);
       return this[key]; 

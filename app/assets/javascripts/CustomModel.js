@@ -12,7 +12,7 @@ $(document).ready(function() {
 			$(this).dialog("close");
         }
       }
-	create_dialog(dialog_id, remove_func);
+	create_dialog(dialog_id, "Remove Custom Model", remove_func);
 
 	$("#remove_model").button().click(function() {
 		var custom_models = get_custom_models();
@@ -52,6 +52,7 @@ function add_model() {
 		custom_model = new Function(input, func_body);
 	}
 	catch(err) {
+		console.log(err.message)
 		alert(err.message + "\n----\nPlease fix your custom model.")
 		return;
 	}
@@ -64,6 +65,17 @@ function add_model() {
 	    alert(err.message + "\n----\nPlease fix your custom model.");
 	    return;
 	}
+
+	// Checking if key in PARAMS.get(key) was initialized.	
+	var uninitialized_param = PARAMS.uninitialized;
+	var u_length = uninitialized_param.length;
+    if(u_length > 0){
+    	var s = u_length == 1 ? "" : "s";
+    	alert("Uninitialized PARAMS value"+ s +" for '"+ uninitialized_param +"'.\n\nAdd the '"+ uninitialized_param +"' parameter"+ s +" via the 'Add new parameter' button.");
+    	PARAMS.reset_uninitialized();
+    	return;
+    }
+
 
 	GMODEL[model_name] = custom_model;
 	localStorage.setItem(CUSTOM_PRE + model_name, func_body);
@@ -109,11 +121,14 @@ function get_custom_models() {
 }
 
 function remove_model_from_list() {
+	var removed = false;
 	$(".ui-selected").each(function() {
 		var text = $(this).text();
 
 		remove_model(text);
+		removed = true;
 	});
 
-	window.location.reload();
+	if(removed)
+		window.location.reload();
 }

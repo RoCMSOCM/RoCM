@@ -342,7 +342,7 @@ function handle_input_keypress(input, e, param_name) {
 
 	if(isNaN(value + input_value))
 	    e.preventDefault();
-	else if(keyCode === 13){
+	else if(keyCode === 13 && param_name != undefined){
 		var new_value = +(value + input_value)
 		PARAMS.setValue(param_name, new_value);
 
