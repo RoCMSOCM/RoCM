@@ -28,31 +28,34 @@ function create_param_table(table_id, data){
     table.append($("<tbody><tr>"));
 
     for(var i=0;i<n;i++){   
-        add_param_to_table(table_id, keys[i]);
+        add_param_to_table(table_id, keys[i], data);
 
     }
     $("input").superScript();
 }
 
-function add_param_to_table(table_id, param_name) {
+function add_param_to_table(table_id, param_name, data) {
 
-    var value = PARAMS.get(param_name);
-    var units = PARAMS.getParam(param_name).units;
-    var html_parameter = formatExponential(value);// + " " + units;
-    // html_parameter = html_parameter.trim();
+    var value = data[param_name];
+    var html_parameter = formatExponential(value);
     
     var table = $("#" + table_id + " thead tr");
         
     var column_name = get_formatted_parameter(param_name);
+    if(column_name != param_name)
+        column_name = column_name + "<br><font size='1'>(" + param_name + ")</font>";
 
     table.append($("<th>")
         .html(column_name)
+        .attr("class", "param_table_header")
+        .attr("id", param_name.replace(/\s/, "_") + "_param_header")
         .on("click", function() {
             update_original(param_name);
         }));
 
     table = $("#" + table_id + " tr:last");
     table.append($("<td><em>")
+        .attr("id", param_name.replace(/\s/, "_") + "_param_value_wrapper")
         .append($("<input>")
             .attr("type", "text")
             .attr("id", param_name.replace(/\s/, "_") + "_param_value")
@@ -64,6 +67,11 @@ function add_param_to_table(table_id, param_name) {
             })
             .val(html_parameter)
         ));
+}
+
+function remove_param_from_table(table_id, param_name) {
+    $("#" + table_id + " #" + param_name + "_param_header").remove(); 
+    $("#" + table_id + " #" + param_name + "_param_value_wrapper").remove(); 
 }
 
 function create_chi_table() {
@@ -81,6 +89,16 @@ function create_chi_table() {
     create_param_table(table_id, data);
     update_chi_squared();
 }
+
+function update_param_table_with_data(data) {
+    var keys = Object.keys(data);
+
+    for(var i=0;i<keys.length;i++) {
+        var k = keys[i];
+        update_param_table(k);
+    }
+}
+
 
 function update_param_table(param_name) {
     if(PARAMS[param_name] === undefined)
@@ -103,12 +121,20 @@ function update_param_table(param_name) {
     $("input").superScript();
 }
 
+// Dynamically resize the input text field
+function resizeInput() {
+    var value = $(this).val();
+    var len = value.length;
 
-function test_setting() {
+    if(value.contains("x")) // from formatExponential() (2.01x10<sup>8</sup>)
+        len = 8;
+    else if(+value == 0){
+        len = 1;
+    }
 
-    // PARAMS.set("N*", new Param(4.1));
+    var chopped_len = len - 2;
+    if(chopped_len <= 0)
+        chopped_len = len;
 
-    // add_param_to_table("chi_table", "N*");
-
-    
+    $(this).attr('size', len);
 }

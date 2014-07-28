@@ -30,8 +30,8 @@ var curve = d3.svg.area()
   .interpolate("monotone")
   .tension([0.1])
   .x(function(d) { return x(d.R); })
-  .y(function(d) { return y(d.v); })
-  .y0(function(d) { return y(d.y0); });
+  .y(function(d) { return isNaN(d.v) ? y(0) : y(d.v); })
+  .y0(function(d) { return isNaN(d.y0) ? y(0) : y(d.y0); });
 
 var xy_line = d3.svg.line()
   .x(function(d) { return x(d.x); })

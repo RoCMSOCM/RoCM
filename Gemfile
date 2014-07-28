@@ -29,5 +29,7 @@ gem 'jquery-datatables-rails', '~> 2.1.10.0.2'
 gem 'jquery-ui-rails'
 gem 'jquery-ui-themes'
 
+gem 'underscore-rails'
+
 #garbage
 gem 'sqlite3'

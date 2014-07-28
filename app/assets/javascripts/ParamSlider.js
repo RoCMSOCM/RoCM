@@ -77,13 +77,15 @@ function ParamSlider(param_name, param) {
 	var value = this.param.value;
 	var min = this.param.min;
 	var max = this.param.max;
+	if(max <= value)
+		max = value * 5;
 
 	var me = this;
 
 	$("#slider_" + this.get_formatted_name()).slider({
 		// orientation: "vertical",
 		range: "min",
-		step: 0.00001,
+		step: 0.000001,
 		min: min,
 		max: max,
 		value: value,
@@ -166,17 +168,32 @@ function format_name(name) {
 function update_original(key) {
 	if(PARAMS.get(key) !== undefined){
 		var param = PARAMS.getParam(key);
-		var original_value = PARAMS.get("_"+key);
-		
-		key = format_name(key);
+		var original_param = PARAMS.getOriginal(key);
+		var original_value = original_param.value;
+		var original_min = original_param.min;
+		var original_max = original_param.max;
 
-		var slider_name = "#slider_" + key;
-		$slider = $(slider_name);
-		$slider.slider("value", original_value);
-		$slider.trigger("change");
+		var fkey = format_name(key);
 
-		$("#"+ key + "_amount").html(formatExponential(original_value));
-		$("#"+ key + "_param_value").val(formatExponential(original_value));
+		var slider_name = "#slider_" + fkey;
+
+		slider = $(slider_name);
+
+		// If there isn't a slider available, just update the models
+		if(slider.length == 0) {			
+			PARAMS.setValue(key, original_value);
+			update_models(key);
+		}
+		else 
+		{
+			slider.slider("option", "min", original_min)				
+	    	slider.slider("option", "max", original_max);
+			slider.slider("option", "value", original_value);
+			slider.trigger("change");
+		}
+
+		$("#"+ fkey + "_amount").html(formatExponential(original_value));
+		$("#"+ fkey + "_param_value").html(formatExponential(original_value));
 	}
 }
 
@@ -311,11 +328,7 @@ function get_slider_configuration() {
 	return slider_parameters;
 }
 
-function resizeInput() {
-	var len = $(this).val().length;
-    $(this).attr('size', len - 2);
-}
-
+// For slider and ParamTable input fields
 function handle_input_keypress(input, e, param_name) {
 	var value = $(input).val();
 	var keyCode = e.keyCode;
@@ -324,8 +337,22 @@ function handle_input_keypress(input, e, param_name) {
 	if(isNaN(value + input_value))
 	    e.preventDefault();
 	else if(keyCode === 13){
-		PARAMS.setValue(param_name, +(value + input_value));
+		var new_value = +(value + input_value)
+		PARAMS.setValue(param_name, new_value);
 
 		update_models(param_name);
+
+		var fme = format_name(param_name);
+		var slider = $("#slider_" + fname);
+
+		var min = slider.slider("option", "min");
+		var max = slider.slider("option", "max");
+		// Update max slider value if the new_value exceeds the current range.
+		if(new_value >= max)
+	    	slider.slider("option", "max", new_value*5);
+	    if(new_value <= min)
+	    	slider.slider("option", "min", new_value/5)
+    
+    	slider.slider("option", "value", new_value);
 	}
 }

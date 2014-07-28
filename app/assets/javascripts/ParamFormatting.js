@@ -2,20 +2,20 @@
 var FORMATTED_MAP;
 
 $(document).ready(function(){
-	var stored_format_map = localStorage.getItem("FORMATTED_MAP");
+	var stored_formatted_map = localStorage.getItem("FORMATTED_MAP");
 
-	if(stored_format_map != null)
-		FORMATTED_MAP = JSON.parse(stored_format_map);
-	else{
+	if(stored_formatted_map != null)
+		FORMATTED_MAP = JSON.parse(stored_formatted_map);
+	else {
 		FORMATTED_MAP = {
 			galaxy_name: "Galaxy",
 			galaxy_type: "Type", 
 			distance: "Distance <br> (Mpc)",
-			luminosity: "L<sub>B</sub> <br> (10<sup>10</sup> L<sub>☉</sub>)",
+			luminosity: "L<sub>B</sub> <br> (10<sup>10</sup> L<sub>☉</sub> W)",
 			scale_length: "R<sub>0</sub> <br> (kpc)",
-			mass_hydrogen: "M<sub>HI</sub> <br> (10<sup>10</sup> M<sub>☉</sub>)",
-			mass_disk: "M<sub>disk</sub> <br> (10<sup>10</sup> M<sub>☉</sub>)",
-			mass_light_ratio: "(M/L)<sub>stars</sub> <br> (M<sub>☉</sub>/L<sub>☉</sub>)",
+			mass_hydrogen: "M<sub>HI</sub> <br> (10<sup>10</sup> M<sub>☉</sub> kg)",
+			mass_disk: "M<sub>disk</sub> <br> (10<sup>10</sup> M<sub>☉</sub> kg)",
+			mass_light_ratio: "(M/L)<sub>stars</sub> <br> (M<sub>☉</sub>/L<sub>☉</sub> kg/W)",
 			r_last: "R<sub>last</sub> <br> (kpc)",
 			universal_constant: "(v<sup>2</sup>/c<sup>2</sup>R)<sub>last</sub> <br> (10<sup>-30</sup> cm<sup>-1</sup>)",
 			velocities_count: "Number of <br> Observed Points",

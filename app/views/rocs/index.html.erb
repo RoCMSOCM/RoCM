@@ -12,6 +12,9 @@
     <%= javascript_include_tag 'jquery-ui.js' %>
     <%= javascript_include_tag 'parallel.js' %>
 
+    <%= javascript_include_tag 'Helper.js' %>
+    <%= javascript_include_tag 'ParamTable.js' %>
+    <%= javascript_include_tag 'ParamFormatting.js' %>
     <%= javascript_include_tag 'RoCS.js' %>
   <% end %>
   
@@ -25,13 +28,13 @@
 
     <div id="title_div"></div>
 
-    <div style="float:right;">
-      <button id="back" style="position:absolute;top:20%;left:78%">Back to RoCM</button>
-    </div>
-
-    <br><br>
+    <div id="button_div" style="float:right;"></div>
       
-    </div>
+    <div id="galaxy_title_div"></div>
+
+    <div id="rocs_galaxy" style="display:block;margin:auto;"></div>
+
+  </div>
     <div id="slider_wrapper" style="margin:0 auto">
       <div style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;' unselectable='on' onselectstart='return false;' onmousedown='return false;'>
         <p>
@@ -47,8 +50,8 @@
 
 
 
-    <div id="rocs_galaxy" style="display:block;margin:auto;"></div>
 
+    <br><br>
 
 
     <div id="legend_wrapper" style="width:50%;margin:0 auto">
@@ -64,16 +67,19 @@
     <br>
     <div id="slider_spin_wrapper" style="width:50%;margin:0 auto;">
       <div style="width:100%;float:left;position:relative;">
-        <div id="slider_spin"</div>
+        <div id="slider_spin"></div>
       </div>
     </div>
     <br>
     <div style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;' unselectable='on' onselectstart='return false;' onmousedown='return false;'>
         <p>
-          <font color="dimgray" style="display:block;text-align:center;" onclick="update_original('spin')"><b>Reset animation spin speed</b></font>
+          <font color="dimgray" style="display:block;text-align:center;" onclick="update_original_speed('spin')"><b>Reset animation spin speed</b></font>
         </p>
       </div>
   </div>
+
+  
+  <div id="rocs_parameters" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;" unselectable="on" onselectstart="return false;" onmousedown="return false;"></div>
 
 </body>
 </html>

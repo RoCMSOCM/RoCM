@@ -25,17 +25,14 @@ function import_parameters(data, is_initial) {
   for(var i=0;i<data_keys.length;i++){
     var key = data_keys[i];
 
-     //TODO: Handle Units for each Param (coming in from SOCM)
-     var param = new Param(data[key]);
+    //TODO: Handle Units for each Param (coming in from SOCM)
+    var param = new Param(data[key]);
 
-     PARAMS.initialize(key, param);
+    PARAMS.initialize(key, param);
 
-     if(!is_initial)
-      update_param_table(key);
+    if(!is_initial)
+    update_param_table(key);
   }
-
-  //TODO: Short name -> Long name parameter mapping
-  // PARAMS.initialize("R0", PARAMS.getParam("scale_length"));
 
   // ParamSlider initial sliders
   // Load sliders from previous session
@@ -54,43 +51,19 @@ function import_parameters(data, is_initial) {
       ];
     }
 
-
+  var params_updated = update_PARAMS();
 
   if(is_initial){
-    if(!update_PARAMS()){
+    if(!params_updated){
       initialize_default_parameters();
     }
 
     initialize_sliders(slider_configuration);
   }
 
-  // MOND Parameter fitting sliders
-  /*  var solar_mass = CONST.get("Mo");
-  var M0 = 9.60 * Math.pow(10, 11) * solar_mass;
-  var M0param = new Param(M0, "kg");
-  PARAMS.add("M0", M0param);
-  var M0slider = new ParamSlider("M0", M0param);
-
-
-  var MONDr0 = 4.30*Math.pow(10, 22); // cm
-  var MONDr0param = new Param(MONDr0, "cm");
-  PARAMS.add("MONDr0", MONDr0param);
-  var MONDr0slider = new ParamSlider("MONDr0", MONDr0param);
-
-
-  var a0 = CONVERT.cm_to_km(6.90*Math.pow(10,-8)); //cm/s^2 -> km/s^2
-  var G0 = (a0*Math.pow(MONDr0,2)) / M0;
-  var G0param = new Param(G0, "kg");
-  PARAMS.add("G0", G0param);
-  var G0slider = new ParamSlider("G0", G0param);
-  */
-
-  // Filter mutable parameters for the ParamsTable
-  data = filter_parameters(data);
 
 
   if(is_initial){
-
     var chi_table_id = "chi_table";
     $("#parameters").append($("<table/>")
       .attr("id", chi_table_id)
@@ -102,70 +75,14 @@ function import_parameters(data, is_initial) {
       .css("float", "right")
       .css("cellspacing", "0"));
 
-    create_param_table(table_id, data);
+    // Filter mutable parameters for the ParamsTable
+    var filtered_data = filter_parameters(data);
+    create_param_table(table_id, filtered_data);
   }
-}
-
-function send_to_rocs() {
-  var url = window.location.href;
-  var galaxy_name = url.split("#")[1].replace("GALAXY=", "");
-  var vrot_name = "";
-  var vels = [];
-  var opac = [];
-
-  $('.velocity path').each(function () {
-    vel = $(this).attr('class'); 
-    op = +$(this).css('opacity');
-    if(op == 1)
-      vels.push(vel);
-  });
-
-  total_count = vels.length;
-  data_count = 0;
-  model_count = 0;
-  models = [];
-
-  for(var i=0;i<vels.length;i++){
-    if(vels[i].contains("DATA"))
-      data_count++;
-    else{
-      model_count++;
-      models.push(vels[i]);
-    }
+  if(params_updated) {
+    var filtered_data = filter_parameters(PARAMS.getDict());
+    update_param_table_with_data(filtered_data);
   }
-
-  if(data_count == total_count)
-  {
-    vrot_name = "VROT_DATA"
-  }
-  else if(model_count == 1){
-    vrot_name = models[0];
-  } 
-  else
-  {
-    alert('Select only one model to simulate.\nOr\nSelect only the data.\n\n(click the legend)')
-    return;
-  }
-
-  // localStorage.clear();
-
-  var R = VDATA.R;
-  var VROT = VDATA[vrot_name];
-
-  localStorage.setItem('R', JSON.stringify(R));
-  localStorage.setItem('VROT', JSON.stringify(VROT));
-
-  vrot_name = vrot_name.replace("VROT_", "");
-
-  localStorage.setItem("vrot_name", vrot_name);
-  localStorage.setItem("galaxy_name", galaxy_name);
-
-  localStorage.setItem("STYLE_dictionary", JSON.stringify(STYLE.getDict()));
-
-  localStorage.setItem("PARAMS", JSON.stringify(PARAMS.getDict()));
-
-  var rocs_url = "rocs/index";
-  window.location.href = rocs_url;
 }
 
 function update_session() {

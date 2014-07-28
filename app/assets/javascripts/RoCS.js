@@ -1,13 +1,5 @@
-var w = 1000, h = w*0.85,
-AU = 100,
-days = 36.5, 
-spScale = 100 * 5, 
-dist = 1 / 5, 
-sizeScale = dist,
-black_hole_size = 1;
-
-var color = d3.scale.linear()
-  .range(["gold","firebrick"]);
+var range_color_white = d3.scale.linear()
+  .range(["white", "white"]);
 
 var range_color = d3.scale.linear()
   .range(["#ea051c","#1aaf3a"]);
@@ -18,8 +10,6 @@ var range_color2 = d3.scale.linear()
 var range_color3 = d3.scale.linear()
   .range(["#c50855","#19ca64"]);
 
-var range_color4 = d3.scale.linear()
-  .range(["white", "white"]);
 
 var radius_scale = d3.scale.linear()
   .domain([0,100])
@@ -27,18 +17,11 @@ var radius_scale = d3.scale.linear()
 
 var size_scale = d3.scale.linear()
   .domain([0,100])
-  .range([0.8,2]);
-
-var cluster_scale = d3.scale.linear()
-  .domain([0, 1])
-  .range([0.1, 2]);
-
+  .range([0.5,2.5]);
 
 var velocity_scale = d3.scale.linear()
   .domain([0, 1])
   .range([0, 2]);
-
-AU *= dist;
 
 var model_name_map = {
   DATA: "Observational Data",
@@ -47,6 +30,9 @@ var model_name_map = {
   CONFORMAL: "Conformal Gravity"
 }
 
+var MIN_VEL, MAX_VEL;
+
+var VELOCITY_FACTOR = 50;
 
 function create_rocs_page(){
   var url_hash_split = window.location.href.split("#")
@@ -54,19 +40,64 @@ function create_rocs_page(){
   // if(galaxy_name === undefined)
       // galaxy_name = "MILKY-WAY"
 
-
   var vrot_name = localStorage.getItem("vrot_name");
+  
+  // create_back_button(galaxy_name);
 
-  $("#back").button({
-    icons: {
-      primary: "ui-icon-arrowreturnthick-1-w"
-    }
-  }).click(function() {
-    back(galaxy_name);
-  });
+  var is_data = vrot_name == "DATA";
+  var data = get_simulate_data(is_data);
 
+  if(!is_data){
+    // Don't simulate_data twice if is_data
+    simulate_data(galaxy_name);
+  }
+
+  var full_model_name = model_name_map[vrot_name];
+
+  if(full_model_name !== undefined)
+      simulate(data, galaxy_name, full_model_name, is_data);  
+  else
+      simulate(data, galaxy_name, vrot_name, is_data);
+
+
+  generate_rocs_title(galaxy_name);
+
+
+  // Creates a ParamTable for the parameters used to model the galaxy
+  var param_data = JSON.parse(localStorage.getItem("PARAMS"));
+
+  var filtered_data = filter_parameters(param_data);
+
+  var final_data = convert_param_to_value(filtered_data);
+
+  var table_wrapper_id = "rocs_parameters";
+  var table_id = "rocs_param_table";
+
+  $("#" + table_wrapper_id)
+    .css("margin", "0 auto")
+    .css("width", "50%")
+    .append($("<table/>")
+      .attr("id", table_id)
+      .css("margin", "0 auto")
+      .css("cellspacing", "0"));
+
+  create_param_table(table_id, final_data);
+
+  // Remove the update_original call when clicking the param header
+  $(".param_table_header").unbind("click");
+}
+
+$(document).ready(function() {
+  create_rocs_page();
+
+  update_star_color_range();
+  initialize_legend(MIN_VEL, MAX_VEL, VELOCITY_FACTOR);
+})
+
+function get_simulate_data(is_data) {
   var R = JSON.parse(localStorage.getItem("R"));
-  var VROT = JSON.parse(localStorage.getItem("VROT"));
+  var vrot_storage_name = is_data ? "VROT_DATA" : "VROT";
+  var VROT = JSON.parse(localStorage.getItem(vrot_storage_name));
   var data = [];
 
   R.forEach(function(d, i) {
@@ -74,32 +105,22 @@ function create_rocs_page(){
       data.push({R: R[i], VROT: VROT[i]});
   });
 
-  var full_model_name = model_name_map[vrot_name];
-
-  if(full_model_name !== undefined)
-      simulate(data, galaxy_name, full_model_name);	 
-  else
-      simulate(data, "DATA", galaxy_name, model_name_map["DATA"]);
+  return data;
 }
 
-$(document).ready(function() {
-  create_rocs_page();
-})
+function simulate_data(galaxy_name) {
+  var data = get_simulate_data(true);
 
-function simulate(data, galaxy_name, data_type) {
+  simulate(data, galaxy_name, model_name_map["DATA"]);
+}
 
-  generate_title(galaxy_name, data_type);
-
+function simulate(data, galaxy_name, data_type, one_galaxy) {
   initialize_angle_slider()
 
-  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "R"; }));
-
-  dist_factor = 3;
-
-  var velocity_factor = 50;
+  var dist_factor = 3;
 
   var stars = data.map(function(d) {
-    return {R: +d.R * dist_factor, r: 1, velocity: +d.VROT/velocity_factor};
+    return {R: +d.R * dist_factor, r: 1, velocity: +d.VROT/VELOCITY_FACTOR};
   });
 
   var min_R = d3.min(stars, function(d) { return d.R; });
@@ -108,16 +129,41 @@ function simulate(data, galaxy_name, data_type) {
   var min_velocity = d3.min(stars, function(d) { return d.velocity; });
   var max_velocity = d3.max(stars, function(d) { return d.velocity; });
 
-  cluster_scale.domain([0, max_R]);
+  // For global relative color scale
+  MIN_VEL === undefined ? MIN_VEL = min_velocity : MIN_VEL = MIN_VEL;
+  MAX_VEL === undefined ? MAX_VEL = max_velocity : MAX_VEL = MAX_VEL;
+
+  MIN_VEL = MIN_VEL < min_velocity ? MIN_VEL : min_velocity;
+  MAX_VEL = MAX_VEL > max_velocity ? MAX_VEL : max_velocity;
+
   size_scale.domain([0, max_R]);
   radius_scale.domain([0, max_R]);
 
-  var svg = d3.select("#rocs_galaxy").insert("svg")
-  .attr("width", w/2).attr("height", h/2).style("margin", "auto").style("display","block");
+  var is_data = data_type == model_name_map["DATA"];
+  var floatstyle = is_data ? "left" : "right";
+  var id_suffix;
+  id_suffix = is_data ? "DATA" : "VROT";
 
-  svg.append("circle").attr("r", black_hole_size * sizeScale).attr("cx", w/4)
-  .attr("cy", h/4).attr("class", "black_hole");
 
+
+  var w = 1000, h = w*0.85;
+
+
+  var div_id = "div_" + id_suffix;
+  var svg_id = "svg_" + id_suffix;
+
+  var div = d3.select("#rocs_galaxy")
+              .insert("div")
+                .attr("id", div_id);
+
+
+  var svg = div.append("svg")
+    .attr("width", one_galaxy ? "100%" : "50%")
+    .attr("height", h/2)
+    .style("float", floatstyle)
+    .style("margin", "auto auto")
+    .style("display","block")
+    .attr("id", svg_id);
 
   var is3D = false;
 
@@ -125,16 +171,14 @@ function simulate(data, galaxy_name, data_type) {
     $("#slider_wrapper").hide();
   }
 
-  var h_factor = is3D ? 8 : 4;
+
+  var g_id = "g_" + id_suffix;
 
   var container = svg.append("g")
-  .attr("transform", "translate(" + w/4 + "," + h/h_factor + ")")
+  .attr("id", g_id);
 
-  range_color.domain([min_velocity, max_velocity]);
 
   initialize_spin_slider();
-
-  initialize_legend(min_velocity, max_velocity, velocity_factor);
 
   insert_star(container, stars, max_R, is3D);
 
@@ -142,52 +186,54 @@ function simulate(data, galaxy_name, data_type) {
     return d.velocity;
   });
 
-  star_cluster = svg.selectAll(".star");
+  var star_cluster = container.selectAll(".star");
   var N_data = star_velocity.length;
 
 
+  var galaxy_title_div = d3.select("#galaxy_title_div");
+
+  generate_galaxy_title(galaxy_title_div, data_type, is_data, one_galaxy);
+
   var rotate_galaxy = true;
 
-
+  var t0 = Date.now() - 10000000;
   if(rotate_galaxy){
     d3.timer(function() {
 
-      rotate(star_cluster, star_velocity, is3D); 
+      rotate(star_cluster, star_velocity, is3D, t0, is_data); 
 
     }, 0);
   } 
   else
-    rotate(star_cluster, star_velocity, is3D);
-
-
-
+    rotate(star_cluster, star_velocity, is3D, t0, is_data);
 }
 
 function insert_star(container, data, max_x, is3D){
-  var INSERT_BOUNDRY = false;
+  var INSERT_BOUNDRY = true;
 
-  container.selectAll("g.star").data(data).enter().insert("g")
-    .attr("class", "star").each(function(d, i) {
+  container.selectAll("g.star").data(data).enter()
+    .insert("g").each(function(d, i) {
       var star = d3.select(this);
       if(i == 0 && INSERT_BOUNDRY)
       {
         star.insert("circle")
           .attr("class", "orbit")
-          .attr("r", max_x)
+          .attr("r", radius_scale(max_x))
           .attr("opacity", 1)
           .style("fill", "black")
-          .style("stroke", "dimgray")
+          .style("stroke", d3.rgb(60,60,60))
           .style("stroke-dasharray", ("3, 3"));
       }
       for(var i=0;i<1;i++){
         star.insert("circle")
+          .attr("class", "star")
           .attr("r", is3D ? 2 : size_scale(d.R)) // > 20 ? 1 : 0.1)
-            .attr("cx", radius_scale(d.R))
-            .attr("cy", 0+i*d.velocity*1.5)
-            .style("stroke", "none")
-            .style("fill", range_color(d.velocity))
-            .attr("class", "star")   
-            .attr("opacity", 0.6+i/2)
+          .attr("cx", radius_scale(d.R))
+          .attr("cy", 0+i*d.velocity*1.5)
+          .style("stroke", "white")
+          .style("fill", "white")
+          .attr("class", "star")   
+          .attr("opacity", 0.6+i/2)
             .transition()
               // .duration(100000)
               // .ease(Math.sqrt)
@@ -197,11 +243,20 @@ function insert_star(container, data, max_x, is3D){
 });
 }
 
-var t0 = Date.now() - 10000000;
+function update_star_color_range() {
+  range_color.domain([MIN_VEL, MAX_VEL]);
+
+  d3.selectAll(".star").each(function(d, i) {
+    var star = d3.select(this);
+    star.style("stroke", d3.rgb(range_color(d.velocity)).brighter(2) )
+        .style("fill", range_color(d.velocity))
+  });
+}
+
 _spin_velocity = 100;
 spin_velocity = _spin_velocity;
 
-function rotate(star_cluster, star_velocity, is3D){
+function rotate(star_cluster, star_velocity, is3D, t0, is_data){
   var delta = (Date.now() - t0);
   var cx = star_cluster.attr("cx");
 
@@ -219,7 +274,37 @@ function rotate(star_cluster, star_velocity, is3D){
     return "rotate(" + delta * d.velocity/spin_velocity + ")";
   })
 
+
+  var id_suffix;
+  id_suffix = is_data ? "DATA" : "VROT";
+
+  var g_id = "g_" + id_suffix;
+  var svg_id = "svg_" + id_suffix;
+  var svg = d3.select("#" + svg_id);
+
+  var w = +(svg.style("width").replace("px", ""));
+  var h = +(svg.style("height").replace("px", ""));
+
+  $("#" + g_id).attr("transform", "translate(" + w/2 + "," + h/2 + ")")
+
 }
+
+
+function convert_param_to_value(data) {
+  // Turn the filtered_data object into 
+  // param_name: value, instead of param_name: Param
+  var keys = Object.keys(data);
+  var new_data = {};
+
+  for(var i=0;i<keys.length;i++) {
+    var k = keys[i];
+    new_data[k] = data[k].value;
+  }
+
+  return new_data;
+}
+
+// 3D Slider settings
 
 a_init = 66; // global initial 3D perspective angle
 a_value = a_init; // global dynamic value for 3D perspective angle
@@ -272,9 +357,9 @@ function slide_slider(event, ui, type) {
 }
 
 function initialize_legend(vmin, vmax, velocity_factor) {
-  vmin = vmin*velocity_factor;
-  vmax = vmax*velocity_factor;
-  vmid = (vmax+vmin)/2
+  var vmin = vmin*velocity_factor;
+  var vmax = vmax*velocity_factor;
+  var vmid = (vmax+vmin)/2;
 
   $( "#velocity_value_min" ).val( Math.round(vmin) + " km/s" );
   $( "#velocity_value_min" ).css('color',range_color(vmin/velocity_factor));
@@ -286,7 +371,7 @@ function initialize_legend(vmin, vmax, velocity_factor) {
   $( "#velocity_value_max" ).css('color',range_color(vmax/velocity_factor));
 }
 
-function update_original_rocs(type) {
+function update_original_speed(type) {
   var orig_val = 0;
   var val_suffix = "";
 
@@ -306,7 +391,7 @@ function update_original_rocs(type) {
   $slider.trigger("change");
 }
 
-function generate_title(galaxy_name, data_type) {
+function generate_rocs_title(galaxy_name, data_type) {
 
   d3.select("#title_div")
   .append("h3")
@@ -315,17 +400,44 @@ function generate_title(galaxy_name, data_type) {
   .text("Rotation Curve Simulation: " + galaxy_name + " Galaxy");
 
   d3.select("#title_div")
-  .append("font")
-  .attr("color", "white")
-  .text("Using " + data_type);
-
-  d3.select("#title_div")
   .append("h2")
   .text(" ");
 
 
 
   $("#title_div").append($("<thead><tr>"));
+}
+
+function generate_galaxy_title(div, data_type, is_data, one_galaxy) {
+  var floatstyle = is_data ? "left" : "right";
+
+  div.append("div") 
+  .style("float", floatstyle)
+  .style("text-align", "center")
+  .style("width", one_galaxy ? "100%" : "50%")
+  .insert("font")
+    .attr("color", "white")
+    .text(data_type);
+}
+
+function create_back_button(galaxy_name) {
+  var back_id = "back_button";
+
+  $("#button_div").append(
+    $("<button>")
+      .attr("id", back_id)
+      .attr("position", "absolute")
+      .attr("left", "78%")
+      .attr("z-index", "10")
+      .text("Back to RoCM"));    
+    
+  $("#" + back_id).button({
+    icons: {
+      primary: "ui-icon-arrowreturnthick-1-w"
+    }
+  }).click(function() {
+    back(galaxy_name);
+  });
 }
 
 function back(){
