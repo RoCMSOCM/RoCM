@@ -342,7 +342,7 @@ function handle_input_keypress(input, e, param_name) {
 
 		update_models(param_name);
 
-		var fme = format_name(param_name);
+		var fname = format_name(param_name);
 		var slider = $("#slider_" + fname);
 
 		var min = slider.slider("option", "min");
