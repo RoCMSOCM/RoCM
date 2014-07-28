@@ -91,6 +91,25 @@ function update_session() {
   if(prev_galaxy_style != null && prev_galaxy_style != "[object Object]" && prev_galaxy_style != "{}"){
     STYLE.setDict(JSON.parse(prev_galaxy_style));
   }
+
+  var local_keys = Object.keys(localStorage);
+  for(var i=0;i<local_keys.length;i++) {
+    var key = local_keys[i];
+    if(key.contains("CUSTOM-")){
+      var custom_model_body = localStorage.getItem(key);
+      var model_name = key.replace("CUSTOM-", "");
+
+      var custom_model = new Function("R", custom_model_body);
+
+      GMODEL[model_name] = custom_model;
+    }
+    else if(key == "model_input" || key == "model_color" || key == "model_full_name"){
+      var input = localStorage.getItem(key);
+      $("#" + key).val(input);
+    }
+  }
+
+
 }
 
 function update_PARAMS() {

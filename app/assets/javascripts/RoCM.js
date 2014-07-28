@@ -52,7 +52,9 @@ $( document ).ready(function() {
 		send_to_rocs();
 	});
 
-	$("#add_model").button();
+	$("#reset_rocm").button().click(function() {
+		reset_rocm();
+	});
 
 	create_dropdown_div("about_wrapper", "about_button", "up");
 
@@ -83,9 +85,6 @@ $( document ).ready(function() {
 	// Create the CurvePlot svg before drawing to it (Firefox NS_ERROR_FAILURE)
 	create_curve_plot_svg();
 
-	// The list of parameters to add as sliders
-	create_parameter_list_dialog();
-
 	// SOCM Parameters Import for all galaxies (and include the current galaxy_name)
 	import_socm_galaxies(allGalaxiesEndpoint, galaxy_name); 
 
@@ -94,3 +93,15 @@ $( document ).ready(function() {
 
 	PARAMS.initialize("galaxy_name", galaxy_name);
 });
+
+
+function reset_rocm() {
+	localStorage.clear();
+
+	var galaxy_name = PARAMS.get("galaxy_name");
+
+	var rocm_url = "#GALAXY="+galaxy_name;
+	window.location.href = rocm_url;
+	
+	window.location.reload();
+}

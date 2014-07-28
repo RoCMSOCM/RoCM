@@ -1,5 +1,18 @@
 // ParamList.js
 
+$(document).ready(function() {
+	var add_func = {Add: function() {
+        	add_param_from_list();
+        	update_slider_configuration();
+			$(this).dialog("close");
+		}
+	};
+
+	// The list of parameters to add as sliders
+	create_dialog("param_list_dialog", add_func);
+
+});
+
 var immutable_parameters = [
 	"galaxy_name",
 	"galaxy_type",
@@ -40,59 +53,51 @@ function find_all_parameters(exclude_sliders) {
 
 // List of parameters dialog menu.
 // Activates when user clicks the + button in the Parameter Fitting Sliders section
-function create_parameter_list_dialog() {
+function create_dialog(dialog_id, button_fnc) {
 
 	$("#sliders").append(
 		$("<div>")
-			.attr("id", "param_list_dialog")
+			.attr("id", dialog_id)
 			.attr("title", "Parameters")
 	);
 
-	$("#param_list_dialog").dialog({
+	$("#" + dialog_id).dialog({
       modal: true,
       autoOpen: false,
       width: 400,
-      buttons: {
-        Add: function() {
-        	add_param_from_list();
-        	update_slider_configuration();
-			$(this).dialog("close");
-        }
-      }
+      buttons: button_fnc
     });
 }
 
-function update_parameter_list_dialog() {
-	var parameters = find_all_parameters(true);
-
-	var dialog = $("#param_list_dialog");
+function update_list_dialog(dialog_id, data, empty_message) {
+	var dialog = $("#" + dialog_id);
 
 	dialog.empty();
 		
-	var list = $("<ol>").attr("id", "param_list");
+	var list_id = dialog_id + "_list";
+	var list = $("<ol>").attr("id", list_id);
 
-	for(var i=0;i<parameters.length;i++){
-		var html_param = get_both_parameter_formats(parameters[i]);
-
+	for(var i=0;i<data.length;i++){
 		list.append($("<li>")
 			.attr("class", "ui-widget-content")
-			.html( html_param ));
+			.html( data[i] ));
+		list.addClass("ui_list");
 	}
 
-	if(parameters.length == 0){
+	if(data.length == 0){
 		dialog.append($("<span>")
-			.text("No parameters available"));
+			.text(empty_message));
 	}
 
 	dialog.append(list);
 
-	$("#param_list").bind("mousedown", function(e) {
+	$("#" + list_id).bind("mousedown", function(e) {
 	  e.metaKey = true;
 	}).selectable();
 }
 
-function fire_parameter_list_dialog() {
-	$("#param_list_dialog").dialog('open');
+function fire_dialog(dialog_id) {
+	$("#" + dialog_id).dialog('open');
 }
 
 function add_param_from_list() {

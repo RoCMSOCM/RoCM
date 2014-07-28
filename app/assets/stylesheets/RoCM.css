@@ -34,23 +34,23 @@ table th{
 }
 
 /* Parameter list (From clicking the '+' button) */
-#param_list .ui-selecting { 
+.ui_list .ui-selecting { 
   background: #FECA40;
 }
 
-#param_list .ui-selected { 
+.ui_list .ui-selected { 
   background: #F39814;
   color: white;
 }
 
-#param_list { 
+.ui_list { 
   list-style-type: none;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 
-#param_list li { 
+.ui_list li { 
   margin: 3px;
   padding: 0.4em;
   /*height: 18px;*/

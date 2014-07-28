@@ -206,8 +206,14 @@ function initialize_sliders(slider_keys) {
 		.attr("id", add_button_id)
 		.text("+") // In case the jquery icon fails
 		.on("click", function() {
-			update_parameter_list_dialog();
-			fire_parameter_list_dialog();
+			var parameters = find_all_parameters(true);
+			for(var i=0;i<parameters.length;i++){
+				parameters[i] = get_both_parameter_formats(parameters[i]);
+			}
+
+			var dialog_id = "param_list_dialog";
+			update_list_dialog(dialog_id, parameters, "No parameters available");
+			fire_dialog(dialog_id);
 		}));
 
 	$("#" + add_button_id).button({

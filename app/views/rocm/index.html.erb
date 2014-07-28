@@ -4,6 +4,7 @@
     <%= stylesheet_link_tag 'SOCMTable.css' %>
     <%= stylesheet_link_tag 'RoCM.css' %>
     <%= stylesheet_link_tag 'jquery.dataTables.css' %>
+    <%= stylesheet_link_tag 'spectrum.css' %>
   <% end %>
   <% content_for :javascript_includes do %>
     <%= javascript_include_tag 'init-mathjax.js' %>
@@ -20,6 +21,8 @@
     <%= javascript_include_tag 'bessel.js' %>
     <%= javascript_include_tag 'integrate.js' %>
 
+    <%= javascript_include_tag 'spectrum.js' %>    
+
     <!-- RoCM Functions -->
     <%= javascript_include_tag 'Param.js' %>
     <%= javascript_include_tag 'ParamDict.js' %>
@@ -28,6 +31,7 @@
     <%= javascript_include_tag 'VData.js' %>
     <%= javascript_include_tag 'Constants.js' %>
     <%= javascript_include_tag 'Conversion.js' %>
+    <%= javascript_include_tag 'CustomModel.js' %>
     <%= javascript_include_tag 'GalacticModel.js' %>
     <%= javascript_include_tag 'GalacticModelStyle.js' %>
     <%= javascript_include_tag 'GalacticModelStyleDict.js' %>
@@ -118,29 +122,48 @@
 
   <div id="user_defined_model" style="float:left;width:100%;height:500px">
     <h2>User Defined Model</h2>
-    <div id="user_defined_model_text" style="float:left;width:50%">
-      Explanation Text Goes Here.
+    <div id="user_defined_model_text" style="float:left;width:48%">
+      <b>Write a JavaScript function in the form</b>: 
+        <pre>
+function MODELNAME(R) {
+    // Input: R in kpc
+    // Output: rotation_velocity in km/s
+    // Available objects: PARAMS, CONST, CONVERT, GMODEL
+    
+    var rotation_velocity;
+
+
+    return rotation_velocity;
+}</pre>
       <!-- TODO: Display mapping of formatted parameters to keys within the PARAMS object. -->
-      <p>
-      <button id="add_model">Add model</button>
     </div>
     <div id="user_defined_model_input" style="float:right;width:50%;height:100%">
+      <label id="model_full_name_label" for="model_full_name"><b>Model full name</b>: </label>
+      <input id="model_full_name" type="text" style="min-width:150px"></input>
+
+      <label id="model_color_label" for="model_color"><b>Model color</b>: </label>
+      <input id="model_color" type="color" value="#3355cc" />
+
       <textarea id="model_input" rows="4" cols="20" style="width:100%;display:block;margin:0 auto;height:75%">
-function(R) {
-  var sigma0 = PARAMS.get("sigma0");
+function CUSTOM(R) {
+  var sigma0 = true_dark_matter_density(PARAMS.get("dark_matter_density"));
   var sigma0_si = CONVERT.GeVcm3_to_kgkms2(sigma0);
 
-  var r0 = PARAMS.get("r0");
+  var r0 = PARAMS.get("dark_halo_radius");
 
   var c = CONST.get("c");
-  var B = PARAMS.get("B");
+  var B = PARAMS.get("schwarzschild_radius");
 
   var inner = (4*Math.PI*B*c*c*sigma0_si) * (1-((r0/R)*Math.atan(R/r0)));
   var rotation_velocity = Math.sqrt(Math.abs(inner));
 
   return rotation_velocity;
-}
-      </textarea>
+}</textarea>
+
+      <p>
+      <button id="add_model" style="float:left">Add model</button>
+      <button id="remove_model" style="float:right">Remove model</button>
+
     </div>
   </div>
 
@@ -156,6 +179,7 @@ function(R) {
 
   <br><br><p>
 
+  <button id="reset_rocm" style="float:right">Reload Default Settings</button>
 
   <div id="about_wrapper" style="display:none;bottom:0;width:100%;padding-bottom:2%;">
     <h2>About</h2>
