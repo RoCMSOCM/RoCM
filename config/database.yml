@@ -6,12 +6,12 @@ development:
 
 test:
   adapter: postgresql
-  database: rocm_dev
+  database: rocm_test
   username: rocm_test
   password: r0cm_t3st
 
 production:
   adapter: postgresql
-  database: rocm_dev
+  database: rocm_pro
   username: rocm_pro
   password: r0cm_pr0
