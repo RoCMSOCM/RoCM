@@ -18,14 +18,7 @@ group :test do
   gem 'factory_girl_rails', '~> 4.0'
 end
 
-group :production do
-  gem 'pg'
-end        
-
-group :development, :test do
-  gem 'sqlite3'
-end
-
+gem 'pg'
 gem 'devise'
 gem 'ransack'
 gem 'd3-rails'
