@@ -19,6 +19,7 @@ group :test do
 end
 
 gem 'pg'
+gem 'thin'
 gem 'devise'
 gem 'ransack'
 gem 'd3-rails'
