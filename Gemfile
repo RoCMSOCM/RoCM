@@ -18,7 +18,6 @@ group :test do
   gem 'factory_girl_rails', '~> 4.0'
 end
 
-gem 'pg'
 gem 'thin'
 gem 'devise'
 gem 'ransack'
@@ -36,3 +35,10 @@ gem 'underscore-rails'
 #heroku
 gem 'rails_12factor', group: :production
 ruby "2.0.0"
+
+group :development, :test do
+  gem 'sqlite3'
+end
+group :production do
+  gem 'pg'
+end
