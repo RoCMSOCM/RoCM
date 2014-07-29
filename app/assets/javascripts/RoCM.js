@@ -105,3 +105,5 @@ function reset_rocm() {
 	
 	window.location.reload();
 }
+
+console.log("Testing rotationcurve.herokuapp.com");
