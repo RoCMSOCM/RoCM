@@ -53,7 +53,7 @@ GalacticModel.prototype = {
 		var B = PARAMS.get("schwarzschild_radius");
 
 		var cMod = CONVERT.km_to_cm(c)*mod;
-		var BMod = CONVERT.km_to_cm(B)*mod;	//TODO: B
+		var BMod = CONVERT.km_to_cm(B)*mod;
 
 		var m = (3.06*Math.pow(10,-30))/mod;
 		var g = (5.42*Math.pow(10,-41))/mod;

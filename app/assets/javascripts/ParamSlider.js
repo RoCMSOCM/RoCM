@@ -274,7 +274,7 @@ function remove_slider(param_name) {
 	$("#" + format_name(param_name) +"_slider_wrapper").remove();
 }
 
-// TODO:
+// TODO: Slider custom min and max values
 function set_slider_range(param_name, min, max) {
 	var slider = $("#slider_" + format_name(param_name));
 

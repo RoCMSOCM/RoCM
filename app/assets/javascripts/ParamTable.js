@@ -105,7 +105,7 @@ function update_param_table(param_name) {
         return;
 
     // For derived parameters (ex: mass_light_ratio)
-    update_derived_elements(param_name);
+    update_derived_parameters(param_name);
 
     var param = PARAMS.getParam(param_name);
 

@@ -163,7 +163,9 @@ function add_table_elements(d) {
   return d;
 }
 
-function update_derived_elements(param_name) {
+
+// Handles all the parameters that are dependent upon other parameters (derived or calculated from other values)
+function update_derived_parameters(param_name) {
   // Updates the parameter that is calculated from and dependent upon another parameter.
   var calculated_param_name;
   var calculated_param;
@@ -184,12 +186,12 @@ function update_derived_elements(param_name) {
 
     calculated_param = Math.round(universal_constant(vrot_data_last,r_last) * 1000) / 1000;
   }
+//  else if(param_name == "distance") {
+
+  //}
   else
     return;
 
   PARAMS.setValue(calculated_param_name, calculated_param);
   update_param_table(calculated_param_name);
 }
-
-
-//TODO: FIX GALAXYS THAT HAVE A r_last VERY SMALL. ERROR IS CSV.
