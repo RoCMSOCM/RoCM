@@ -91,13 +91,127 @@ function get_data(data) {
   data = sortByKey(data, "R");
 
   //Defines global array of Galactocentric distance, R (kpc)
-  VDATA.R = Array(data_size);
+  VDATA.R = Array(data_size); // Mutable R values
+  VDATA._R = Array(data_size); // Original R values
 
   for(var i=0;i<data_size;i++){
     VDATA.R[i] = +data[i].R;
+    VDATA._R[i] = +data[i].R;
   }
 
   return data;
+}
+
+function create_curve_plot_svg() {
+  // D3 graph set-up
+  svg = d3.select("#graph_svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      // .call(zoom);
+
+  svg.append("rect")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .style("fill", "blue")
+    .attr("opacity", 0);
+
+
+  d3.select("#rocm_wrapper")
+    .attr("width", "75%")
+    .attr("min-width", width + margin.left + margin.right + 200);
+}
+
+function create_curve_plot(galaxy_name, is_initial){
+  // Generate the D3 plot with the velocity data (red data points)
+  // and compute each model from GMODEL (colored curved lines)
+  if(!SOCMPARAMS[galaxy_name]){
+    alert("No velocity data for " + galaxy_name + ".");
+    return -1;
+  }
+
+  // Call SOCM for galaxy parameters
+  import_parameters(SOCMPARAMS[galaxy_name], is_initial);
+
+  var galaxy_id = SOCMPARAMS[galaxy_name].id;
+  d3.json(socm_url + "/" + galaxy_id + "/velocities.json?page=false", function(error, data) {
+
+    // META
+    data = get_data(data);
+
+    data.forEach(function(d) {
+      for(var model in GMODEL) {
+        d["VROT_" + model] = GMODEL[model](+d.R);
+      }
+    });
+
+    var velocities = update_velocities(data);
+
+    var vel_size = Object.keys(velocities).length;
+    var data_size = velocities[0].values.length;
+      
+    for(var i=0;i<vel_size;i++){
+      VDATA[velocities[i].name] = Array(data_size);
+
+      for(var j=0;j<data_size;j++){
+        VDATA[velocities[i].name][j] = velocities[i].values[j].v
+      }
+    }
+    
+    set_curve_domain(data, velocities);
+
+    // zoom.x(x).y(y);
+
+    if(is_initial)
+      create_axes();
+    else {
+      update_axes();
+    }
+
+    var SHOW_ERR_BAR = true;
+
+    var SHOW_SUN = false; //(galaxy_name == "Milky-Way");
+
+    if(SHOW_SUN){
+      create_sun_label();
+    }
+    
+    if(!is_initial){
+      remove_data();
+      remove_curves();
+      remove_title();
+    }
+    else {
+      create_legend(velocities, SHOW_SUN);
+    }
+
+
+    if(SHOW_ERR_BAR){
+      create_error_bar(data);
+    }
+
+    // svg.attr("display", "block");
+
+    plot_data(data);
+    plot_curves(velocities);
+
+    // Create title for the galaxy
+    create_title(galaxy_name, SHOW_TITLE = true, ANIMATE_TITLE = false);
+    
+    // if(is_initial){
+    //   // TODO: move bar chart
+    //   create_bar_chart("VROT_GR");
+    // } 
+
+    if(is_initial)
+      create_chi_table();
+    else
+      update_chi_squared();
+
+    // Update distance value to alter x-axis (special case)
+    update_derived_parameters("distance");
+  });
 }
 
 function set_curve_domain(data, velocities) {
@@ -136,6 +250,16 @@ function update_axes() {
     .selectAll("text").remove();
 
   apply_axis_formatting(svg);
+}
+
+function update_x_axis(min, max) {
+  set_curve_x_domain(min, max);
+  update_axes();
+}
+
+function update_y_axis(min, max) {
+  set_curve_y_domain(min, max);
+  update_axes();
 }
 
 function apply_axis_formatting(svg) {
@@ -263,6 +387,21 @@ function plot_data(data){
       .style("fill", get_color("DATA"))
       .append("title")
         .text(function(d) { return "(" + d.R + ", " + d.VROT_DATA + ")"; });
+}
+
+function update_data(R_data) {
+
+  var dot_data = get_dot_data(".VROT_DATA");
+
+  var size = R_data.length;
+  for(var i=0; i<size; i++) {
+    dot_data[i].R = R_data[i];
+  }
+
+  svg.selectAll(".VROT_DATA")
+    .data(dot_data)
+    .attr("cx", function(d) { return x(d.R); })
+    .attr("cy", function(d) { return y(d.VROT_DATA); })
 }
 
 function remove_data() {
@@ -449,114 +588,6 @@ function remove_title() {
   svg.selectAll(".title").remove();
 }
 
-function create_curve_plot_svg() {
-  // D3 graph set-up
-  svg = d3.select("#graph_svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-      // .call(zoom);
-
-  svg.append("rect")
-    .attr("width", "100%")
-    .attr("height", "100%")
-    .style("fill", "blue")
-    .attr("opacity", 0);
-
-
-  d3.select("#rocm_wrapper")
-    .attr("width", "75%")
-    .attr("min-width", width + margin.left + margin.right + 200);
-}
-
-function create_curve_plot(galaxy_name, is_initial){
-  // Generate the D3 plot with the velocity data (red data points)
-  // and compute each model from GMODEL (colored curved lines)
-  if(!SOCMPARAMS[galaxy_name]){
-    alert("No velocity data for " + galaxy_name + ".");
-    return -1;
-  }
-
-  // Call SOCM for galaxy parameters
-  import_parameters(SOCMPARAMS[galaxy_name], is_initial);
-
-  var galaxy_id = SOCMPARAMS[galaxy_name].id;
-  d3.json(socm_url + "/" + galaxy_id + "/velocities.json?page=false", function(error, data) {
-
-    // META
-    data = get_data(data);
-
-    data.forEach(function(d) {
-      for(var model in GMODEL) {
-        d["VROT_" + model] = GMODEL[model](+d.R);
-      }
-    });
-
-    var velocities = update_velocities(data);
-
-    var vel_size = Object.keys(velocities).length;
-    var data_size = velocities[0].values.length;
-      
-    for(var i=0;i<vel_size;i++){
-      VDATA[velocities[i].name] = Array(data_size);
-
-      for(var j=0;j<data_size;j++){
-        VDATA[velocities[i].name][j] = velocities[i].values[j].v
-      }
-    }
-    
-    set_curve_domain(data, velocities);
-
-    // zoom.x(x).y(y);
-
-    if(is_initial)
-      create_axes();
-    else {
-      update_axes();
-    }
-
-    var SHOW_ERR_BAR = true;
-
-    var SHOW_SUN = false; //(galaxy_name == "Milky-Way");
-
-    if(SHOW_SUN){
-      create_sun_label();
-    }
-    
-    if(!is_initial){
-      remove_data();
-      remove_curves();
-      remove_title();
-    }
-    else {
-      create_legend(velocities, SHOW_SUN);
-    }
-
-
-    if(SHOW_ERR_BAR){
-      create_error_bar(data);
-    }
-
-    // svg.attr("display", "block");
-
-    plot_data(data);
-    plot_curves(velocities);
-    // Create title for the galaxy
-    create_title(galaxy_name, SHOW_TITLE = true, ANIMATE_TITLE = false);
-    
-    // if(is_initial){
-    //   // TODO: move bar chart
-    //   create_bar_chart("VROT_GR");
-    // } 
-
-    if(is_initial)
-      create_chi_table();
-    else
-      update_chi_squared();
-  });
-}
-
 function get_color(d) {
   if(d.name !== undefined){
     d = d.name;
@@ -618,11 +649,12 @@ function object_opacity(d) {
   object.style("opacity", new_opacity); 
 }
 
-function update_line(line_class, v_array) {
+function update_curve(line_class, v_array, R_array) {
   var line_svg = svg.select(line_class);
   var line_data = get_line_data(line_class);
 
   Object.keys(line_data.values).map(function(value, index) {
+    line_data.values[value].R = R_array[index];
     line_data.values[value].v = v_array[index];
     line_data.values[value].y0 = v_array[index];
   });
@@ -638,6 +670,13 @@ function get_line_data(line_class) {
   var line_data = line_svg.data()[0];
 
   return line_data;
+}
+
+function get_dot_data(dot_class) {
+  var dot_svg = svg.selectAll(dot_class)
+  var dot_data = dot_svg.data();
+
+  return dot_data;
 }
 
 function update_velocities(data) {

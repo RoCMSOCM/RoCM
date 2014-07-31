@@ -8,7 +8,7 @@ $(document).ready(function() {
 	var dialog_id = "custom_model_list_dialog";
 	var remove_func = {
 		Remove: function() {
-        	remove_model_from_list();
+        	remove_model_from_list(dialog_id);
 			$(this).dialog("close");
         }
       }
@@ -52,7 +52,6 @@ function add_model() {
 		custom_model = new Function(input, func_body);
 	}
 	catch(err) {
-		console.log(err.message)
 		alert(err.message + "\n----\nPlease fix your custom model.")
 		return;
 	}
@@ -120,9 +119,10 @@ function get_custom_models() {
 	return custom_models;
 }
 
-function remove_model_from_list() {
+function remove_model_from_list(dialog_id) {
+	var item_id = dialog_id + "_list_item";
 	var removed = false;
-	$(".ui-selected").each(function() {
+	$(".ui-selected #" + item_id).each(function() {
 		var text = $(this).text();
 
 		remove_model(text);
@@ -131,4 +131,5 @@ function remove_model_from_list() {
 
 	if(removed)
 		window.location.reload();
+
 }

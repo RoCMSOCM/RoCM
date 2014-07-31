@@ -75,13 +75,16 @@ function update_list_dialog(dialog_id, data, empty_message) {
 	dialog.empty();
 		
 	var list_id = dialog_id + "_list";
-	var list = $("<ol>").attr("id", list_id);
+	var list = $("<ol>").attr("id", list_id).attr("class", "ui_list");
+	list.addClass("ui_list");
+
+	var item_id = dialog_id + "_list_item";
 
 	for(var i=0;i<data.length;i++){
 		list.append($("<li>")
 			.attr("class", "ui-widget-content")
+			.attr("id", item_id + i)
 			.html( data[i] ));
-		list.addClass("ui_list");
 	}
 
 	if(data.length == 0){
@@ -91,8 +94,8 @@ function update_list_dialog(dialog_id, data, empty_message) {
 
 	dialog.append(list);
 
-	$("#" + list_id).bind("mousedown", function(e) {
-	  e.metaKey = true;
+	list.bind("mousedown", function(e) {
+		e.metaKey = true;
 	}).selectable();
 }
 

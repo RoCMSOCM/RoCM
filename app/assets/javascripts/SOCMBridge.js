@@ -167,31 +167,61 @@ function add_table_elements(d) {
 // Handles all the parameters that are dependent upon other parameters (derived or calculated from other values)
 function update_derived_parameters(param_name) {
   // Updates the parameter that is calculated from and dependent upon another parameter.
-  var calculated_param_name;
-  var calculated_param;
+  var calculated_param_name = [];
+  var calculated_param = [];
 
   if(param_name == "mass_disk" || param_name == "luminosity"){
-    calculated_param_name = "mass_light_ratio";
+    calculated_param_name.push("mass_light_ratio");
 
     var mass_disk = PARAMS.get("mass_disk");
     var luminosity = PARAMS.get("luminosity");
     
-    calculated_param = Math.round((mass_disk / luminosity) * 100) / 100;    
+    calculated_param.push(Math.round((mass_disk / luminosity) * 100) / 100); 
   }
   else if(param_name == "r_last"){ 
-    calculated_param_name = "universal_constant";
+    calculated_param_name.push("universal_constant");
  
     var vrot_data_last = PARAMS.get("vrot_data_last");
     var r_last = PARAMS.get("r_last");
 
-    calculated_param = Math.round(universal_constant(vrot_data_last,r_last) * 1000) / 1000;
+    calculated_param.push(Math.round(universal_constant(vrot_data_last,r_last) * 1000) / 1000);
   }
-//  else if(param_name == "distance") {
+ else if(param_name == "distance") {
+  // Change: 
+  //         R (recalculate models AND data)
+  //         scale_length (function of distance)
+  //         mass_hydrogen (function of estimated distance)
 
-  //}
-  else
-    return;
+    // Convert original Rkpc to Rarcsec
+    // Calculate Rkpc according to original Rarcsec and changed distance value
 
-  PARAMS.setValue(calculated_param_name, calculated_param);
-  update_param_table(calculated_param_name);
+    if(VDATA._R !== undefined) {
+      var _Rkpc = VDATA._R;
+      var _DMpc = PARAMS.getOriginalValue("distance");
+      var DMpc = PARAMS.get("distance");
+
+      for(var i=0; i<_Rkpc.length; i++) {
+        var _Rarcsec = kpc_to_arcsec(_Rkpc[i], _DMpc);
+
+        VDATA.R[i] = arcsec_to_kpc(_Rarcsec, DMpc);
+      }
+
+      update_x_axis(0, d3.max(VDATA.R));
+
+      update_models();
+      update_data(VDATA.R);
+
+    }
+
+    // calculated_param_name.push("scale_length");
+    // calculated_param.push(PARAMS.get("scale_length"));
+
+    // calculated_param_name.push("scale_length");
+    // calculated_param.push(PARAMS.get("mass_hydrogen"));
+  }
+
+  for(var i=0;i<calculated_param_name.length;i++) {
+    PARAMS.setValue(calculated_param_name[i], calculated_param[i]);
+    update_param_table(calculated_param_name[i]);
+  }
 }

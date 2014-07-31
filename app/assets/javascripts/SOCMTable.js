@@ -109,6 +109,7 @@ function create_socm_table(param_data) {
 		var galaxy_name = id.split("-PLOT")[0];	
 		
 		GLOBAL_BULGE = default_bulge(galaxy_name);
+	    $("#bulge_toggle").prop('checked', GLOBAL_BULGE);
 
 		if(create_curve_plot(galaxy_name, false) != -1){
 			close_all_dropdowns();

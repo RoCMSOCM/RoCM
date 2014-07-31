@@ -10,12 +10,12 @@ STYLE = new GalacticModelStyleDict();
 
 CONVERT = new Conversion();
 
-GLOBAL_BULGE = true;
+GLOBAL_BULGE = false;
 
 var FONT = "12px sans-serif";
 var	socm_url = "http://socm.herokuapp.com/galaxies";
 
-$( document ).ready(function() { 
+$(document).ready(function() { 
 	// Initial interface formatting
 
 	document.getElementById("graph").style.font = FONT;
@@ -103,7 +103,6 @@ function reset_rocm() {
 	var rocm_url = "#GALAXY="+galaxy_name;
 	window.location.href = rocm_url;
 	
+	$(this).scrollTop(0);
 	window.location.reload();
 }
-
-console.log("Testing rotationcurve.herokuapp.com");

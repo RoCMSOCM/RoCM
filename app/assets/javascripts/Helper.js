@@ -68,20 +68,25 @@ function formatExponential(exp) {
 		return Math.round(exp * 100000) / 100000;
 }
 
-function arcsec_to_kpc(arcsec, Dkpc) {
-	var DMpc = Dkpc * 1000;
+// Distance calculations
+
+function arcsec_to_kpc(arcsec, DMpc) {
+	var Dkpc = CONVERT.Mpc_to_kpc(DMpc);
 	var deg2rad = Math.PI/180;
-	return DMpc * Math.tan(CONVERT.arcsec_to_degree(arcsec) * deg2rad);
+	return Dkpc * Math.tan(CONVERT.arcsec_to_degree(arcsec) * deg2rad);
 }
 
-function kpc_to_arcsec(kpc, Dkpc) {
-	var DMpc = Dkpc * 1000;
+function kpc_to_arcsec(kpc, DMpc) {
+	var DMpc = CONVERT.Mpc_to_kpc(DMpc);
 	var rad2deg = 180/Math.PI;
 	return CONVERT.degree_to_arcsec(Math.atan(kpc/DMpc) * rad2deg);
 }
 
-// TODO:
-// function distance_to_R(DMpc)
+function stellar_surface_matter_density(R, scale_length) {
+	var Sigma0 = 1;
+
+	return Sigma0 * Math.pow(e, -(R/scale_length));
+}
 
 function universal_constant(v_last, R_last) {
 	var c = CONVERT.km_to_cm(CONST.get("c"));

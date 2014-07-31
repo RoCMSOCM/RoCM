@@ -122,6 +122,7 @@ function ParamDict(){
       return this[key]; 
    };
    this.getOriginal = function(key) { return this.getParam("_" + key); };
+   this.getOriginalValue = function(key) { return this.get("_" + key); };
 
    this.updateUsed = function(key) { 
       // if(this.getFindUsedParams())

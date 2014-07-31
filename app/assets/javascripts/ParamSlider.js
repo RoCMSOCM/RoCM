@@ -121,9 +121,6 @@ ParamSlider.prototype = {
 		PARAMS.setValue(this.param_name, local);
 
 		update_models(this.param_name);
-
-
-		
 	},
 	get_formatted_name: function() {
 		return format_name(this.param_name);
@@ -149,9 +146,10 @@ function update_models(param_name) {
 					VDATA["VROT_" + model][i] = vrot_value;
 			}
 
-			update_line(".VROT_"+model, VDATA["VROT_" + model]);
+			update_curve(".VROT_"+model, VDATA["VROT_" + model], VDATA.R);
 		}
 	}
+
 	PARAMS.setFindUsedParams(false);
 	PARAMS.resetUsed();
 
@@ -257,6 +255,7 @@ function initialize_sliders(slider_keys) {
 
 	$("#bulge_toggle").change(function() {
         GLOBAL_BULGE = $(this).is(":checked");
+        localStorage.setItem("GLOBAL_BULGE", GLOBAL_BULGE);
         update_models("bulge_b");
     });
 

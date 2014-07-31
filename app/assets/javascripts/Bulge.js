@@ -1,8 +1,25 @@
 // Bulge
 
 function default_bulge(galaxy_name){
-	var defaults = ["MILKY-WAY"];
+	// If the bulge toggle was checked for this galaxy, use that boolean value.
+	// Else use the boolean value from the 'defaults' array
 
+	var savedBulge = localStorage.getItem("GLOBAL_BULGE");
+	var localStorage_PARAMS = localStorage.getItem("PARAMS");
+	var prev_galaxy_name;
+
+	if(localStorage_PARAMS != null){
+		prev_galaxy_name = JSON.parse(localStorage_PARAMS)["galaxy_name"];
+		if(prev_galaxy_name != undefined)
+			prev_galaxy_name = prev_galaxy_name.value;
+	}
+
+	if(savedBulge != null && galaxy_name == prev_galaxy_name){
+		return (savedBulge == "true");
+	}
+
+
+	var defaults = ["MILKY-WAY"];
 	for(var i=0;i<defaults.length; i++) {
 		if(defaults[i] == galaxy_name){
 			return true;
