@@ -404,6 +404,22 @@ function update_data(R_data) {
     .attr("cy", function(d) { return y(d.VROT_DATA); })
 }
 
+function update_error_bar(R_data) {
+  var error_bars = d3.selectAll(".VROT_DATA_ERROR");
+  var error_data = [];
+
+  for(var i=0;i<R_data.length;i++){
+    error_data.push([
+      {x:R_data[i], y:VDATA.VROT_DATA[i] + VDATA.VROT_DATA_ERROR[i]},
+      {x:R_data[i], y:VDATA.VROT_DATA[i] - VDATA.VROT_DATA_ERROR[i]}
+    ]);
+  }
+
+  error_bars
+    .data(error_data)
+    .attr("d", xy_line);
+}
+
 function remove_data() {
   svg.selectAll(".VROT_DATA").remove();
   svg.selectAll(".VROT_DATA_ERROR").remove();

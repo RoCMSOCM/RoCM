@@ -210,6 +210,7 @@ function update_derived_parameters(param_name) {
 
       update_models();
       update_data(VDATA.R);
+      update_error_bar(VDATA.R);
 
     }
 
