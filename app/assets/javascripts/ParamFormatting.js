@@ -8,19 +8,59 @@ $(document).ready(function(){
 		FORMATTED_MAP = JSON.parse(stored_formatted_map);
 	else {
 		FORMATTED_MAP = {
-			galaxy_name: "Galaxy",
-			galaxy_type: "Type", 
-			distance: "Distance <br> (Mpc)",
-			luminosity: "L<sub>B</sub> <br> (10<sup>10</sup> L<sub>☉</sub> W)",
-			scale_length: "R<sub>0</sub> <br> (kpc)",
-			mass_hydrogen: "M<sub>HI</sub> <br> (10<sup>10</sup> M<sub>☉</sub> kg)",
-			mass_disk: "M<sub>disk</sub> <br> (10<sup>10</sup> M<sub>☉</sub> kg)",
-			mass_light_ratio: "(M/L)<sub>stars</sub> <br> (M<sub>☉</sub>/L<sub>☉</sub> kg/W)",
-			r_last: "R<sub>last</sub> <br> (kpc)",
-			universal_constant: "(v<sup>2</sup>/c<sup>2</sup>R)<sub>last</sub> <br> (10<sup>-30</sup> cm<sup>-1</sup>)",
-			velocities_count: "Number of <br> Observed Points",
-			citation_ids_array: "Citations",
-			vrot_data_last: "V<sub>last</sub> <br> (km/s)"
+			galaxy_name: {
+				name: "Galaxy"
+			},
+			galaxy_type: {
+				name: "Type"
+			}, 
+			distance: {
+				name: "Distance",
+				units: "Mpc"
+			},
+			luminosity: {
+				name: "L<sub>B</sub>",
+				units: "10<sup>10</sup> L<sub>☉</sub> W",
+				multiplier: Math.pow(10,10) * CONST.get("solar_luminosity")
+			},
+			scale_length: {
+				name: "R<sub>0</sub>",
+				units: "kpc"
+			},
+			mass_hydrogen: {
+				name: "M<sub>HI</sub>",
+				units: "10<sup>10</sup> M<sub>☉</sub> kg",				
+				multiplier: Math.pow(10,10) * CONST.get("solar_mass")
+			},
+			mass_disk: {
+				name: "M<sub>disk</sub>", 
+				units: "10<sup>10</sup> M<sub>☉</sub> kg",				
+				multiplier: Math.pow(10,10) * CONST.get("solar_mass")
+			},
+			mass_light_ratio: {
+				name: "(M/L)<sub>stars</sub>",
+				units: "M<sub>☉</sub>/L<sub>☉</sub> kg/W"
+			},
+			r_last: {
+				name: "R<sub>last</sub>",
+				units: "kpc"
+			},
+			universal_constant: {
+				name: "(v<sup>2</sup>/c<sup>2</sup>R)<sub>last</sub>",
+				units: "10<sup>-30</sup> cm<sup>-1</sup>",
+				multiplier: Math.pow(10,-30)
+			},
+			velocities_count: {
+				name: "Number of <br> Observed Points"
+			},
+			citation_ids_array: 
+			{
+				name: "Citations"
+			},
+			vrot_data_last: {
+				name: "V<sub>last</sub>",
+				units: "km/s"
+			}
 		};
 	}
 
@@ -40,16 +80,25 @@ $(document).ready(function(){
 });
 
 
-function get_formatted_parameter(param_name) {
-   var column_name = FORMATTED_MAP[param_name];
-   if(column_name === undefined)
-      column_name = param_name;
+function get_formatted_parameter(param_name, include_units, include_breaks) {
+	var fparam = FORMATTED_MAP[param_name];
+	if(fparam === undefined)
+		fparam = param_name;
+	else if(fparam.units !== undefined && include_units){
+		var br = include_breaks ? "<br>" : "";
+		var units = fparam.units == "" ? "" : " (" + fparam.units + ")";
 
-   return column_name;
+		fparam = fparam.name + br + units;
+	}
+	else
+		fparam = fparam.name;
+
+	return fparam;
 }
 
-function get_both_parameter_formats(param_name) {
-	var formatted_param = get_formatted_parameter(param_name).replace("<br>", "");
+function get_both_parameter_formats(param_name, include_units, include_breaks) {
+	var formatted_param = get_formatted_parameter(param_name, include_units, include_breaks);
+
 	var param = param_name;
 
 	if(formatted_param == param){
@@ -64,29 +113,12 @@ function get_both_parameter_formats(param_name) {
 	return html_param;
 }
 
-function add_param(param_name, param_full_name, param) {
-	var units = param.units != "" ? "(" + param.units + ")" : param.units;
-
-	var fname = param_full_name + " <br> " + units;
-
-	FORMATTED_MAP[param_name] = fname;
-
-	
-	if(typeof(param) != "object")
-		PARAMS.add(param_name, new Param(param));
-	else
-		PARAMS.add(param_name, param);
-
-	localStorage.setItem("FORMATTED_MAP", JSON.stringify(FORMATTED_MAP));
-}
-
-
 function display_formatted_map() {
 	// var arrow = "→";
 	var parameter_map = "";
 
 	for(var formatted_name in FORMATTED_MAP) {
-		parameter_map += get_both_parameter_formats(formatted_name) + "<br>";
+		parameter_map += get_both_parameter_formats(formatted_name, true, false).replace("<br>","") + "<br>";
 	}
 
 	$("#user_defined_model_text").html(parameter_map);
@@ -149,10 +181,12 @@ function add_param_from_inputs(){
 	var param_min = $("#" + param_min_id).val();
 	var param_max = $("#" + param_max_id).val();
 
+	//TODO: var param_multiplier = 1;
+
 	if(param_name.length == 0 || param_long_name.length == 0 || param_value.length == 0 || param_min.length == 0 || param_max.length == 0)
 		alert("Please fill every parameter input.");
 	else{
-		add_param(param_name, param_long_name, new Param(+param_value, param_units, +param_min, +param_max));
+		add_param(param_name, param_long_name, new Param(+param_value, param_units, 1, +param_min, +param_max));
 	}
 
 

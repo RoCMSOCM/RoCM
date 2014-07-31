@@ -8,11 +8,11 @@
 function ParamSlider(param_name, param) {
 	this.param_name = param_name;
 	if(param == undefined){
-		if(PARAMS.getParam(param_name) !== undefined){
+		if(PARAMS.getParam(param_name) != null){
 			param = PARAMS.getParam(param_name);
 		}
 		else {
-			params = new Params()
+			params = new Param()
 			PARAMS.initialize(param_name, params);
 			PARAMS.update_localStorage();
 		}
@@ -27,6 +27,9 @@ function ParamSlider(param_name, param) {
 					.css("width", sliders_width + "px");
 
 	var minus_button_id = "slider_" + param_name + "_remove";
+
+	var include_units = true;
+	var include_breaks = false;
 
 	wrapper.append(
 		$("<div>")
@@ -46,7 +49,7 @@ function ParamSlider(param_name, param) {
 			.append($("<label>")
 				.attr("for", param_name + "_amount")
 				.css("background-color", "white")
-				.html(get_both_parameter_formats(param_name) + " = " )
+				.html(get_both_parameter_formats(param_name, include_units, include_breaks) + " = " )
 				.on("click", function() {
 		            update_original(param_name);
 		        }))
@@ -129,6 +132,7 @@ ParamSlider.prototype = {
 
 function update_models(param_name) {
 	var data_size = VDATA.VROT_DATA.length;
+	var ymax = 0;
 
 	PARAMS.setFindUsedParams(true);
 	for(var model in GMODEL) {
@@ -144,11 +148,34 @@ function update_models(param_name) {
 					VDATA["VROT_" + model][i] = 0;
 				else
 					VDATA["VROT_" + model][i] = vrot_value;
-			}
 
+				if(vrot_value > ymax)
+					ymax = vrot_value;
+			}
 			update_curve(".VROT_"+model, VDATA["VROT_" + model], VDATA.R);
 		}
+
 	}
+	
+	if(UPDATE_Y_AXIS){
+		for(var v in VDATA) {
+			var vmax = d3.max(VDATA[v]);
+			if(vmax > ymax)
+				ymax = vmax;
+		}
+
+		var y_updated = update_y_axis(0, ymax);
+
+		if(y_updated){
+			for(var model in GMODEL) {
+				update_curve(".VROT_"+model, VDATA["VROT_" + model], VDATA.R);
+			}
+		}
+	}
+
+  	update_data(VDATA.R);
+    update_error_bar(VDATA.R);
+
 
 	PARAMS.setFindUsedParams(false);
 	PARAMS.resetUsed();
@@ -164,9 +191,9 @@ function format_name(name) {
 }
 
 function update_original(key) {
-	if(PARAMS.get(key) !== undefined){
+	if(PARAMS.get(key) != null){
 		var param = PARAMS.getParam(key);
-		var original_param = PARAMS.getOriginal(key);
+		var original_param = PARAMS.getOriginalParam(key);
 		var original_value = original_param.value;
 		var original_min = original_param.min;
 		var original_max = original_param.max;
@@ -204,9 +231,11 @@ function initialize_sliders(slider_keys) {
 		.attr("id", add_button_id)
 		.text("+") // In case the jquery icon fails
 		.on("click", function() {
+			var include_units = true;
+			var include_breaks = false;
 			var parameters = find_all_parameters(true);
 			for(var i=0;i<parameters.length;i++){
-				parameters[i] = get_both_parameter_formats(parameters[i]);
+				parameters[i] = get_both_parameter_formats(parameters[i], include_units, include_breaks);
 			}
 
 			var dialog_id = "param_list_dialog";
@@ -257,6 +286,28 @@ function initialize_sliders(slider_keys) {
         GLOBAL_BULGE = $(this).is(":checked");
         localStorage.setItem("GLOBAL_BULGE", GLOBAL_BULGE);
         update_models("bulge_b");
+    });
+
+
+	// Y_axis updating toggle label
+	$("#sliders").append($("<label/>")
+		.attr("id", "y_axis_toggle_label")
+		.css("float", "right")
+		.html("<b>Update Y-Axis</b>"));
+
+    // Y_axis updating toggle
+	$("#sliders").append($("<input/>")
+		.attr("type", "checkbox")
+		.attr("id", "y_axis_toggle")
+		.css("float", "right"));
+
+	// Default to UPDATE_Y_AXIS
+    $("#y_axis_toggle").prop('checked', UPDATE_Y_AXIS);
+
+	$("#y_axis_toggle").change(function() {
+        UPDATE_Y_AXIS = $(this).is(":checked");
+        localStorage.setItem("UPDATE_Y_AXIS", UPDATE_Y_AXIS);
+        update_models();
     });
 
 

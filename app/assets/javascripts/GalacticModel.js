@@ -2,10 +2,6 @@ function GalacticModel() {};
 
 GalacticModel.prototype = {
 	GR: function(R) {
-		// var distance = PARAMS.get("distance");
-		
-
-		
 		var R0 = PARAMS.get("scale_length");
 		var R0km = CONVERT.kpc_to_km(R0);
 		var Rkm = CONVERT.kpc_to_km(R);
@@ -18,7 +14,7 @@ GalacticModel.prototype = {
 
 		var mass = PARAMS.get("mass_disk");
 
-		var Nstar = mass_to_stars(true_mass(mass));
+		var Nstar = mass_to_stars(mass);
 
 		var bulge_b = PARAMS.get("bulge_b");
 		var bulge_t = PARAMS.get("bulge_t");
@@ -32,7 +28,7 @@ GalacticModel.prototype = {
 		return rotation_velocity;
 	},
 	DARK: function(R) {
-		var sigma0 = true_dark_matter_density(PARAMS.get("dark_matter_density"));
+		var sigma0 = PARAMS.get("dark_matter_density");
 		var sigma0_si = CONVERT.GeVcm3_to_kgkms2(sigma0);
 
 		var r0 = PARAMS.get("dark_halo_radius");
@@ -65,9 +61,9 @@ GalacticModel.prototype = {
 		var mass = PARAMS.get("mass_disk");
 		var gas_mass = PARAMS.get("mass_hydrogen");
 
-		var Nstar = mass_to_stars(true_mass(mass));
+		var Nstar = mass_to_stars(mass);
 
-	    var Ng = mass_to_stars(true_mass(gas_mass));
+	    var Ng = mass_to_stars(gas_mass);
 
 		var bulge_b = PARAMS.get("bulge_b");
 		var bulge_t = PARAMS.get("bulge_t");

@@ -66,21 +66,18 @@ function create_socm_table(param_data) {
 				continue;
 
 			if (r == 0) {
-				var column_name = get_formatted_parameter(keys[c]);
+				var include_units = true;
+				var include_breaks = true;
+				var column_name = get_formatted_parameter(keys[c], include_units, include_breaks);
 				if(column_name != keys[c])
-					column_name = column_name + "<br><font size='1'>(" + keys[c] + ")</font>";
+					column_name = "<font size='1'>(" + keys[c] + ")</font><br>" + column_name;
 				row.append($("<th/>").html(column_name));
 			} else {
 				// Use [r-1] because d3 already takes the csv header out (the <th> tag)
 				var row_data = param_data[r-1][keys[c]];
 				var prefix = "";
 				var suffix = "";
-
-				// if(row_data.contains("[")){
-				// 	prefix = "<button class='reference'>";
-				// 	suffix = "</button>";
-
-				// }
+				
 				row.append($("<td/>").html(prefix + row_data + suffix))
 
 			}

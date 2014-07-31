@@ -145,7 +145,7 @@ function update_chi_squared_model(model_name) {
 	});
 
 	var chi_model = model_name + " χ²";
-	PARAMS[chi_model] = chisqr;
+	PARAMS.set(chi_model, chisqr);
 	update_param_table(chi_model);
 }
 

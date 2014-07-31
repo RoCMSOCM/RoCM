@@ -47,6 +47,7 @@
     <%= javascript_include_tag 'LaTeXEquation.js' %>
 
     <%= javascript_include_tag 'Helper.js' %>
+    <%= javascript_include_tag 'MathHelper.js' %>
     <%= javascript_include_tag 'CurvePlot.js' %>
     <%= javascript_include_tag 'ParamTable.js' %>
     <%= javascript_include_tag 'ParamSlider.js' %>
@@ -138,16 +139,14 @@ function MODELNAME(R) {
       <!-- TODO: Display mapping of formatted parameters to keys within the PARAMS object. -->
     </div>
     <div id="user_defined_model_input" style="float:right;width:50%;height:100%">
-      <label id="model_full_name_label" for="model_full_name"><b>Model full name</b>: </label>
-      <input id="model_full_name" type="text" style="min-width:150px"></input>
-
-      <label id="model_color_label" for="model_color"><b>Model color</b>: </label>
-      <input id="model_color" type="color" value="#3355cc" />
-      <button id="add_parameter" style="float:right">Add new parameter</button>
-
-      <textarea id="model_input" rows="4" cols="20" style="width:100%;display:block;margin:0 auto;height:75%">
+      <label id="model_full_name_label" for="model_full_name" style="float:left"><b>Model full name</b>: </label>
+      <label id="model_color_label" for="model_color" style="float:right"><b>Model color</b>: </label>
+      <br>
+      <input id="model_full_name" type="text" style="float:left;min-width:80%;max-width:80%"></input>
+      <input id="model_color" type="color" value="#3355cc" style="float:right;width:15%"/>
+      <textarea id="model_input" rows="4" cols="20" style="width:100%;display:block;margin:0 auto;height:70%">
 function CUSTOM(R) {
-  var sigma0 = true_dark_matter_density(PARAMS.get("dark_matter_density"));
+  var sigma0 = PARAMS.get("dark_matter_density");
   var sigma0_si = CONVERT.GeVcm3_to_kgkms2(sigma0);
 
   var r0 = PARAMS.get("dark_halo_radius");
@@ -162,8 +161,10 @@ function CUSTOM(R) {
 }</textarea>
 
       <p>
-      <button id="add_model" style="float:left">Add model</button>
-      <button id="remove_model" style="float:right">Remove model</button>
+      <button id="add_model" style="float:left">Add/Update model</button>
+      <button id="remove_model" style="float:left">Remove model</button>
+      <button id="add_parameter" style="float:right">Add new parameter</button>
+
 
     </div>
   </div>

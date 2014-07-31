@@ -41,7 +41,9 @@ function add_param_to_table(table_id, param_name, data) {
     
     var table = $("#" + table_id + " thead tr");
         
-    var column_name = get_formatted_parameter(param_name);
+    var include_units = true;
+    var include_breaks = true;
+    var column_name = get_formatted_parameter(param_name, include_units, include_breaks);
     if(column_name != param_name)
         column_name = column_name + "<br><font size='1'>(" + param_name + ")</font>";
 
@@ -101,7 +103,7 @@ function update_param_table_with_data(data) {
 
 
 function update_param_table(param_name) {
-    if(PARAMS[param_name] === undefined)
+    if(PARAMS.get(param_name) == null)
         return;
 
     // For derived parameters (ex: mass_light_ratio)

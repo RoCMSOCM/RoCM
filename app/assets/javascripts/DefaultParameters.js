@@ -2,9 +2,9 @@ function initialize_default_parameters(){
 	// Default Lambda-CDM values come from the Milky Way
 
 	// Lambda-CDM Halo Radius (r0)
-	add_param("dark_halo_radius", "r<sub>0</sub>", new Param(5.29, "kpc", 0, 100));
+	add_param("dark_halo_radius", "r<sub>0</sub>", new Param(5.29, "kpc", 1, 0, 40));
 	// Lambda-CDM Dark Matter Density (sigma0)
-	add_param("dark_matter_density", "σ<sub>0</sub>", new Param(1.3, "10<sup>-7</sup> GeV cm<sup>-3</sup>"));
+	add_param("dark_matter_density", "σ<sub>0</sub>", new Param(1.3, "10<sup>-7</sup> GeV cm<sup>-3</sup>", Math.pow(10,-7)));
 
 
 

@@ -26,7 +26,27 @@ function import_parameters(data, is_initial) {
     var key = data_keys[i];
 
     //TODO: Handle Units for each Param (coming in from SOCM)
-    var param = new Param(data[key]);
+    var param;
+
+    if(FORMATTED_MAP[key] !== undefined)
+      var units = "";
+      try {
+        units = FORMATTED_MAP[key].units;
+      } 
+      catch(error) {
+        units = units;
+      }
+
+      var multiplier = 1;
+      try {
+        multiplier = FORMATTED_MAP[key].multiplier;
+      } 
+      catch(error) {
+        multiplier = multiplier;
+      }
+
+      param = new Param(data[key], units, multiplier);
+    
 
     PARAMS.initialize(key, param);
 
@@ -110,6 +130,10 @@ function update_session() {
   }
 
 
+  var savedBoolean = localStorage.getItem("UPDATE_Y_AXIS");
+  if(savedBoolean != null)
+    UPDATE_Y_AXIS = (savedBoolean == "true");
+
 }
 
 function update_PARAMS() {
@@ -158,7 +182,12 @@ function add_table_elements(d) {
   d.citation_ids_array = citations;
 
   // Plot and Download buttons
-  d.Functions = "<button class='plot' id='" + d.galaxy_name + "-PLOT'' style='font-size: .8em !important;'>Plot</button><button class='download' id='" + d.id + "-DOWNLOAD' name='" + d.galaxy_name + "' style='font-size: .8em !important;'>Download CSV</button>"
+  d.Functions = "<button class='plot' id='" + d.galaxy_name + "-PLOT'' style='font-size: .8em !important;'>"
+                + "Plot"
+                + "</button>"
+                + "<button class='download' id='" + d.id + "-DOWNLOAD' name='" + d.galaxy_name + "' style='font-size: .8em !important;'>"
+                + "CSV"
+                + "</button>";
 
   return d;
 }
@@ -173,8 +202,8 @@ function update_derived_parameters(param_name) {
   if(param_name == "mass_disk" || param_name == "luminosity"){
     calculated_param_name.push("mass_light_ratio");
 
-    var mass_disk = PARAMS.get("mass_disk");
-    var luminosity = PARAMS.get("luminosity");
+    var mass_disk = PARAMS.getValue("mass_disk");
+    var luminosity = PARAMS.getValue("luminosity");
     
     calculated_param.push(Math.round((mass_disk / luminosity) * 100) / 100); 
   }
@@ -197,7 +226,7 @@ function update_derived_parameters(param_name) {
 
     if(VDATA._R !== undefined) {
       var _Rkpc = VDATA._R;
-      var _DMpc = PARAMS.getOriginalValue("distance");
+      var _DMpc = PARAMS.getOriginal("distance");
       var DMpc = PARAMS.get("distance");
 
       for(var i=0; i<_Rkpc.length; i++) {
@@ -208,9 +237,10 @@ function update_derived_parameters(param_name) {
 
       update_x_axis(0, d3.max(VDATA.R));
 
-      update_models();
       update_data(VDATA.R);
       update_error_bar(VDATA.R);
+
+      update_models();
 
     }
 

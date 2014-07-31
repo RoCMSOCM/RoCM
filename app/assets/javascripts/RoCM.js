@@ -10,7 +10,9 @@ STYLE = new GalacticModelStyleDict();
 
 CONVERT = new Conversion();
 
-GLOBAL_BULGE = false;
+GLOBAL_BULGE = false; // updated via default_bulge(galaxy_name)
+
+UPDATE_Y_AXIS = false; // updated via update_session()
 
 var FONT = "12px sans-serif";
 var	socm_url = "http://socm.herokuapp.com/galaxies";

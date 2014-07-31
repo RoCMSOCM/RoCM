@@ -4,15 +4,16 @@
    
    Use: 
       PARAMS = new ParamDict();
-      PARAMS.add("N", new Param(value, value, units, min, max));
+      PARAMS.add("mass_disk", new Param(value, units, multiplier, min, max));
 
-      // Get only the value by:
-      PARAMS["N"]
+      // Get the true value by:
+      PARAMS.get("mass_disk")
+
+      // Get the displayed value by: 
+      PARAMS.getValue("mass_disk");
 
       // Get the Param Object by:
-      PARAMS.get("N"); 
-      // or
-      PARAMS.getParam("N");
+      PARAMS.getParam("mass_disk");
 
 
  */
@@ -30,20 +31,22 @@ function ParamDict(){
    this.uninitialized = [];
    this.reset_uninitialized = function() { this.uninitialized = []; };
 
+   this.checkRange = function(key) {
+      return this.dictionary[key].value <= 0.00001 && this.dictionary[key] > 0;
+   }
+
    this.initialize = function(key, param) {
       if(typeof(param) != "object"){
          param = new Param(param);
       }
 
       // Initial value (but preserve previous state's original value)
-      if(key[0] != "_" && this.dictionary["_" + key] != undefined){
+      if(key[0] != "_" && this.hasOriginal(key)){
          this.dictionary["_"+key] = param;
-         this["_" + key] = param.value;
       }
 
       // Modifiable value
       this.dictionary[key] = param;
-      this[key] = param.value;       
    };
 
    // Input: parameter name, and Param Object.
@@ -57,14 +60,12 @@ function ParamDict(){
       }
 
       // Initial value if undefined
-      if(key[0] != "_" && this.dictionary["_" + key] == undefined){
+      if(key[0] != "_" && this.hasOriginal(key)){
          this.dictionary["_"+key] = param;
-         this["_" + key] = param.value;
       }
 
 		// Modifiable value
 		this.dictionary[key] = param;
-      this[key] = param.value;       
 
       this.update_localStorage();
 	};
@@ -72,7 +73,6 @@ function ParamDict(){
    this.setValue = function(key, value) {
       // Modifiable value
       this.dictionary[key].value = value;
-      this[key] = value;       
 
       this.update_localStorage();
    };
@@ -87,42 +87,74 @@ function ParamDict(){
    // Get just value by Param[key]
    // or   
    // Get the full Param Object
-   this.getParam = function(key) { 
-      // Updates the value in `this` Object
-      if(this[key] !== undefined && this[key] != this.dictionary[key].value && this.dictionary[key] !== undefined){
-         this.dictionary[key].value = this[key];
-      }
-      else if(this[key] === undefined || this.dictionary[key] === undefined){
+   this.check = function(key) {
+      // This gets called in the 'get' functions.
+      // Checks for an initialized Param
+      // Also checks for an original Param value
+
+      if(this.dictionary[key] === undefined){
          this.uninitialized.push(key);
          return null;
       }
-      if(key[0] != "_" && this.dictionary["_" + key] === undefined){
-         this["_" + key] = this[key];
-         this.dictionary["_" + key] = new Param(this[key])
+
+      if(key[0] != "_" && !this.hasOriginal(key)){
+         this.dictionary["_" + key] = new Param(this.dictionary[key].value);
       }
+
+      return true;
+   }
+   this.getParam = function(key) { 
+      var check = this.check(key);
+      if(check == null)
+         return check;
 
       this.used.push(key);
       return this.dictionary[key]; 
    };
-   this.get = function(key) { 
-      // Updates the value in `this` Object
-      if(this[key] !== undefined && this[key] != this.dictionary[key].value && this.dictionary[key] !== undefined){
-         this.dictionary[key].value = this[key];
-      }
-      else if(this[key] === undefined || this.dictionary[key] === undefined){
-         this.uninitialized.push(key);
-         return null;
-      }
-      if(key[0] != "_" && this.dictionary["_" + key] === undefined){
-         this["_" + key] = this[key];
-         this.dictionary["_" + key] = new Param(this[key]);
-      }
+   this.getValue = function(key) { 
+      var check = this.check(key);
+      if(check == null)
+         return check;
+
+      var value = this.dictionary[key].value;
 
       this.used.push(key);
-      return this[key]; 
+      return value;
    };
-   this.getOriginal = function(key) { return this.getParam("_" + key); };
-   this.getOriginalValue = function(key) { return this.get("_" + key); };
+   this.getMultiplier = function(key) { 
+      var check = this.check(key);
+      if(check == null)
+         return check;
+
+      var multiplier = this.dictionary[key].multiplier;
+
+      this.used.push(key);
+      return multiplier;
+   };
+   this.get = function(key) { 
+      // Gets the true value of the Param (value * multiplier)
+      var check = this.check(key);
+      if(check == null)
+         return null;
+
+      var value = this.getValue(key);
+      var multiplier = this.getMultiplier(key);
+      var return_value;
+
+      if(value == null || multiplier == null)
+         return null;
+
+      if(isNaN(value))
+         return_value = value;
+      else
+         return_value = value * multiplier;
+
+      this.used.push(key);
+      return return_value; 
+   };
+   this.getOriginalParam = function(key) { return this.getParam("_" + key); };
+   this.getOriginal = function(key) { return this.get("_" + key); };
+   this.hasOriginal = function(key) { return (this.dictionary["_" + key] !== undefined); }
 
    this.updateUsed = function(key) { 
       // if(this.getFindUsedParams())
@@ -138,7 +170,6 @@ function ParamDict(){
       this.resetUsed();
       for(var d in dict){
          this.dictionary[d] = dict[d];
-         this[d] = dict[d].value;
       }
    };
 
@@ -161,6 +192,4 @@ function ParamDict(){
       this.setMin(key, min);
       this.setMax(key, max);
    };
-
-   this.hasOriginal = false;
 };

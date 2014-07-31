@@ -271,7 +271,10 @@ function rotate(star_cluster, star_velocity, is3D, t0, is_data){
     })
   }
   star_cluster.attr("transform",  function(d) {
-    return "rotate(" + delta * d.velocity/spin_velocity + ")";
+    if(spin_velocity != 0)
+      return "rotate(" + delta * d.velocity/spin_velocity + ")";
+    else
+      return "rotate(" + d.velocity * Math.pow(10, 1) + ")";
   })
 
 
