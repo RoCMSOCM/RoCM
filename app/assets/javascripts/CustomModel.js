@@ -66,15 +66,14 @@ function add_model() {
 	}
 
 	// Checking if key in PARAMS.get(key) was initialized.	
-	var uninitialized_param = PARAMS.uninitialized;
+	var uninitialized_param = PARAMS.getUninitialized();
 	var u_length = uninitialized_param.length;
     if(u_length > 0){
     	var s = u_length == 1 ? "" : "s";
     	alert("Uninitialized PARAMS value"+ s +" for '"+ uninitialized_param +"'.\n\nAdd the '"+ uninitialized_param +"' parameter"+ s +" via the 'Add new parameter' button.");
-    	PARAMS.reset_uninitialized();
+    	PARAMS.resetUninitialized();
     	return;
     }
-
 
 	GMODEL[model_name] = custom_model;
 	localStorage.setItem(CUSTOM_PRE + model_name, func_body);
@@ -94,13 +93,15 @@ function add_model() {
 	localStorage.setItem("model_color", model_color);
 	localStorage.setItem("model_full_name", full_name);
 
-	window.location.reload();
+	update_models();
 }
 
 function remove_model(model_name) {
 	delete GMODEL[model_name];
 
 	delete localStorage[CUSTOM_PRE + model_name];
+
+	return true;
 }
 
 function get_custom_models() {
@@ -120,16 +121,13 @@ function get_custom_models() {
 }
 
 function remove_model_from_list(dialog_id) {
-	var item_id = dialog_id + "_list_item";
-	var removed = false;
-	$(".ui-selected #" + item_id).each(function() {
+	$("li.ui-selected").each(function() {
 		var text = $(this).text();
 
-		remove_model(text);
-		removed = true;
+		if(remove_model(text)){
+			var legend = d3.select("#legend_VROT_" + text);
+			var data = legend.data();
+			remove_legend_element(data[0]);
+		}
 	});
-
-	if(removed)
-		window.location.reload();
-
 }

@@ -63,11 +63,7 @@ function import_parameters(data, is_initial) {
     slider_configuration = [
       "distance",
       "mass_disk",
-      "scale_length",
-      "dark_halo_radius",
-      "dark_matter_density",
-      "bulge_b",
-      "bulge_t"
+      "scale_length"
       ];
     }
 
@@ -210,8 +206,8 @@ function update_derived_parameters(param_name) {
   else if(param_name == "r_last"){ 
     calculated_param_name.push("universal_constant");
  
-    var vrot_data_last = PARAMS.get("vrot_data_last");
-    var r_last = PARAMS.get("r_last");
+    var vrot_data_last = PARAMS.getValue("vrot_data_last");
+    var r_last = PARAMS.getValue("r_last");
 
     calculated_param.push(Math.round(universal_constant(vrot_data_last,r_last) * 1000) / 1000);
   }
@@ -227,7 +223,7 @@ function update_derived_parameters(param_name) {
     if(VDATA._R !== undefined) {
       var _Rkpc = VDATA._R;
       var _DMpc = PARAMS.getOriginal("distance");
-      var DMpc = PARAMS.get("distance");
+      var DMpc = PARAMS.getValue("distance");
 
       for(var i=0; i<_Rkpc.length; i++) {
         var _Rarcsec = kpc_to_arcsec(_Rkpc[i], _DMpc);
@@ -237,22 +233,70 @@ function update_derived_parameters(param_name) {
 
       update_x_axis(0, d3.max(VDATA.R));
 
-      update_data(VDATA.R);
-      update_error_bar(VDATA.R);
+      // update_data(VDATA.R);
+      // update_error_bar(VDATA.R);
 
       update_models();
 
+      var ratio = (DMpc/_DMpc);
+      var ratio_sqr = Math.pow(ratio, 2);
+
+      var scale_length = PARAMS.getOriginal("scale_length");
+      var scale_length_new = scale_length * ratio;
+      calculated_param_name.push("scale_length");
+      calculated_param.push(scale_length_new);
+
+      var luminosity = PARAMS.getOriginalValue("luminosity");
+      var luminosity_new = luminosity * ratio_sqr;
+      calculated_param_name.push("luminosity");
+      calculated_param.push(luminosity_new);
+
+      var mass_hydrogen = PARAMS.getOriginalValue("mass_hydrogen");
+      var mass_hydrogen_new = mass_hydrogen * ratio_sqr;
+      calculated_param_name.push("mass_hydrogen");
+      calculated_param.push(mass_hydrogen_new);
     }
+  }
+  else if(param_name == "inclination_angle") {
+    if(VDATA._VROT_DATA !== undefined) {
+      var _inclination_angle = PARAMS.getOriginal("inclination_angle");
+      _inclination_angle = CONVERT.deg_to_rad(_inclination_angle);
 
-    // calculated_param_name.push("scale_length");
-    // calculated_param.push(PARAMS.get("scale_length"));
+      var inclination_angle = PARAMS.get("inclination_angle");
+      inclination_angle = CONVERT.deg_to_rad(inclination_angle);
 
-    // calculated_param_name.push("scale_length");
-    // calculated_param.push(PARAMS.get("mass_hydrogen"));
+      var inc_sin = Math.sin(_inclination_angle)/Math.sin(inclination_angle);
+
+      Object.keys(VDATA).map(function(d) {
+        if(d != "R" && d[0] != "_"){
+          var size = VDATA[d].length;
+          var _VROT = VDATA["_" + d];
+          for(var i=0; i<size; i++){
+            VDATA[d][i] = _VROT[i] * inc_sin;
+          }
+        }
+      });
+
+      update_y_axis(0, d3.max(VDATA.VROT_DATA));
+
+      update_models();
+
+      var inc_cos = Math.cos(inclination_angle)/(Math.cos(_inclination_angle) + 0.00000001);
+
+      var mass_hydrogen = PARAMS.getOriginalValue("mass_hydrogen");
+      var mass_hydrogen_new = mass_hydrogen * inc_cos;
+      calculated_param_name.push("mass_hydrogen");
+      calculated_param.push(mass_hydrogen_new);
+    }
   }
 
+
+
+
+  // Update the PARAMS object, ParamTable, and ParamSliders.
   for(var i=0;i<calculated_param_name.length;i++) {
     PARAMS.setValue(calculated_param_name[i], calculated_param[i]);
     update_param_table(calculated_param_name[i]);
+    update_param_slider(calculated_param_name[i]);
   }
 }

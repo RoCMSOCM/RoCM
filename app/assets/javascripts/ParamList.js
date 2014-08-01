@@ -1,15 +1,17 @@
 // ParamList.js
 
 $(document).ready(function() {
+	var dialog_id = "param_list_dialog";
+
 	var add_func = {Add: function() {
-        	add_param_from_list();
+        	add_param_from_list(dialog_id);
         	update_slider_configuration();
 			$(this).dialog("close");
 		}
 	};
 
 	// The list of parameters to add as sliders
-	create_dialog("param_list_dialog", "Parameters", add_func);
+	create_dialog(dialog_id, "Parameters", add_func);
 
 });
 
@@ -37,7 +39,7 @@ function find_all_parameters(exclude_sliders) {
 	var return_params = [];
 
 	for(var param in parameters) {
-		if(param[0] != "_" && !param.contains("χ²") && !immutable_parameters.contains(param)){
+		if(param[0] != "_" && !param.contains(chi_squared_string) && !immutable_parameters.contains(param)){
 			if(exclude_sliders){
 				if(!slider_params.contains(param))
 					return_params.push(param);
@@ -78,12 +80,9 @@ function update_list_dialog(dialog_id, data, empty_message) {
 	var list = $("<ol>").attr("id", list_id).attr("class", "ui_list");
 	list.addClass("ui_list");
 
-	var item_id = dialog_id + "_list_item";
-
 	for(var i=0;i<data.length;i++){
 		list.append($("<li>")
 			.attr("class", "ui-widget-content")
-			.attr("id", item_id + i)
 			.html( data[i] ));
 	}
 
@@ -103,10 +102,10 @@ function fire_dialog(dialog_id) {
 	$("#" + dialog_id).dialog('open');
 }
 
-function add_param_from_list() {
-	$(".ui-selected").each(function() {
+function add_param_from_list(dialog_id) {
+	$("li.ui-selected").each(function() {
 		var text = $(this).text();
-		var split = text.split(":");
+		var split = text.split(" ");
 
 		var param = split[0];
 

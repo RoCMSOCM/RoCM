@@ -28,47 +28,134 @@ function ParamSlider(param_name, param) {
 
 	var minus_button_id = "slider_" + param_name + "_remove";
 
-	var include_units = true;
-	var include_breaks = false;
+	var div_container = $("<div>")
+		.attr("id", param_name + "_slider_wrapper")
+		.attr("class", "slider_wrapper")
+		.css("margin", "0 auto")
+		.css("float", "right")
+		.css("width", "100%")
+
+	var minus_button = $("<button>")
+		.attr("id", minus_button_id)
+		.attr("class", "slider_button")
+		.text("-") // In case the jquery icon fails
+		.on("click", function(d) {
+			remove_slider(param_name);
+			update_slider_configuration();
+		});
+
+	var amount_label = $("<label>")
+		.attr("for", param_name + "_amount")
+		.html(get_both_parameter_formats(param_name) + "= " )
+		.on("click", function() {
+	        update_original(param_name);
+	    });
+
+    var amount_input = $("<input>")
+		.attr("type", "text")
+		.attr("id", param_name + "_amount")
+		.css("background-color", "white")
+		.css("opacity", "1")
+		.css("color", "#f6931f")
+		.css("font-weight", "bold")
+		.keyup(resizeInput)
+		.keypress(function(e) {
+		    handle_input_keypress(this, e, param_name);
+		});
+
+	var units_label = $("<label>")
+		.attr("for", param_name + "_amount")
+		.css("font-weight", "bold")
+		.html("(" + PARAMS.getUnits(param_name) + ")")
+		.on("click", function() {
+	        update_original(param_name);
+	    });
+
+	var div_slider_container = $("<div>")
+		.attr("id", "slider_" + param_name + "_container")
+		.css("width", "100%")
+		.css("opacity", 0.8);	
+
+	var free_id = param_name + "_free_parameter";
+	var free_parameter_toggle = $("<input/>")
+	    .attr("type", "checkbox")
+	    .attr("class", "free_parameter")
+	    .css("float", "right")
+	    .attr("id", free_id);
+
+	var free_parameter_label = $("<label/>")
+	    .attr("for", free_id)
+	    .css("float", "right")
+		.css("font-weight", "bold")
+	    .html(chi_squared_string);
+
+
+	$("#" + free_id).change(function() {
+
+	});
+
+	var min_input = $("<input>")
+		.attr("type", "text")
+		.attr("id", param_name + "_min")
+		.css("background-color", "white")
+		.css("opacity", "1")
+		.css("color", "#f6931f")
+		.css("font-weight", "bold")
+		.keyup(resizeInput)
+		.keypress(function(e) {
+		    handle_input_keypress(this, e, param_name);
+		});
+
+	var min_label = $("<label>")
+		.attr("for", param_name + "_min")
+		.css("float", "left")
+		.html("MIN");
+
+	var max_input = $("<input>")
+		.attr("type", "text")
+		.attr("id", param_name + "_max")
+		.css("background-color", "white")
+		.css("opacity", "1")
+		.css("color", "#f6931f")
+		.css("font-weight", "bold")
+		.css("float", "right")
+		.keyup(resizeInput)
+		.keypress(function(e) {
+		    handle_input_keypress(this, e, param_name);
+		});
+
+	var max_label = $("<label>")
+		.attr("for", param_name + "_max")
+		.css("float", "right")
+		.html("MAX");
+
+	var div_slider = $("<div>")
+		.attr("id", "slider_" + param_name)
+		.css("width", "94%")
+		.css("display", "inline-block")
+		// .css("opacity", 0.8);
+
+	
+	var pbreak = $("<p>");
+
+	var h2break = $("<h2>").html(" ");
+
 
 	wrapper.append(
-		$("<div>")
-			.attr("id", param_name + "_slider_wrapper")
-			.attr("class", "slider_wrapper")
-			.css("margin", "0 auto")
-			.css("float", "right")
-			.css("width", "100%")
-			.append($("<button>")
-				.attr("id", minus_button_id)
-				.attr("class", "slider_button")
-				.text("-") // In case the jquery icon fails
-				.on("click", function(d) {
-					remove_slider(param_name);
-					update_slider_configuration();
-				}))
-			.append($("<label>")
-				.attr("for", param_name + "_amount")
-				.css("background-color", "white")
-				.html(get_both_parameter_formats(param_name, include_units, include_breaks) + " = " )
-				.on("click", function() {
-		            update_original(param_name);
-		        }))
-			.append($("<input>")
-				.attr("type", "text")
-				.attr("id", param_name + "_amount")
-				.css("border", "0")
-				.css("opacity", "1")
-				.css("color", "#f6931f")
-				.css("font-weight", "bold")
-				.keyup(resizeInput)
-				.keypress(function(e) {
-	                handle_input_keypress(this, e, param_name);
-	            }))
-			.append($("<div>")
-				.attr("id", "slider_" + param_name)
-				.css("width", "100%")
-				.css("opacity", 0.8))
-			.append($("<p>")));
+		div_container	
+			.append(h2break)	
+			.append(minus_button)
+			.append(amount_label)
+			.append(amount_input)
+			.append(units_label)
+			.append(div_slider_container
+				.append(min_input)
+				.append(min_label)
+				.append(max_label)
+				.append(max_input)
+				.append(div_slider)
+				.append(free_parameter_toggle)
+				.append(free_parameter_label)));
 
 	$("#" + minus_button_id).button({
       icons: {
@@ -80,8 +167,13 @@ function ParamSlider(param_name, param) {
 	var value = this.param.value;
 	var min = this.param.min;
 	var max = this.param.max;
-	if(max <= value)
-		max = value * 5;
+
+	if(max < value)
+		max = value * 2;
+
+	update_min_input(param_name, min);
+	update_max_input(param_name, max);
+
 
 	var me = this;
 
@@ -103,10 +195,7 @@ function ParamSlider(param_name, param) {
 	$("#" + this.get_formatted_name() + "_amount").val(formatExponential(this.param.value));
 	update_param_table(this.get_formatted_name());
 
-
-	$('input[type="text"]')
-	    .keyup(resizeInput)
-	    .each(resizeInput);
+	update_dynamic_input_fields();
 
 }
 
@@ -129,6 +218,57 @@ ParamSlider.prototype = {
 		return format_name(this.param_name);
 	}
 };
+
+function update_param_slider(param_name) {
+	// if(exits)
+
+	var slider = $("#slider_" + param_name);
+	var max_input = $("#" + param_name + "_max");
+
+	var new_value = PARAMS.getValue(param_name);
+	var min = slider.slider("option", "min");
+	var max = slider.slider("option", "max");
+
+	// Update max slider value if the new_value exceeds the current range.
+    if(new_value < min){
+		var new_min = new_value/5;
+		slider.slider("option", "min", new_min);
+		update_min_input(param_name, new_min);
+    }
+	if(new_value > max){
+		var new_max = new_value*5;
+    	slider.slider("option", "max", new_max);
+    	update_max_input(param_name, new_max);
+    }
+
+	slider.slider("option", "value", new_value);
+}
+
+function update_dynamic_input_fields() {
+	$('input[type="text"]')
+	    .keyup(resizeInput)
+	    .each(resizeInput);
+
+    $("input").superScript();
+}
+
+function update_min_input(param_name, new_min) {
+	var min_input = $("#" + param_name + "_min");
+	min_input.val(formatExponential(new_min));
+
+	PARAMS.setMin(param_name, new_min);
+
+	update_dynamic_input_fields();
+}
+
+function update_max_input(param_name, new_max) {
+	var max_input = $("#" + param_name + "_max");
+	max_input.val(formatExponential(new_max));
+
+	PARAMS.setMax(param_name, new_max);
+
+	update_dynamic_input_fields();
+}
 
 function update_models(param_name) {
 	var data_size = VDATA.VROT_DATA.length;
@@ -173,7 +313,7 @@ function update_models(param_name) {
 		}
 	}
 
-  	update_data(VDATA.R);
+  	update_data(VDATA.R, VDATA.VROT_DATA);
     update_error_bar(VDATA.R);
 
 
@@ -215,10 +355,19 @@ function update_original(key) {
 	    	slider.slider("option", "max", original_max);
 			slider.slider("option", "value", original_value);
 			slider.trigger("change");
+
+			update_min_input(key, original_min);
+			update_max_input(key, original_max);
 		}
 
 		$("#"+ fkey + "_amount").html(formatExponential(original_value));
 		$("#"+ fkey + "_param_value").html(formatExponential(original_value));
+
+		if(key == "distance"){
+			update_original("luminosity");
+			update_original("scale_length");
+			update_original("mass_hydrogen");
+		}
 	}
 }
 
@@ -231,11 +380,11 @@ function initialize_sliders(slider_keys) {
 		.attr("id", add_button_id)
 		.text("+") // In case the jquery icon fails
 		.on("click", function() {
-			var include_units = true;
-			var include_breaks = false;
 			var parameters = find_all_parameters(true);
 			for(var i=0;i<parameters.length;i++){
-				parameters[i] = get_both_parameter_formats(parameters[i], include_units, include_breaks);
+				var units = PARAMS.getUnits(parameters[i]);
+
+				parameters[i] = get_both_parameter_formats(parameters[i]) + " " + units;
 			}
 
 			var dialog_id = "param_list_dialog";
@@ -250,34 +399,51 @@ function initialize_sliders(slider_keys) {
       text: false
     });
 
-	// Reset button
-	var reset_button_id = "slider_reset";
 
-    $("#sliders").append($("<button/>")
+
+	var bulge_toggle = $("<input/>")
+		.attr("type", "checkbox")
+		.css("float", "left")
+		.attr("id", "bulge_toggle")
+	$("#sliders").append();
+
+	var bulge_label = $("<label/>")
+		.attr("id", "bulge_label")
+		.css("float", "left")
+		.html("<b>Bulge</b>");
+
+    var run_button = $("<button/>")
 		.attr("class", "reset_button")
-		.attr("id", reset_button_id)
+		.attr("id", "slider_run")
+		.css("font-size",".8em")
+		.text("Run " + chi_squared_string) 
+		.on("click", function(d) {
+			AutomaticObjectiveTesting();
+		});
+
+
+    var reset_button = $("<button/>")
+		.attr("class", "reset_button")
+		.attr("id", "slider_reset")
 		.css("font-size",".8em")
 		.text("Reset") 
 		.on("click", function(d) {
 			update_parameter_sliders(true);
-		}));
+		});
 
-	$("#" + reset_button_id).button();
-	
+	var title = $("<h2>")
+		.html("Parameter Fitting Sliders")
+		.css("text-align", "center")
+		.css("margin", "0 auto")
+		.css("z-index", -1)
+		.css("border", 0)
 
-	// Title
-	$("#sliders").append($("<h2/>")
-		.html("Parameter Fitting Sliders"));
-	
-	// Bulge toggle label
-	$("#sliders").append($("<label/>")
-		.attr("id", "bulge_toggle_label")
-		.html("<b>Bulge</b>"));
+	$("#sliders").append(bulge_toggle)
+		.append(bulge_label)
+		.append(reset_button)
+		.append(run_button)
+		.append(title);
 
-	// Bulge toggle
-	$("#sliders").append($("<input/>")
-		.attr("type", "checkbox")
-		.attr("id", "bulge_toggle"));
 
 	// Default to GLOBAL_BULGE
     $("#bulge_toggle").prop('checked', GLOBAL_BULGE);
@@ -285,31 +451,13 @@ function initialize_sliders(slider_keys) {
 	$("#bulge_toggle").change(function() {
         GLOBAL_BULGE = $(this).is(":checked");
         localStorage.setItem("GLOBAL_BULGE", GLOBAL_BULGE);
-        update_models("bulge_b");
+        update_models("mass_bulge");
     });
 
+	reset_button.button();	
 
-	// Y_axis updating toggle label
-	$("#sliders").append($("<label/>")
-		.attr("id", "y_axis_toggle_label")
-		.css("float", "right")
-		.html("<b>Update Y-Axis</b>"));
-
-    // Y_axis updating toggle
-	$("#sliders").append($("<input/>")
-		.attr("type", "checkbox")
-		.attr("id", "y_axis_toggle")
-		.css("float", "right"));
-
-	// Default to UPDATE_Y_AXIS
-    $("#y_axis_toggle").prop('checked', UPDATE_Y_AXIS);
-
-	$("#y_axis_toggle").change(function() {
-        UPDATE_Y_AXIS = $(this).is(":checked");
-        localStorage.setItem("UPDATE_Y_AXIS", UPDATE_Y_AXIS);
-        update_models();
-    });
-
+	run_button.button();
+	
 
 	// Create initial sliders
     for(var i=0;i<slider_keys.length;i++){
@@ -346,7 +494,7 @@ function update_parameter_sliders(is_original_value) {
 		var galaxy_name = PARAMS.get("galaxy_name");
 		// First check if the param is within SOCM 
 		// (meaning the default should be reset if the galaxy doesn't have the observed parameter)
-		// Ex: dark_matter_density, bulge_b
+		// Ex: dark_matter_density, mass_bulge
 		if(SOCMPARAMS[galaxy_name][param_name] === undefined || (is_original_value !== undefined && is_original_value)){
 			update_original(param_name);
 		}
@@ -385,8 +533,10 @@ function get_slider_configuration() {
 }
 
 // For slider and ParamTable input fields
-function handle_input_keypress(input, e, param_name) {
+function handle_input_keypress(input, e, param_name, min_max) {
 	var value = $(input).val();
+	var id = $(input).attr("id");
+
 	var keyCode = e.keyCode;
 	var input_value = String.fromCharCode(keyCode);
 
@@ -394,21 +544,58 @@ function handle_input_keypress(input, e, param_name) {
 	    e.preventDefault();
 	else if(keyCode === 13 && param_name != undefined){
 		var new_value = +(value + input_value)
-		PARAMS.setValue(param_name, new_value);
-
-		update_models(param_name);
+		
 
 		var fname = format_name(param_name);
-		var slider = $("#slider_" + fname);
 
-		var min = slider.slider("option", "min");
-		var max = slider.slider("option", "max");
-		// Update max slider value if the new_value exceeds the current range.
-		if(new_value >= max)
-	    	slider.slider("option", "max", new_value*5);
-	    if(new_value <= min)
-	    	slider.slider("option", "min", new_value/5)
-    
-    	slider.slider("option", "value", new_value);
+		var update_slider = true;
+
+		if(id.contains("_min")){ // HANDLE MIN CHANGE
+			update_slider = false;
+			var slider = $("#slider_" + fname);
+			var curr_min = slider.slider("option", "min");
+			var curr_max = slider.slider("option", "max");
+			var curr_val = slider.slider("option", "value");
+			var new_min = new_value;
+
+			if(new_min >= curr_val && new_min < curr_max){
+				new_value = (curr_max + new_min) / 2;
+				update_slider = true;
+			}
+			else if(new_min >= curr_max){
+				new_min = curr_min;
+			}
+
+			slider.slider("option", "min", new_min);
+			update_min_input(fname, new_min);
+		}
+		else if(id.contains("_max")){ // HANDLE MAX CHANGE
+			update_slider = false;
+			var slider = $("#slider_" + fname);
+			var curr_min = slider.slider("option", "min");
+			var curr_max = slider.slider("option", "max");
+			var curr_val = slider.slider("option", "value");
+			var new_max = new_value;
+			
+			if(new_max <= curr_val && new_max > curr_min){
+				new_value = (curr_min + new_max) / 2;
+				update_slider = true;
+			}
+			else if(new_max <= curr_min){
+				new_max = curr_max;
+			}
+			
+
+			slider.slider("option", "max", new_max);
+			update_max_input(fname, new_max);
+		}
+
+		if(update_slider) {
+			PARAMS.setValue(param_name, new_value);
+
+			update_models(param_name);
+
+			update_param_slider(fname);
+		}
 	}
 }

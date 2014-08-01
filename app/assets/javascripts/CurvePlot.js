@@ -102,6 +102,15 @@ function get_data(data) {
   return data;
 }
 
+function add_models_to_data(data) {
+    data.forEach(function(d) {
+      for(var model in GMODEL) {
+        d["VROT_" + model] = GMODEL[model](+d.R);
+      }
+    });
+    return data;
+}
+
 function create_curve_plot_svg() {
   // D3 graph set-up
   svg = d3.select("#graph_svg")
@@ -140,11 +149,7 @@ function create_curve_plot(galaxy_name, is_initial){
     // META
     data = get_data(data);
 
-    data.forEach(function(d) {
-      for(var model in GMODEL) {
-        d["VROT_" + model] = GMODEL[model](+d.R);
-      }
-    });
+    data = add_models_to_data(data);
 
     var velocities = update_velocities(data);
 
@@ -152,10 +157,13 @@ function create_curve_plot(galaxy_name, is_initial){
     var data_size = velocities[0].values.length;
       
     for(var i=0;i<vel_size;i++){
-      VDATA[velocities[i].name] = Array(data_size);
+      var name = velocities[i].name;
+      VDATA[name] = Array(data_size);
+      VDATA["_" + name] = Array(data_size);
 
       for(var j=0;j<data_size;j++){
-        VDATA[velocities[i].name][j] = velocities[i].values[j].v
+        VDATA[name][j] = velocities[i].values[j].v;
+        VDATA["_" + name][j] = velocities[i].values[j].v;
       }
     }
     
@@ -218,7 +226,7 @@ function set_curve_domain(data, velocities) {
   x.domain(d3.extent(data, function(d) { return d.R; }));
 
   var ymin = d3.min(velocities, function(c) { return d3.min(c.values, function(v) { return v.v; }); });
-  var ymax = d3.max(velocities, function(c) { return d3.max(c.values, function(v) { return v.v; }); });
+  var ymax = d3.max(data, function(d) { return d.VROT_DATA; });
 
   y.domain([ymin, ymax + ymax/4]);
 }
@@ -405,13 +413,14 @@ function plot_data(data){
         .text(function(d) { return "(" + d.R + ", " + d.VROT_DATA + ")"; });
 }
 
-function update_data(R_data) {
+function update_data(R_data, V_data) {
 
   var dot_data = get_dot_data(".VROT_DATA");
 
   var size = R_data.length;
   for(var i=0; i<size; i++) {
     dot_data[i].R = R_data[i];
+    dot_data[i].VROT_DATA = V_data[i];
   }
 
   svg.selectAll(".VROT_DATA")
@@ -451,7 +460,11 @@ function plot_curves(velocities){
 
   var path = velocity.append("path");
 
-  path.attr("class", function(d) { return d.name; })
+  create_curve(path);
+}
+
+function create_curve(path_svg) {
+  path_svg.attr("class", function(d) { return d.name; })
     .attr("d", function(d) { return d.name.contains("DATA") ? null : curve(d.values); })
     .attr("stroke-dasharray", function(d,i) { return is(d, "data") || !ANIMATE_BEGINNING ? "0 0" : children_length(velocity, i) + " " + children_length(velocity, i)*2; } )
     .attr("stroke-dashoffset", function(d,i) {return is(d, "data") || !ANIMATE_BEGINNING ? "0 0" :  children_length(velocity, i); } )
@@ -471,20 +484,117 @@ function remove_curves(){
   svg.selectAll(".velocity").remove();
 }
 
+function update_curve(line_class, v_array, R_array) {
+  var line_svg = svg.select(line_class);
+  var line_data = get_line_data(line_class);
+
+  // If there is no curve, create one.
+  if(line_data === undefined){
+    line_data = {};
+    line_data.name = line_class.replace(".","");
+    line_data.values = Array(R_array.length);
+
+    for(var i=0;i<line_data.values.length;i++){
+      line_data.values[i] = {
+        R:i, 
+        v: v_array[i], 
+        y0: v_array[i]
+      }; 
+    }
+
+    var velocity = svg.select("#velocities")
+                    .append("g").attr("class", "velocity");
+
+    line_svg = velocity.append("path").data([line_data]);
+
+    create_curve(line_svg);
+
+
+  }
+
+  // Add it to the legend if it doesn't exist
+  var legend_id = "legend_" + line_data.name;
+  if($("#" + legend_id).length == 0){
+    var legend_panel = d3.select("#legend_panel");
+    var all_legend_elements = legend_panel.selectAll(".legend");
+    var legend_size = all_legend_elements[0].length;
+
+    var legend = legend_panel
+      .data([line_data])
+      .append("g")
+        .attr("class", "legend")
+        .attr("id", legend_id)
+        .attr("transform", function(d, i) { return "translate(0," + legend_size * legend_item_vertical_offset + ")"; });
+
+    add_to_legend(legend);
+
+  }
+
+  Object.keys(line_data.values).map(function(value, index) {
+    line_data.values[value].R = R_array[index];
+    line_data.values[value].v = v_array[index];
+    line_data.values[value].y0 = v_array[index];
+  });
+
+  line_svg
+    .data([line_data])
+    .attr("stroke-dashoffset", "0")         
+    .attr("d", function(d) { return curve(d.values); });
+}
+
+// function create_curve() {
+
+// }
+
+function get_line_data(line_class) {
+  var line_svg = svg.select(line_class)
+  var line_data = line_svg.data()[0];
+
+  return line_data;
+}
+
+function get_dot_data(dot_class) {
+  var dot_svg = svg.selectAll(dot_class)
+  var dot_data = dot_svg.data();
+
+  return dot_data;
+}
+
+function update_velocities(data) {
+  var keys = Object.keys(data[0]);
+  var R_filtered = keys.filter(function(d) { return d != "R"; })
+
+  var velocities = R_filtered.map(function(name) {
+    return {
+      name: name,
+      values: data.map(function(d) {
+      return {R: d.R,
+        v: +d[name], 
+        y0: name.contains("ERROR") ? +d[name.replace("_ERROR", "")] : +d[name]};
+      })
+    };
+  });
+
+ return velocities;
+}
+
+function children_length(velocity, i) {
+  return velocity[0][i].children.item(0).getTotalLength();
+}
+
+// Legend placement constants
+var leg_width = 18;
+var leg_offset = 10;
+var legend_item_vertical_offset = 25;
+var legend_width_factor = 2;
+var rect_position_offset = 5;
+
 function create_legend(velocities, SHOW_SUN) {
   var legend_dialog = $("#rocm_wrapper").append($("<div>")
     .attr("id", "legend_confirm")
     .attr("title", "Remove model from legend?"));
 
-  var leg_width = 18;
-  var leg_offset = 10;
-  var legend_item_vertical_offset = 25;
-  var legend_width_factor = 2;
-  var rect_position_offset = 5;
-
-  var legend_data = velocities.filter(function(d) {
-    return !is(d, "min");
-  });
+  var legend_data = velocities;
   
   //Add sun to the legend data
   if(SHOW_SUN)
@@ -492,27 +602,55 @@ function create_legend(velocities, SHOW_SUN) {
 
   var data_size = legend_data.length+2;
   
+  var legend_panel_id = "legend_panel";
+
   var legend_panel = svg.append("svg")
-        .attr("id", "legend_panel")
+        .attr("id", legend_panel_id)
         .attr("x", width + leg_width/2)
         .attr("y", -leg_width/2)
         //defined dynamically below // .attr("width", leg_width*legend_width_factor*data_size)
-        .attr("height", data_size*(leg_width+legend_item_vertical_offset) / 2)
+        .attr("height", "100%");//data_size*(leg_width+legend_item_vertical_offset) / 2)
 
   legend_panel.append("rect")
         .attr("width", "100%")
         .attr("height", "100%")
         .attr("fill", "white")
-        .attr("opacity", 0)
+        .attr("opacity", 0);
+
 
   var num_elements = 0;
-        
-  var legend = legend_panel.selectAll(".legend")
-          .data(legend_data)
-          .enter().append("g")
-            .attr("class", "legend")
-            .attr("transform", function(d, i) { num_elements=i; return "translate(0," + i * legend_item_vertical_offset + ")"; });
 
+  var legend = legend_panel.selectAll(".legend")
+    .data(legend_data)
+    .enter().append("g")
+      .attr("class", "legend")
+      .attr("id", function(d) { return "legend_" + d.name; })
+      .attr("transform", function(d, i) { num_elements=i; return "translate(0," + i * legend_item_vertical_offset + ")"; });
+  
+
+  add_to_legend(legend);
+
+
+  var max_width = 0;
+    $('.legend').each(function(i,n){
+      var width = n.getBoundingClientRect().width;
+
+      if(width>max_width) max_width = width;
+    });
+
+    legend_panel.attr("width", max_width + leg_width);
+
+
+    // $( "#legend_panel" )
+    //   .draggable()
+    //   .bind('drag', function(event, ui){
+    //     // update coordinates manually, since top/left style props don't work on SVG
+    //     event.target.setAttribute('x', ui.position.left - margin.left - margin.right);
+    //     event.target.setAttribute('y', ui.offset.top - num_elements*legend_item_vertical_offset);
+    //   });
+}
+
+function add_to_legend(legend) {
   legend.append("rect")
     .attr("class", function(d) { return d.name + "_legend_rect"; })
     .attr("x", rect_position_offset)
@@ -528,11 +666,10 @@ function create_legend(velocities, SHOW_SUN) {
       object_opacity(object_class);
 
       // if(!is(d, "data") && !is(d, "sun"))
-        // update_bar(d.name, get_bar_data(d.name));
+        // update_bar(d.name, calculate_chi_squared(d.name));
     })
     .on("contextmenu", function(d, index) {
       // Handle right click, open dialog confirmation
-      console.log(d.name);
       var dialog = $("#legend_confirm");
       var full_name = STYLE.get(d.name.replace("VROT_", "")).full_name;
 
@@ -548,45 +685,11 @@ function create_legend(velocities, SHOW_SUN) {
         modal: true,
         buttons: {
           Remove: function() {
-            var object_class = is(d, "err") ? "VROT_DATA_ERROR" : d.name;
-            var object = svg.selectAll("."+object_class);
-            object.style("opacity", 0);
-
-            var this_name = d.name;
-            var this_index = 0;
-            for(var i=0;i<legend_data.length;i++) {
-              if(legend_data[i].name == this_name)
-                this_index = i;
-            }
-            var this_rect_class = "." + this_name + "_legend_rect";
-            var this_text_class = "." + this_name + "_legend_text";
-
-            svg.select(this_rect_class).remove();
-            svg.select(this_text_class).remove();
-
-            legend_data.forEach(function(d, i) {
-              if(this_index < i){
-                // Removes the items below the right-clicked from the legend.
-                var below_rect_name = "." + d.name + "_legend_rect";
-                var below_text_name = "." + d.name + "_legend_text";
-
-                var this_y = d3.transform(svg.select(below_rect_name).attr("transform")).translate[1];
-
-                svg.select(below_rect_name).attr("transform", "translate(0," +  (-legend_item_vertical_offset+this_y) + ")");
-                svg.select(below_text_name).attr("transform", "translate(0," + (-legend_item_vertical_offset+this_y) + ")");
-              }
-            });
-
-            legend_data = legend_data.filter(function(d,i) { 
-              return i != this_index;
-            });
-
-            $( this ).dialog( "close" );
-            dialog.empty();
+            remove_legend_element(d, this);
           },
           Cancel: function() {
-            $( this ).dialog( "close" );
-            dialog.empty();
+            $(this).dialog( "close" );
+            $(this).empty();
           }
         }
       });      
@@ -594,6 +697,7 @@ function create_legend(velocities, SHOW_SUN) {
       //stop showing browser menu
       d3.event.preventDefault();
     });
+
 
   legend.append("text")
     .attr("x", rect_position_offset + leg_width*legend_width_factor*1.1)
@@ -612,30 +716,52 @@ function create_legend(velocities, SHOW_SUN) {
       var object_class = is(d, "err") ? "VROT_DATA_ERROR" : d.name;
       object_opacity(object_class);
     });
+}
 
-  var max_width = 0;
-  $('.legend').each(function(i,n){
-    var width = n.getBoundingClientRect().width;
+function remove_legend_element(d, this_dialog) {
+  var object_class = is(d, "err") ? "VROT_DATA_ERROR" : d.name;
+  var object = svg.selectAll("."+object_class);
+  object.style("opacity", 0);
 
-    if(width>max_width) max_width = width;
+  var this_name = d.name;
+  var this_index = 0;
+  var legend_data = d3.selectAll(".legend").data();
+
+  for(var i=0;i<legend_data.length;i++) {
+    if(legend_data[i].name == this_name)
+      this_index = i;
+  }
+  var this_rect_class = "." + this_name + "_legend_rect";
+  var this_text_class = "." + this_name + "_legend_text";
+
+  svg.select(this_rect_class).node().parentNode.remove();
+  svg.select(this_rect_class).remove();
+  svg.select(this_text_class).remove();
+
+  legend_data.forEach(function(d, i) {
+    if(this_index < i){
+      // Removes the items below the right-clicked from the legend.
+      var below_rect_name = "." + d.name + "_legend_rect";
+      var below_text_name = "." + d.name + "_legend_text";
+
+      var this_y = d3.transform(svg.select(below_rect_name).attr("transform")).translate[1];
+
+      svg.select(below_rect_name).attr("transform", "translate(0," +  (-legend_item_vertical_offset+this_y) + ")");
+      svg.select(below_text_name).attr("transform", "translate(0," + (-legend_item_vertical_offset+this_y) + ")");
+    }
   });
 
-  legend_panel.attr("width", max_width + leg_width);
+  legend_data = legend_data.filter(function(d,i) { 
+    return i != this_index;
+  });
 
-
-  // $( "#legend_panel" )
-  //   .draggable()
-  //   .bind('drag', function(event, ui){
-  //     // update coordinates manually, since top/left style props don't work on SVG
-  //     event.target.setAttribute('x', ui.position.left - margin.left - margin.right);
-  //     event.target.setAttribute('y', ui.offset.top - num_elements*legend_item_vertical_offset);
-  //   });
-
+  $(this_dialog).dialog( "close" );
+  $(this_dialog).empty();
 }
 
 function create_title(galaxy_name, SHOW_TITLE, ANIMATE_TITLE) {
   if(SHOW_TITLE){
-    var title = svg.append("text")
+  var title = svg.append("text")
       .attr("class", "title")
       .attr("x", (width / 2))             
       .attr("y", ANIMATE_TITLE ? 220 : 0)
@@ -644,7 +770,7 @@ function create_title(galaxy_name, SHOW_TITLE, ANIMATE_TITLE) {
       .style("font-size", ANIMATE_TITLE ? "40px" : "14px") 
       .style("text-decoration", "underline")
       .style("fill", "black")
-      .text(galaxy_name + " Galaxy");
+      .text(galaxy_name + " GALAXY");
 
     if(ANIMATE_TITLE){
       title.transition()
@@ -668,7 +794,6 @@ function get_color(d) {
 
   return STYLE.get(d).color;
 }
-
 
 function get_opacity(d) {
   if(d.name !== undefined){
@@ -718,58 +843,6 @@ function object_opacity(d) {
   
   set_opacity(d, new_opacity);
   object.style("opacity", new_opacity); 
-}
-
-function update_curve(line_class, v_array, R_array) {
-  var line_svg = svg.select(line_class);
-  var line_data = get_line_data(line_class);
-
-  Object.keys(line_data.values).map(function(value, index) {
-    line_data.values[value].R = R_array[index];
-    line_data.values[value].v = v_array[index];
-    line_data.values[value].y0 = v_array[index];
-  });
-
-  line_svg
-    .data([line_data])
-    .attr("stroke-dashoffset", "0")         
-    .attr("d", function(d) { return curve(d.values); });
-}
-
-function get_line_data(line_class) {
-  var line_svg = svg.select(line_class)
-  var line_data = line_svg.data()[0];
-
-  return line_data;
-}
-
-function get_dot_data(dot_class) {
-  var dot_svg = svg.selectAll(dot_class)
-  var dot_data = dot_svg.data();
-
-  return dot_data;
-}
-
-function update_velocities(data) {
-  var keys = Object.keys(data[0]);
-  var R_filtered = keys.filter(function(d) { return d != "R"; })
-
- var velocities = R_filtered.map(function(name) {
-  return {
-    name: name,
-    values: data.map(function(d) {
-      return {R: d.R,
-        v: +d[name], 
-        y0: name.contains("ERROR") ? +d[name.replace("_ERROR", "")] : +d[name]};
-      })
-    };
-  });
-
- return velocities;
-}
-
-function children_length(velocity, i) {
-  return velocity[0][i].children.item(0).getTotalLength();
 }
 
 function zoomed() {

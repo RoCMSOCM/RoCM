@@ -44,5 +44,11 @@ Conversion.prototype = {
 	},
 	pc_to_AU: function(pc) {
 		return pc * 206246.806;
+	},
+	rad_to_deg: function(rad) {
+		return rad * 180/Math.PI;
+	},
+	deg_to_rad: function(deg) {
+		return deg * Math.PI/180;
 	}
 };

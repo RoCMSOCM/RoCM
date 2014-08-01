@@ -1,11 +1,19 @@
 /////////////////// MATH HELP ///////////////////
 
+var chi_squared_string = "χ²"
+
 function difference(a, b) {
 	return Math.abs(a - b);
 }
 
 function chi_squared(obs, exp) {
 	return Math.pow(obs - exp, 2) / exp;
+}
+
+function chi_squared_variance(obs, exp, obs_err) {
+	obs_err = obs_err == 0 ? 0.2 : obs_err;
+
+	return Math.pow(obs - exp, 2) / Math.pow(obs_err, 2);
 }
 
 //TODO: Numbers between 0-1 (starting at 0.001 or 1.0e-3)
@@ -50,14 +58,12 @@ $.fn.superScript = function() {
 
 function arcsec_to_kpc(arcsec, DMpc) {
 	var Dkpc = CONVERT.Mpc_to_kpc(DMpc);
-	var deg2rad = Math.PI/180;
-	return Dkpc * Math.tan(CONVERT.arcsec_to_degree(arcsec) * deg2rad);
+	return Dkpc * Math.tan(CONVERT.deg_to_rad(CONVERT.arcsec_to_degree(arcsec)));
 }
 
 function kpc_to_arcsec(kpc, DMpc) {
 	var DMpc = CONVERT.Mpc_to_kpc(DMpc);
-	var rad2deg = 180/Math.PI;
-	return CONVERT.degree_to_arcsec(Math.atan(kpc/DMpc) * rad2deg);
+	return CONVERT.degree_to_arcsec(CONVERT.rad_to_deg(Math.atan(kpc/DMpc)));
 }
 
 function stellar_surface_matter_density(R, scale_length) {

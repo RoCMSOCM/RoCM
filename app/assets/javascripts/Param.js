@@ -13,8 +13,23 @@ function Param(value, units, multiplier, min, max) {
 	this.value = value === undefined ? 0 : value;	
 	this.units = units === undefined ? "" : units;
 	this.multiplier = multiplier === undefined ? 1 : multiplier;
-	this.min = min === undefined ? isNaN(value) ? 0 : value <= 0.01 ? value/10 : 0 : min;
-	this.max = max === undefined ? isNaN(value) ? 0 : value*5 : max;
+	if(min === undefined){
+		if(isNaN(value))
+			this.min = 0;
+		else
+			this.min = value/2;
+	}
+	else
+		this.min = min;
+
+	if(max === undefined){
+		if(isNaN(value))
+			this.max = 0;
+		else
+			this.max = value*2;
+	}
+	else
+		this.max = max;
 };
 
 

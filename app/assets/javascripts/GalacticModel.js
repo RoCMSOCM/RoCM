@@ -10,16 +10,16 @@ GalacticModel.prototype = {
 		var bessel_func = (besseli(x,0)*besselk(x,0) - besseli(x,1)*besselk(x,1));
 
 		var c = CONST.get("c");
-		var B = PARAMS.get("schwarzschild_radius");
+		var B = CONST.get("schwarzschild_radius");
 
 		var mass = PARAMS.get("mass_disk");
 
 		var Nstar = mass_to_stars(mass);
 
-		var bulge_b = PARAMS.get("bulge_b");
-		var bulge_t = PARAMS.get("bulge_t");
+		var mass_bulge = PARAMS.get("mass_bulge");
+		var scale_length_bulge = PARAMS.get("scale_length_bulge");
 
-		var bulge = BULGE(R, bulge_b, bulge_t);
+		var bulge = BULGE(R, mass_bulge, scale_length_bulge);
 
 		var rotation_velocity = Math.sqrt(Rkm * (((Nstar*B*c*c*Rkm)/(2*R0km*R0km*R0km)) * bessel_func));
 
@@ -34,7 +34,7 @@ GalacticModel.prototype = {
 		var r0 = PARAMS.get("dark_halo_radius");
 
 		var c = CONST.get("c");
-		var B = PARAMS.get("schwarzschild_radius");
+		var B = CONST.get("schwarzschild_radius");
 
 		var inner = (4*Math.PI*B*c*c*sigma0_si) * (1-((r0/R)*Math.atan(R/r0)));
 		var rotation_velocity = Math.sqrt(Math.abs(inner));
@@ -46,7 +46,7 @@ GalacticModel.prototype = {
 		var norm = CONVERT.kpc_to_km(1);
 
 		var c = CONST.get("c");
-		var B = PARAMS.get("schwarzschild_radius");
+		var B = CONST.get("schwarzschild_radius");
 
 		var cMod = CONVERT.km_to_cm(c)*mod;
 		var BMod = CONVERT.km_to_cm(B)*mod;
@@ -65,10 +65,10 @@ GalacticModel.prototype = {
 
 	    var Ng = mass_to_stars(gas_mass);
 
-		var bulge_b = PARAMS.get("bulge_b");
-		var bulge_t = PARAMS.get("bulge_t");
+		var mass_bulge = PARAMS.get("mass_bulge");
+		var scale_length_bulge = PARAMS.get("scale_length_bulge");
 
-		var bulge = BULGE(R, bulge_b, bulge_t);
+		var bulge = BULGE(R, mass_bulge, scale_length_bulge);
 
 		var besx2 = R/(2*R0kpc);
 		var besx8 = R/(8*R0kpc);

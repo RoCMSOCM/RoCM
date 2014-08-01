@@ -29,7 +29,10 @@ function ParamDict(){
    this.getFindUsedParams = function() { return findUsedParams; }
 
    this.uninitialized = [];
-   this.reset_uninitialized = function() { this.uninitialized = []; };
+   this.setUninitialized = function(key) { this.uninitialized.push(key); };
+   this.getUninitialized = function() { return this.uninitialized; };   
+   this.resetUninitialized = function() { this.uninitialized = []; };
+
 
    this.checkRange = function(key) {
       return this.dictionary[key].value <= 0.00001 && this.dictionary[key] > 0;
@@ -55,7 +58,7 @@ function ParamDict(){
    };
 
    this.set = function(key, param) { 
-      if(param.value == undefined || typeof(param) != "object"){
+      if(param.value === undefined || typeof(param) != "object"){
          param = new Param(param);
       }
 
@@ -88,17 +91,21 @@ function ParamDict(){
    // or   
    // Get the full Param Object
    this.check = function(key) {
+      if(key === undefined)
+         alert("key undefined")
       // This gets called in the 'get' functions.
       // Checks for an initialized Param
       // Also checks for an original Param value
 
-      if(this.dictionary[key] === undefined){
-         this.uninitialized.push(key);
+      var d = this.dictionary[key];
+
+      if(d === undefined){
+         this.setUninitialized(key);
          return null;
       }
 
       if(key[0] != "_" && !this.hasOriginal(key)){
-         this.dictionary["_" + key] = new Param(this.dictionary[key].value);
+         this.dictionary["_" + key] = new Param(d.value, d.units, d.multiplier, d.min, d.max);
       }
 
       return true;
@@ -131,6 +138,16 @@ function ParamDict(){
       this.used.push(key);
       return multiplier;
    };
+   this.getUnits = function(key) { 
+      var check = this.check(key);
+      if(check == null)
+         return check;
+
+      var units = this.dictionary[key].units;
+
+      this.used.push(key);
+      return units;
+   };
    this.get = function(key) { 
       // Gets the true value of the Param (value * multiplier)
       var check = this.check(key);
@@ -153,6 +170,7 @@ function ParamDict(){
       return return_value; 
    };
    this.getOriginalParam = function(key) { return this.getParam("_" + key); };
+   this.getOriginalValue = function(key) { return this.getOriginalParam(key).value; };
    this.getOriginal = function(key) { return this.get("_" + key); };
    this.hasOriginal = function(key) { return (this.dictionary["_" + key] !== undefined); }
 

@@ -34,9 +34,9 @@ var integral_func = function(z) {
 	return Math.pow(z,2)*besselk(z,0);
 };
 
-function BULGE(x, bulge_b, bulge_t) {
+function BULGE(x, mass_bulge, scale_length_bulge) {
 	if(GLOBAL_BULGE){
-		var bulge_contrib = bulge_b*27478.2/x*numerically_integrate(0.00001, x/bulge_t, 1, integral_func);
+		var bulge_contrib = mass_bulge*27478.2/x*numerically_integrate(0.00001, x/scale_length_bulge, 1, integral_func);
 		
 		return bulge_contrib;
 	}

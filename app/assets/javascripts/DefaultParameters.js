@@ -2,23 +2,33 @@ function initialize_default_parameters(){
 	// Default Lambda-CDM values come from the Milky Way
 
 	// Lambda-CDM Halo Radius (r0)
-	add_param("dark_halo_radius", "r<sub>0</sub>", new Param(5.29, "kpc", 1, 0, 40));
+	add_param(
+		"dark_halo_radius", 
+		"r<sub>0</sub>", 
+		new Param(5.29, "kpc", 1, 0, 40));
 	// Lambda-CDM Dark Matter Density (sigma0)
-	add_param("dark_matter_density", "σ<sub>0</sub>", new Param(1.3, "10<sup>-7</sup> GeV cm<sup>-3</sup>", Math.pow(10,-7)));
+	add_param(
+		"dark_matter_density", 
+		"σ<sub>0</sub>", 
+		new Param(1.3, "10<sup>-7</sup> GeV cm<sup>-3</sup>", Math.pow(10,-7)));
 
 
+	var mass_bulge = 0.611499
+	var scale_length_bulge = 0.0939927
+	add_param(
+		"mass_bulge",
+		"M<sub>Bulge</sub>", 
+		new Param(mass_bulge, "10<sup>10</sup> M<sub>☉</sub>"));
+	add_param(
+		"scale_length_bulge", 
+		"R0<sub>Bulge</sub>", 
+		new Param(scale_length_bulge, "kpc"));
 
-	// TODO: bulge full names and units
-	var bulge_b = 0.611499 // *10^10
-	var bulge_t = 0.0939927
-	add_param("bulge_b", "Bulge<sub>b</sub> fitting", new Param(bulge_b)) // *10^10
-	add_param("bulge_t", "Bulge<sub>t</sub> fitting", new Param(bulge_t));
 
-
-
-
-
-	// TODO: Calculate it.
-	// Schwarzchild radius
-	add_param("schwarzschild_radius", "β<sup>*</sup>", new Param(1.48, "km"));
+	// Observed inclination angle
+	var inclination_angle = 90;
+	add_param(
+		"inclination_angle",
+		"θ<sub>i</sub>",
+		new Param(inclination_angle, "°", 1, 0.001, 90));
 }

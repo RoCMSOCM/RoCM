@@ -20,7 +20,8 @@ function create_param_table(table_id, data){
     var table = $("#" + table_id);
 
     // Headers row
-    table.append($("<thead><tr>"));
+    var header = $("<thead><tr>");
+    table.append(header);
 
     table = $("#" + table_id);
 
@@ -47,14 +48,28 @@ function add_param_to_table(table_id, param_name, data) {
     if(column_name != param_name)
         column_name = column_name + "<br><font size='1'>(" + param_name + ")</font>";
 
-    table.append($("<th>")
+    var header = $("<th>")
         .html(column_name)
         .attr("class", "param_table_header")
         .attr("id", param_name.replace(/\s/, "_") + "_param_header")
         .on("click", function() {
             update_original(param_name);
-        }));
+        });
 
+    if(param_name.contains(chi_squared_string)){
+        var id = "objective_model_toggle"
+        var objective_model_toggle = $("<input/>")
+            .attr("type", "radio")
+            .attr("name", "objective_model")
+            .attr("id", param_name.replace(chi_squared_string,"").trim() + "_objective");
+
+        header.prepend(objective_model_toggle);
+
+        $("#" + id).change(function() {
+
+        });
+    }
+    table.append(header);
     table = $("#" + table_id + " tr:last");
     table.append($("<td><em>")
         .attr("id", param_name.replace(/\s/, "_") + "_param_value_wrapper")
@@ -103,7 +118,7 @@ function update_param_table_with_data(data) {
 
 
 function update_param_table(param_name) {
-    if(PARAMS.get(param_name) == null)
+    if(param_name === undefined || PARAMS.get(param_name) == null)
         return;
 
     // For derived parameters (ex: mass_light_ratio)

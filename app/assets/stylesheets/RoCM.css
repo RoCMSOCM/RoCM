@@ -16,9 +16,42 @@ body {
   stroke-width: 1.5px;
 }
 
-
 table th{
   background-color:#f2f2f2;/*#d9cdb5;*/
+}
+
+.fixed {
+  top: 0;
+  left: 0;
+  z-index: 1030;
+  position: fixed;
+  width: 100%;
+  background-color: rgba(255,255,255,0.9);
+  border: 1px;
+}
+
+.sub_fixed {
+  padding-left: 5%;
+  padding-right: 5%;
+  width: 90%;
+}
+
+.rocm_wrapper {
+  max-width:90%;
+  margin:0 auto;
+  padding-top: 45px;
+}
+
+.sliders_dropdown {
+  /* Set the opacity level of the background and of the child elements */
+  background-color: rgba(245, 245, 203, 0.7); /* Background */
+  padding: 20px;
+  top: 90px;
+  left: 50px;
+}
+
+.sliders_dropdown * {
+  background-color: rgba(245, 245, 203, 0.5); /* Background */
 }
 
 .slider_button {
@@ -54,11 +87,4 @@ table th{
   margin: 3px;
   padding: 0.4em;
   /*height: 18px;*/
-}
-
-
-.sliders_dropdown {
-    /* Set the opacity level of the background and of the child elements */
-    opacity: 0.95; /* Child elements */
-    background-color: rgba(255,255,255,0.5); /* Background */
 }

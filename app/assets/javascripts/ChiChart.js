@@ -47,7 +47,7 @@ function create_bar_chart(model_name){
 
 	$("#sliders").prepend($chi_button);
 
-	var data = get_bar_data(model_name);
+	var data = calculate_chi_squared(model_name);
 
 	set_bar_domain(data);
 
@@ -80,7 +80,7 @@ function create_bar_chart(model_name){
       .attr("y", bar_margin.bottom*.75)
       .style("font", FONT)
       .style("text-anchor", "middle")
-      .text("χ²");
+      .text(chi_squared_string);
       // .text("Observed vs. Modeled Difference");
 
 	bar_svg.append("g")
@@ -107,7 +107,7 @@ function update_bar(model_name){
 	}
 
 
-	var data = get_bar_data(model_name);
+	var data = calculate_chi_squared(model_name);
 
 	set_bar_domain(data);
 
@@ -137,14 +137,14 @@ function update_chi_squared() {
 }
 
 function update_chi_squared_model(model_name) {
-	var data = get_bar_data(model_name);
+	var data = calculate_chi_squared(model_name);
 
 	var chisqr = 0;
 	data.forEach(function(d) {
 		chisqr += d.chi_squared;
 	});
 
-	var chi_model = model_name + " χ²";
+	var chi_model = model_name + " " + chi_squared_string;
 	PARAMS.set(chi_model, chisqr);
 	update_param_table(chi_model);
 }
@@ -167,17 +167,18 @@ function set_bar_domain(data){
 	bar_y.domain(yrange);
 }
 
-function get_bar_data(model_name){
+function calculate_chi_squared(model_name){
 	var data = [];
 
-	var vel_data = VDATA.VROT_DATA;
-	var vel_size = vel_data.length;
+	var obs_data = VDATA.VROT_DATA;
+	var vel_size = obs_data.length;
+	var obs_data_err = VDATA.VROT_DATA_ERROR;
 
 	var model_data = VDATA["VROT_" + model_name];
 	var total = 0;
 
 	for(var i=0;i<vel_size;i++){
-		var X2 = chi_squared(vel_data[i], model_data[i]);
+		var X2 = chi_squared(obs_data[i], model_data[i], obs_data_err[i]);
 
 		if(data[X2] === undefined){
 			data.push({chi_squared: X2, frequency: 1, color: get_color(model_name)})

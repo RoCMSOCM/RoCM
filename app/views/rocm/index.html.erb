@@ -21,7 +21,9 @@
     <%= javascript_include_tag 'bessel.js' %>
     <%= javascript_include_tag 'integrate.js' %>
 
-    <%= javascript_include_tag 'spectrum.js' %>    
+    <%= javascript_include_tag 'spectrum.js' %>  
+    <%= javascript_include_tag 'parallel.js' %>  
+    <%= javascript_include_tag 'eval.js' %>  
 
     <!-- RoCM Functions -->
     <%= javascript_include_tag 'Param.js' %>
@@ -58,6 +60,7 @@
     <%= javascript_include_tag 'ChiChart.js' %>
     <%= javascript_include_tag 'DefaultParameters.js' %>
     <%= javascript_include_tag 'DownloadGalaxy.js' %>
+    <%= javascript_include_tag 'AutomaticObjectiveTesting.js' %>
     
     <%= javascript_include_tag 'RoCM.js' %>
   <% end %>
@@ -75,17 +78,15 @@
   
   
 
-
-
-  <div id="rocm_wrapper" style="max-width:1200px;margin:0 auto">
-    <div id="title_div" style="position:absolute;top:0;max-width:inherit;width:100%">
+  <div id="nav_bar" class="fixed">
+    <div id="title_div" class="sub_fixed" style="height:20px">
       <h1>Rotation Curve Modeler</h1>
     </div>
   
     <!-- Underscored lined beneath the title -->    
     <h2> </h2>
 
-    <div style="position:relative;"> 
+    <div id="button_bar" class="sub_fixed" style="position:relative;height:20px;"> 
       <button id="display_button">Galaxies</button>
       <button id="slider_button">Parameter Sliders</button>
 
@@ -93,18 +94,13 @@
       <button style="float:right" id="save" onclick="saveSVG('graph')">Save to SVG</button>
     </div>
 
-
-    <div id="socmt_wrapper" class="dropdown socm_dropdown"></div> <!--  -->
     
-    <div id="sliders" class="dropdown sliders_dropdown" style="left:50px;">
+  </div>
 
-      <!-- <div id="bar_graph" style="-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;">
-        <br><br>
-        <svg xmlns="http://www.w3.org/2000/svg" id="bar_graph_svg" style="float:left"></svg>
-      </div>     margin-left:-200px;width:400px
-      -->
+  <div id="rocm_wrapper" class="rocm_wrapper">
+    <div id="socmt_wrapper" class="dropdown socm_dropdown"></div>
 
-      </div>
+    <div id="sliders" class="dropdown sliders_dropdown"></div>
     
     <div id="graph" style="fill:white;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;">
       <svg xmlns="http://www.w3.org/2000/svg" id="graph_svg" style="display:block;margin:auto;"></svg>
@@ -152,7 +148,7 @@ function CUSTOM(R) {
   var r0 = PARAMS.get("dark_halo_radius");
 
   var c = CONST.get("c");
-  var B = PARAMS.get("schwarzschild_radius");
+  var B = CONST.get("schwarzschild_radius");
 
   var inner = (4*Math.PI*B*c*c*sigma0_si) * (1-((r0/R)*Math.atan(R/r0)));
   var rotation_velocity = Math.sqrt(Math.abs(inner));

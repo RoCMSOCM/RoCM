@@ -81,6 +81,8 @@ $(document).ready(function(){
 
 
 function get_formatted_parameter(param_name, include_units, include_breaks) {
+	include_units = include_units === undefined ? false : include_units;
+	include_breaks = include_breaks === undefined ? false : include_breaks;
 	var fparam = FORMATTED_MAP[param_name];
 	if(fparam === undefined)
 		fparam = param_name;
@@ -106,7 +108,7 @@ function get_both_parameter_formats(param_name, include_units, include_breaks) {
 		formatted_param = "";
 	}
 	else
-		formatted_param = ": " + formatted_param;
+		formatted_param = " (" + formatted_param + ") ";
 
 	var html_param = "<b>" + param + "</b>" + formatted_param;
 
