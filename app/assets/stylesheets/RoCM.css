@@ -44,7 +44,7 @@ table th{
 
 .sliders_dropdown {
   /* Set the opacity level of the background and of the child elements */
-  background-color: rgba(245, 245, 203, 0.7); /* Background */
+  background-color: rgba(241, 241, 241, 0.7); /* Background */
   padding: 20px;
   top: 90px;
   left: 50px;
