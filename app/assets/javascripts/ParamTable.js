@@ -59,6 +59,7 @@ function add_param_to_table(table_id, param_name, data) {
     if(param_name.contains(chi_squared_string)){
         var id = "objective_model_toggle"
         var objective_model_toggle = $("<input/>")
+            .attr("class", "auto_obj_test")
             .attr("type", "radio")
             .attr("name", "objective_model")
             .attr("id", param_name.replace(chi_squared_string,"").trim() + "_objective");

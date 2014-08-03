@@ -19,7 +19,6 @@ function Constants() {
 CONST = new Constants();
 
 
-
 // Speed of light
 var speed_of_light = new Param(300000, "km/s");
 CONST.set("c", speed_of_light);
@@ -41,5 +40,6 @@ CONST.set("G", gravitational_constant);
 CONST.set("gravitational_constant", gravitational_constant);
 
 // Schwarzschild radius
-var beta_star = new Param(1.48, "km");
-CONST.set("schwarzschild_radius", beta_star);
+var schwarzschild_radius = new Param(1.48, "km");
+CONST.set("B*", schwarzschild_radius);
+CONST.set("schwarzschild_radius", schwarzschild_radius);

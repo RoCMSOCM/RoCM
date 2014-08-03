@@ -312,7 +312,7 @@ function create_xaxis() {
       .style("text-anchor", "end")
       .style("font", FONT)
       .style("fill", "black")
-      .text("R: Galactocentric Distance (kpc)")
+      .text("Galactocentric Distance, R (kpc)")
       .transition()
         .duration(TIME*(3/4))    
         .attr("x", width);
@@ -341,7 +341,7 @@ function create_yaxis() {
       .style("text-anchor", "end")
       .style("font", FONT)
       .style("fill", "black")
-      .text("VROT: Rotation Velocity (km/s)")
+      .text("Rotation Velocity, VROT (km/s)")
       .transition()
         .duration(TIME*(3/4))    
         .attr("x", 0);

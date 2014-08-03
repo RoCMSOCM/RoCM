@@ -13,13 +13,11 @@ GalacticModel.prototype = {
 		var B = CONST.get("schwarzschild_radius");
 
 		var mass = PARAMS.get("mass_disk");
+		var solar_mass = CONST.get("solar_mass");
 
-		var Nstar = mass_to_stars(mass);
+		var Nstar = mass/solar_mass;
 
-		var mass_bulge = PARAMS.get("mass_bulge");
-		var scale_length_bulge = PARAMS.get("scale_length_bulge");
-
-		var bulge = BULGE(R, mass_bulge, scale_length_bulge);
+		var bulge = BULGE(R);
 
 		var rotation_velocity = Math.sqrt(Rkm * (((Nstar*B*c*c*Rkm)/(2*R0km*R0km*R0km)) * bessel_func));
 
@@ -33,7 +31,7 @@ GalacticModel.prototype = {
 
 		var r0 = PARAMS.get("dark_halo_radius");
 
-		var c = CONST.get("c");
+		var c = CONST.get("speed_of_light");
 		var B = CONST.get("schwarzschild_radius");
 
 		var inner = (4*Math.PI*B*c*c*sigma0_si) * (1-((r0/R)*Math.atan(R/r0)));
@@ -45,44 +43,42 @@ GalacticModel.prototype = {
 		var mod = CONVERT.cm_to_kpc(1);
 		var norm = CONVERT.kpc_to_km(1);
 
-		var c = CONST.get("c");
+		var c = CONST.get("speed_of_light");
 		var B = CONST.get("schwarzschild_radius");
 
 		var cMod = CONVERT.km_to_cm(c)*mod;
 		var BMod = CONVERT.km_to_cm(B)*mod;
 
-		var m = (3.06*Math.pow(10,-30))/mod;
-		var g = (5.42*Math.pow(10,-41))/mod;
-		var k = (18*Math.pow(10,-11));
+		var gamma_star = (3.06*Math.pow(10,-30))/mod;
+		var gamma_0 = (5.42*Math.pow(10,-41))/mod;
+		var kappa = (18*Math.pow(10,-11));
 
 		var R0kpc = PARAMS.get("scale_length"); 
 		var R0km = CONVERT.kpc_to_km(R0kpc);
 
 		var mass = PARAMS.get("mass_disk");
 		var gas_mass = PARAMS.get("mass_hydrogen");
+		var solar_mass = CONST.get("solar_mass");
 
-		var Nstar = mass_to_stars(mass);
+		var Nstar = mass/solar_mass;
 
-	    var Ng = mass_to_stars(gas_mass);
+	    var Ng = gas_mass/solar_mass;
 
-		var mass_bulge = PARAMS.get("mass_bulge");
-		var scale_length_bulge = PARAMS.get("scale_length_bulge");
-
-		var bulge = BULGE(R, mass_bulge, scale_length_bulge);
+		var bulge = BULGE(R);
 
 		var besx2 = R/(2*R0kpc);
 		var besx8 = R/(8*R0kpc);
 		
 		var veln = Math.pow(norm,2)*((BMod*Math.pow(cMod,2)*Math.pow(R,2))/(2*Math.pow(R0kpc,3))) * (besseli(besx2,0)*besselk(besx2,0) - besseli(besx2,1)*besselk(besx2,1));
 
-		var velm = Math.pow(norm,2)*((m*Math.pow(cMod,2)*R)/2);
-		var velb = Math.pow(norm,2)*(((g*Math.pow(cMod,2)*Math.pow(R,2))/(2*R0kpc))*(besseli(besx2,1)*besselk(besx2,1)));
-		var velk = Math.pow(norm,2)*((k*Math.pow(cMod,2)*Math.pow(R,2))/2);
+		var vel_gamma_star = Math.pow(norm,2)*((gamma_star*Math.pow(cMod,2)*R)/2);
+		var vel_gamma_0 = Math.pow(norm,2)*(((gamma_0*Math.pow(cMod,2)*Math.pow(R,2))/(2*R0kpc))*(besseli(besx2,1)*besselk(besx2,1)));
+		var vel_kappa = Math.pow(norm,2)*((kappa*Math.pow(cMod,2)*Math.pow(R,2))/2);
 
 		var veln_gas = Math.pow(norm,2)*((Ng*BMod*Math.pow(cMod,2)*Math.pow(R,2))/(2*64*Math.pow(R0kpc,3)))*(besseli(besx8,0)*besselk(besx8,0)-besseli(besx8,1)*besselk(besx8,1));
-		var velb_gas = Math.pow(norm,2)*((Ng*g*Math.pow(cMod,2)*Math.pow(R,2))/(8*R0kpc))*(besseli(besx8,1)*besselk(besx8,1));
+		var vel_gamma_0_gas = Math.pow(norm,2)*((Ng*gamma_0*Math.pow(cMod,2)*Math.pow(R,2))/(8*R0kpc))*(besseli(besx8,1)*besselk(besx8,1));
 
-		var rotation_velocity = Math.sqrt((Nstar*(veln + velb)) + velm - velk + veln_gas + velb_gas + bulge);
+		var rotation_velocity = Math.sqrt((Nstar*(veln + vel_gamma_0)) + vel_gamma_star - vel_kappa + veln_gas + vel_gamma_0_gas + bulge);
 
 		return rotation_velocity;
 	},
@@ -92,7 +88,7 @@ GalacticModel.prototype = {
 		var rotation_velocity = Math.sqrt(GR*GR + DARK*DARK);
 
 		return rotation_velocity;
-	},
+	}/*,
 	MOND: function(R) {
 		return 0;
 
@@ -102,21 +98,22 @@ GalacticModel.prototype = {
 		var big_R;
 		var q;
 
-		/*
+		
 
 
-		var solar_mass = CONST.get("solar_mass");
+		// var solar_mass = CONST.get("solar_mass");
 
-		var G0 = PARAMS.get("G0");
-		var M0 = PARAMS.get("M0");
+		// var G0 = PARAMS.get("G0");
+		// var M0 = PARAMS.get("M0");
 
-		var r0 = CONVERT.cm_to_kpc(PARAMS.get("MONDr0"));
+		// var r0 = CONVERT.cm_to_kpc(PARAMS.get("MONDr0"));
 
-		var M = PARAMS.get("mass_disk"); // TODO: Add mass_hydrogen (M_HI)
+		// var M = PARAMS.get("mass_disk"); // TODO: Add mass_hydrogen (M_HI)
 
-		var rotation_velocity = Math.sqrt((G0 * M)/R)*Math.sqrt(1 + Math.sqrt(M0/M)*(1-Math.exp(-R/r0)*(1+R/r0) ) );
+		// var rotation_velocity = Math.sqrt((G0 * M)/R)*Math.sqrt(1 + Math.sqrt(M0/M)*(1-Math.exp(-R/r0)*(1+R/r0) ) );
 
-		return rotation_velocity;
-		*/
-	}
+		// return rotation_velocity;
+		
+	}*/
+	
 };

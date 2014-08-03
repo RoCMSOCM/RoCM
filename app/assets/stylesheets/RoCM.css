@@ -51,7 +51,11 @@ table th{
 }
 
 .sliders_dropdown * {
-  background-color: rgba(245, 245, 203, 0.5); /* Background */
+  background-color: rgba(241, 241, 241, 0.5); /* Background */
+}
+
+.auto_obj_test {
+  display: none !important;
 }
 
 .slider_button {
@@ -60,7 +64,7 @@ table th{
   float: right;
 }
 
-.reset_button {
+.text_button {
   width: auto;
   height: 20px;
   float: right;

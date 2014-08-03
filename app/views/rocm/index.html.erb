@@ -117,7 +117,7 @@
 
   <br>
 
-  <div id="user_defined_model" style="float:left;width:100%;height:600px">
+  <div id="user_defined_model" style="float:left;width:100%;height:700px">
     <h2>User Defined Model</h2>
     <div id="user_defined_model_text" style="float:left;width:48%">
       <b>Write a JavaScript function in the form</b>: 
@@ -142,17 +142,28 @@ function MODELNAME(R) {
       <input id="model_color" type="color" value="#3355cc" style="float:right;width:15%"/>
       <textarea id="model_input" rows="4" cols="20" style="width:100%;display:block;margin:0 auto;height:70%">
 function CUSTOM(R) {
-  var sigma0 = PARAMS.get("dark_matter_density");
-  var sigma0_si = CONVERT.GeVcm3_to_kgkms2(sigma0);
+  // General Relativity 
+  var R0 = PARAMS.get("scale_length");
+  var R0km = CONVERT.kpc_to_km(R0);
+  var Rkm = CONVERT.kpc_to_km(R);
 
-  var r0 = PARAMS.get("dark_halo_radius");
+  var x = (Rkm/(2*R0km));
+  var bessel_func = (besseli(x,0)*besselk(x,0) - besseli(x,1)*besselk(x,1));
 
   var c = CONST.get("c");
   var B = CONST.get("schwarzschild_radius");
 
-  var inner = (4*Math.PI*B*c*c*sigma0_si) * (1-((r0/R)*Math.atan(R/r0)));
-  var rotation_velocity = Math.sqrt(Math.abs(inner));
+  var mass = PARAMS.get("mass_disk");
+  var solar_mass = CONST.get("solar_mass");
 
+  var Nstar = mass/solar_mass;
+
+  var bulge = BULGE(R);
+
+  var rotation_velocity = Math.sqrt(Rkm * (((Nstar*B*c*c*Rkm)/(2*R0km*R0km*R0km)) * bessel_func));
+
+  rotation_velocity = Math.sqrt(rotation_velocity*rotation_velocity + bulge);
+  
   return rotation_velocity;
 }</textarea>
 

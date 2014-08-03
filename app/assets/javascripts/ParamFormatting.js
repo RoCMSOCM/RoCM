@@ -65,8 +65,8 @@ $(document).ready(function(){
 	}
 
 	var add_func = {Add: function() {
-			add_param_from_inputs();
-			$(this).dialog("close");
+			if(add_param_from_inputs())
+				$(this).dialog("close");
 		}
 	};
 
@@ -131,6 +131,7 @@ var param_name_id = "param_name_input";
 var param_long_name_id = "param_long_name_input";
 var param_units_id = "param_units_input";
 var param_value_id = "param_value_input";
+var param_multi_id = "param_multi_input";
 var param_min_id = "param_min_input";
 var param_max_id = "param_max_input";
 
@@ -143,6 +144,7 @@ function create_parameter_input_fields(dialog_id){
 	var param_long_name_label = "Parameter formatted name (use HTML formatting)";
 	var param_units_label = "Units (use HTML formatting)";
 	var param_value_label = "Value";
+	var param_multi_label = "Multiplier";
 	var param_min_label = "Minimum";
 	var param_max_label = "Maximum";
 
@@ -150,9 +152,9 @@ function create_parameter_input_fields(dialog_id){
 	add_input_with_label(param_long_name_id, dialog, param_long_name_label, false);
 	add_input_with_label(param_units_id, dialog, param_units_label, false);
 	add_input_with_label(param_value_id, dialog, param_value_label, true);
+	add_input_with_label(param_multi_id, dialog, param_multi_label, true);
 	add_input_with_label(param_min_id, dialog, param_min_label, true);
 	add_input_with_label(param_max_id, dialog, param_max_label, true);
-	
 }
 
 function add_input_with_label(input_id, div, html_text, is_number) {
@@ -180,16 +182,32 @@ function add_param_from_inputs(){
 	var param_long_name = $("#" + param_long_name_id).val();
 	var param_units = $("#" + param_units_id).val();
 	var param_value = $("#" + param_value_id).val();
+	var param_multi = $("#" + param_multi_id).val();
 	var param_min = $("#" + param_min_id).val();
 	var param_max = $("#" + param_max_id).val();
 
-	//TODO: var param_multiplier = 1;
+	if(param_multi.length == 0)
+		param_multi = 1;
 
-	if(param_name.length == 0 || param_long_name.length == 0 || param_value.length == 0 || param_min.length == 0 || param_max.length == 0)
-		alert("Please fill every parameter input.");
-	else{
-		add_param(param_name, param_long_name, new Param(+param_value, param_units, 1, +param_min, +param_max));
+	if(param_long_name.length == 0)
+		param_long_name = param_name;
+
+	if(param_min.length == 0)
+		param_min = undefined;
+	else
+		param_min = +param_min;
+
+	if(param_max.length == 0)
+		param_max = undefined;
+	else
+		param_max = +param_max;
+	
+	if(param_name.length == 0 || param_value.length == 0 || param_units.length == 0){
+		alert("Please provide at least the 'Short Name', 'Value' and 'Units'.");
+		return false;
 	}
-
-
+	else{
+		add_param(param_name, param_long_name, new Param(+param_value, param_units, +param_multi, param_min, param_max));
+		return true;
+	}
 }

@@ -13,7 +13,7 @@ function initialize_default_parameters(){
 		new Param(1.3, "10<sup>-7</sup> GeV cm<sup>-3</sup>", Math.pow(10,-7)));
 
 
-	var mass_bulge = 0.611499
+	var mass_bulge = 0.611499 // 10^10
 	var scale_length_bulge = 0.0939927
 	add_param(
 		"mass_bulge",
@@ -26,9 +26,9 @@ function initialize_default_parameters(){
 
 
 	// Observed inclination angle
-	var inclination_angle = 90;
+	var inclination_angle = 89.999;
 	add_param(
 		"inclination_angle",
 		"θ<sub>i</sub>",
-		new Param(inclination_angle, "°", 1, 0.001, 90));
+		new Param(inclination_angle, "°", 1, 0.001, 89.999));
 }

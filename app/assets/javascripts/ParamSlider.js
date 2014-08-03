@@ -79,11 +79,13 @@ function ParamSlider(param_name, param) {
 	var free_id = param_name + "_free_parameter";
 	var free_parameter_toggle = $("<input/>")
 	    .attr("type", "checkbox")
-	    .attr("class", "free_parameter")
+	    .attr("name", "free_parameter")
+	    .attr("class", "auto_obj_test")
 	    .css("float", "right")
 	    .attr("id", free_id);
 
 	var free_parameter_label = $("<label/>")
+	    .attr("class", "auto_obj_test")
 	    .attr("for", free_id)
 	    .css("float", "right")
 		.css("font-weight", "bold")
@@ -129,9 +131,13 @@ function ParamSlider(param_name, param) {
 		.css("float", "right")
 		.html("MAX");
 
+	var slider_width = "100%";
+	if($(".auto_obj_test").css("display") != "none")
+		slider_width = "94%";
+
 	var div_slider = $("<div>")
 		.attr("id", "slider_" + param_name)
-		.css("width", "94%")
+		.css("width", slider_width)
 		.css("display", "inline-block")
 		// .css("opacity", 0.8);
 
@@ -368,6 +374,9 @@ function update_original(key) {
 			update_original("scale_length");
 			update_original("mass_hydrogen");
 		}
+		else if(key == "inclination_angle"){
+			update_original("mass_hydrogen");
+		}
 	}
 }
 
@@ -413,7 +422,7 @@ function initialize_sliders(slider_keys) {
 		.html("<b>Bulge</b>");
 
     var run_button = $("<button/>")
-		.attr("class", "reset_button")
+		.attr("class", "text_button auto_obj_test")
 		.attr("id", "slider_run")
 		.css("font-size",".8em")
 		.text("Run " + chi_squared_string) 
@@ -423,7 +432,7 @@ function initialize_sliders(slider_keys) {
 
 
     var reset_button = $("<button/>")
-		.attr("class", "reset_button")
+		.attr("class", "text_button")
 		.attr("id", "slider_reset")
 		.css("font-size",".8em")
 		.text("Reset") 

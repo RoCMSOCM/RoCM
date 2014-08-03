@@ -11,7 +11,7 @@ function AutomaticObjectiveTesting() {
 	var model_name = model.attr("id").replace("_objective", "");
 
 
-	var parameter = $("[class=free_parameter]:checked");
+	var parameter = $("[name=free_parameter]:checked");
 
 	if(parameter.length == 0){
 		alert("Please select a free parameter.")
@@ -22,27 +22,31 @@ function AutomaticObjectiveTesting() {
 		return;
 	}
 
-	var parameter_name = parameter.attr("id").replace("_free_parameter", "");
+	var parameter_names = [];
+	for(var i=0; i<parameter.length; i++){
+		parameter_names.push($(parameter[i]).attr("id").replace("_free_parameter", ""));
+	}
 
 	// Check if the model uses the parameter...
 
 
-	var vrot = GMODEL[model_name];
+	// var vrot = GMODEL[model_name];
 
-	var param = PARAMS.getParam(parameter_name);
-	var min = param.min;
-	var max = param.max;
+	// var param = PARAMS.getParam(parameter_name);
+	// var min = param.min;
+	// var max = param.max;
 
-	var slider = $("#slider_" + format_name(parameter_name));
-	var steps = slider.slider("option", "step")*1000;
+	// var slider = $("#slider_" + format_name(parameter_name));
+	// var steps = slider.slider("option", "step")*1000;
 
-	var chi = Infinity;
-	var optimal_parameter = null;
-	var obs = VDATA.VROT_DATA;
-	var obs_err = VDATA.VROT_DATA_ERROR;
-	var R = VDATA.R;
+	// var chi = Infinity;
+	// var optimal_parameter = null;
+	// var obs = VDATA.VROT_DATA;
+	// var obs_err = VDATA.VROT_DATA_ERROR;
+	// var R = VDATA.R;
 
-	alert("Objective: " + model_name + "\nFree parameter: " + parameter_name);
+	var s = parameter_names.length == 0 ? "" : "s";
+	alert("Objective: " + model_name + "\nFree parameter" + s + ": " + parameter_names);
 	
 	// TODO: Parallel approach to AutomaticObjectiveTesting
 
@@ -77,7 +81,4 @@ function AutomaticObjectiveTesting() {
 	// } 
 
 	// alert("Optimizing " + chi_squared_string + " for " + model_name + ":\n\n" + parameter_name + " = " + i);
-
-
-
 }

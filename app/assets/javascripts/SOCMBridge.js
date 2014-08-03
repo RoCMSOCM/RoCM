@@ -241,18 +241,18 @@ function update_derived_parameters(param_name) {
       var ratio = (DMpc/_DMpc);
       var ratio_sqr = Math.pow(ratio, 2);
 
-      var scale_length = PARAMS.getOriginal("scale_length");
-      var scale_length_new = scale_length * ratio;
+      var _scale_length = PARAMS.getOriginal("scale_length");
+      var scale_length_new = _scale_length * ratio;
       calculated_param_name.push("scale_length");
       calculated_param.push(scale_length_new);
 
-      var luminosity = PARAMS.getOriginalValue("luminosity");
-      var luminosity_new = luminosity * ratio_sqr;
+      var _luminosity = PARAMS.getOriginalValue("luminosity");
+      var luminosity_new = _luminosity * ratio_sqr;
       calculated_param_name.push("luminosity");
       calculated_param.push(luminosity_new);
 
-      var mass_hydrogen = PARAMS.getOriginalValue("mass_hydrogen");
-      var mass_hydrogen_new = mass_hydrogen * ratio_sqr;
+      var _mass_hydrogen = PARAMS.getOriginalValue("mass_hydrogen");
+      var mass_hydrogen_new = _mass_hydrogen * ratio_sqr;
       calculated_param_name.push("mass_hydrogen");
       calculated_param.push(mass_hydrogen_new);
     }
@@ -281,10 +281,13 @@ function update_derived_parameters(param_name) {
 
       update_models();
 
-      var inc_cos = Math.cos(inclination_angle)/(Math.cos(_inclination_angle) + 0.00000001);
+      //TODO: 
+      // INIT / NEW in dwarfs\mod_pdfs\ugc4499_2010_mod.pdf
+      // NEW / INIT in dwarfs\ddo50\ddo50.pdf (where NEW == INIT)
+      var inc_cos = Math.cos(_inclination_angle)/Math.cos(inclination_angle);
 
-      var mass_hydrogen = PARAMS.getOriginalValue("mass_hydrogen");
-      var mass_hydrogen_new = mass_hydrogen * inc_cos;
+      var _mass_hydrogen = PARAMS.getOriginalValue("mass_hydrogen");
+      var mass_hydrogen_new = _mass_hydrogen * inc_cos;
       calculated_param_name.push("mass_hydrogen");
       calculated_param.push(mass_hydrogen_new);
     }

@@ -42,9 +42,6 @@ Conversion.prototype = {
 	degree_to_arcsec: function(degree) {
 		return degree * 3600;
 	},
-	pc_to_AU: function(pc) {
-		return pc * 206246.806;
-	},
 	rad_to_deg: function(rad) {
 		return rad * 180/Math.PI;
 	},
