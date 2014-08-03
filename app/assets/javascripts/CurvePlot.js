@@ -63,7 +63,7 @@ var sun_label = "Sun"
 
 var hide_legend_labels = true;
 
-var ORIGIN = 0.0000000001
+var ORIGIN = 0; //0.0000000001
 
 function get_data(data) {
   var data_keys = Object.keys(data[0]);
@@ -666,7 +666,7 @@ function add_to_legend(legend) {
       object_opacity(object_class);
 
       // if(!is(d, "data") && !is(d, "sun"))
-        // update_bar(d.name, calculate_chi_squared(d.name));
+        // update_bar(d.name, calculate_chi_squared_for_model(d.name));
     })
     .on("contextmenu", function(d, index) {
       // Handle right click, open dialog confirmation

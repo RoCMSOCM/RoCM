@@ -16,6 +16,18 @@ function chi_squared_variance(obs, exp, obs_err) {
 	return Math.pow(obs - exp, 2) / Math.pow(obs_err, 2);
 }
 
+function chi_squared_variance_loop(obs, exp, obs_err){
+	var iterations = obs.length;
+	var sum = 0;
+
+	for(var i = 0; i < iterations; i++) {
+		var chi = chi_squared_variance(obs[i], exp[i], obs_err[i]);
+		sum += chi;
+	}
+
+	return sum;
+}
+
 //TODO: Numbers between 0-1 (starting at 0.001 or 1.0e-3)
 function formatExponential(exp) {
 	if(typeof(exp) !== "number")
@@ -33,11 +45,12 @@ function formatExponential(exp) {
 		return Math.round(exp * 100000) / 100000;
 }
 
-
+///////////////////////// Unicode /////////////////////////
 /////////////////// superScript Plug-in ///////////////////
+///////////////// For jQuery input fields /////////////////
 $.fn.superScript = function() {
-    var chars = '+-=()0123456789AaÆᴂɐɑɒBbcɕDdðEeƎəɛɜɜfGgɡɣhHɦIiɪɨᵻɩjJʝɟKklLʟᶅɭMmɱNnɴɲɳŋOoɔᴖᴗɵȢPpɸrRɹɻʁsʂʃTtƫUuᴜᴝʉɥɯɰʊvVʋʌwWxyzʐʑʒꝯᴥβγδθφχнნʕⵡ',
-        sup   = '⁺⁻⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᵃᴭᵆᵄᵅᶛᴮᵇᶜᶝᴰᵈᶞᴱᵉᴲᵊᵋᶟᵌᶠᴳᵍᶢˠʰᴴʱᴵⁱᶦᶤᶧᶥʲᴶᶨᶡᴷᵏˡᴸᶫᶪᶩᴹᵐᶬᴺⁿᶰᶮᶯᵑᴼᵒᵓᵔᵕᶱᴽᴾᵖᶲʳᴿʴʵʶˢᶳᶴᵀᵗᶵᵁᵘᶸᵙᶶᶣᵚᶭᶷᵛⱽᶹᶺʷᵂˣʸᶻᶼᶽᶾꝰᵜᵝᵞᵟᶿᵠᵡᵸჼˤⵯ';
+    var chars = '+-=()0123456789AaÆᴂɐɑɒBbcɕDdðEeƎəɛɜɜfGgɡɣhHɦIiɪɨᵻɩjJʝɟKklLʟᶅɭMmɱNnɴɲɳŋOoɔᴖᴗɵȢPpɸrRɹɻʁsʂʃTtƫUuᴜᴝʉɥɯɰʊvVʋʌwWxyzʐʑʒꝯᴥβγδθφχнნʕⵡ';
+    var sup   = '⁺⁻⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᵃᴭᵆᵄᵅᶛᴮᵇᶜᶝᴰᵈᶞᴱᵉᴲᵊᵋᶟᵌᶠᴳᵍᶢˠʰᴴʱᴵⁱᶦᶤᶧᶥʲᴶᶨᶡᴷᵏˡᴸᶫᶪᶩᴹᵐᶬᴺⁿᶰᶮᶯᵑᴼᵒᵓᵔᵕᶱᴽᴾᵖᶲʳᴿʴʵʶˢᶳᶴᵀᵗᶵᵁᵘᶸᵙᶶᶣᵚᶭᶷᵛⱽᶹᶺʷᵂˣʸᶻᶼᶽᶾꝰᵜᵝᵞᵟᶿᵠᵡᵸჼˤⵯ';
 
     return this.each(function() {
         this.value = this.value.replace(/<sup[^>]*>(.*?)<\/sup>/g, function(x) {
@@ -52,6 +65,26 @@ $.fn.superScript = function() {
         });
     });
 }
+
+//////////////////// For pure strings /////////////////////
+String.prototype.superScript = function () {
+    var chars = '+-=()0123456789AaÆᴂɐɑɒBbcɕDdðEeƎəɛɜɜfGgɡɣhHɦIiɪɨᵻɩjJʝɟKklLʟᶅɭMmɱNnɴɲɳŋOoɔᴖᴗɵȢPpɸrRɹɻʁsʂʃTtƫUuᴜᴝʉɥɯɰʊvVʋʌwWxyzʐʑʒꝯᴥβγδθφχнნʕⵡ';
+    var sup   = '⁺⁻⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ᴬᵃᴭᵆᵄᵅᶛᴮᵇᶜᶝᴰᵈᶞᴱᵉᴲᵊᵋᶟᵌᶠᴳᵍᶢˠʰᴴʱᴵⁱᶦᶤᶧᶥʲᴶᶨᶡᴷᵏˡᴸᶫᶪᶩᴹᵐᶬᴺⁿᶰᶮᶯᵑᴼᵒᵓᵔᵕᶱᴽᴾᵖᶲʳᴿʴʵʶˢᶳᶴᵀᵗᶵᵁᵘᶸᵙᶶᶣᵚᶭᶷᵛⱽᶹᶺʷᵂˣʸᶻᶼᶽᶾꝰᵜᵝᵞᵟᶿᵠᵡᵸჼˤⵯ';
+
+    var formatted = this.replace(/<sup[^>]*>(.*?)<\/sup>/g, function(x) {
+        var str = '',
+            txt = $.trim($(x).unwrap().text());
+
+        for (var i=0; i<txt.length; i++) {
+            var n = chars.indexOf(txt[i]);
+            str += (n!=-1 ? sup[n] : txt[i]);
+        }
+        return str;
+    });
+
+    return formatted;
+}
+
 
 
 // Distance calculations

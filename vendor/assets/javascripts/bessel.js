@@ -13,6 +13,7 @@ function _bessel_iter(x, n, f0, f1, sign) {
 }
 function _bessel_wrap(bessel0, bessel1, name, nonzero, sign) {
   return function bessel(x,n) {
+    if(x === 0) return 0;
     if(n === 0) return bessel0(x);
     if(n === 1) return bessel1(x);
     if(n < 0) throw name + ': Order (' + n + ') must be nonnegative';

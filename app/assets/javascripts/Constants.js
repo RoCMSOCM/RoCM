@@ -1,6 +1,36 @@
 function Constants() {
+	this.used = [];
+	
+	var findUsedParams = true;
+
+	this.setFindUsedParams = function(tf) { 
+	  findUsedParams = tf; 
+	  this.resetUsed();
+	}
+
+	this.getFindUsedParams = function() { return findUsedParams; }
+
+	this.setUsed = function(key) { 
+	  if(this.getFindUsedParams() == false || this.used.contains(key))
+	     return;
+	  else
+	     this.used.push(key);
+	}
+
+	this.isUsed = function(key) { 
+	  return this.used.contains(key);
+	}
+
+	this.resetUsed = function() { this.used = []; }
+
 	this.get = function(key) {
+		this.setUsed(key);
 		return this[key].value;
+	};
+
+	this.getParam = function(key) {
+		this.setUsed(key);
+		return this[key];
 	};
 
 	this.setValue = function(key, value) {
@@ -13,8 +43,13 @@ function Constants() {
 
 	this.set = function(key, param) {
 		this[key] = param;
+	},
+	this.getDict = function() {
+		return this;
 	}
 };
+
+// Constants.prototype = new ParamDict();
 
 CONST = new Constants();
 

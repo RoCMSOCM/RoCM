@@ -55,7 +55,7 @@ table th{
 }
 
 .auto_obj_test {
-  display: none !important;
+  /*display: none !important;*/
 }
 
 .slider_button {

@@ -78,7 +78,7 @@ function ParamSlider(param_name, param) {
 
 	var free_id = param_name + "_free_parameter";
 	var free_parameter_toggle = $("<input/>")
-	    .attr("type", "checkbox")
+	    .attr("type", "radio")
 	    .attr("name", "free_parameter")
 	    .attr("class", "auto_obj_test")
 	    .css("float", "right")
@@ -276,18 +276,19 @@ function update_max_input(param_name, new_max) {
 	update_dynamic_input_fields();
 }
 
+// TODO: Optimize this function for repeated calls.
 function update_models(param_name) {
 	var data_size = VDATA.VROT_DATA.length;
 	var ymax = 0;
 
 	PARAMS.setFindUsedParams(true);
 	for(var model in GMODEL) {
-		PARAMS.resetUsed();
 		// Test model equation to find out which PARAMS are used.
 		var test = GMODEL[model](1);
 
-		if(param_name === undefined || PARAMS.used.contains(param_name)) {
+		if(param_name === undefined || PARAMS.isUsed(param_name)) {
 			VDATA["VROT_" + model] = new Array(data_size);
+
 			for(var i = 0; i < data_size; i++){
 				var vrot_value = GMODEL[model](VDATA.R[i]);
 				if(isNaN(vrot_value))
@@ -324,7 +325,6 @@ function update_models(param_name) {
 
 
 	PARAMS.setFindUsedParams(false);
-	PARAMS.resetUsed();
 
 	// TODO: Change where to update bar chart
 	// update_bar();

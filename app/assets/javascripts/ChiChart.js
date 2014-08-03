@@ -47,7 +47,7 @@ function create_bar_chart(model_name){
 
 	$("#sliders").prepend($chi_button);
 
-	var data = calculate_chi_squared(model_name);
+	var data = calculate_chi_squared_for_model(model_name);
 
 	set_bar_domain(data);
 
@@ -107,7 +107,7 @@ function update_bar(model_name){
 	}
 
 
-	var data = calculate_chi_squared(model_name);
+	var data = calculate_chi_squared_for_model(model_name);
 
 	set_bar_domain(data);
 
@@ -132,12 +132,12 @@ function update_bar(model_name){
 function update_chi_squared() {
 	for(var model in GMODEL) {
 		if(model != "DARK")
-			update_chi_squared_model(model);
+			update_chi_squared_for_model(model);
 	}
 }
 
-function update_chi_squared_model(model_name) {
-	var data = calculate_chi_squared(model_name);
+function update_chi_squared_for_model(model_name) {
+	var data = calculate_chi_squared_for_model(model_name);
 
 	var chisqr = 0;
 	data.forEach(function(d) {
@@ -167,7 +167,7 @@ function set_bar_domain(data){
 	bar_y.domain(yrange);
 }
 
-function calculate_chi_squared(model_name){
+function calculate_chi_squared_for_model(model_name){
 	var data = [];
 
 	var obs_data = VDATA.VROT_DATA;
@@ -178,7 +178,7 @@ function calculate_chi_squared(model_name){
 	var total = 0;
 
 	for(var i=0;i<vel_size;i++){
-		var X2 = chi_squared(obs_data[i], model_data[i], obs_data_err[i]);
+		var X2 = chi_squared_variance(obs_data[i], model_data[i], obs_data_err[i]);
 
 		if(data[X2] === undefined){
 			data.push({chi_squared: X2, frequency: 1, color: get_color(model_name)})

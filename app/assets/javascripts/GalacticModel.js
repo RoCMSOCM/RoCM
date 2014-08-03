@@ -9,7 +9,7 @@ GalacticModel.prototype = {
 		var x = (Rkm/(2*R0km));
 		var bessel_func = (besseli(x,0)*besselk(x,0) - besseli(x,1)*besselk(x,1));
 
-		var c = CONST.get("c");
+		var c = CONST.get("speed_of_light");
 		var B = CONST.get("schwarzschild_radius");
 
 		var mass = PARAMS.get("mass_disk");

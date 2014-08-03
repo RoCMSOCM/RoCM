@@ -22,11 +22,22 @@ function ParamDict(){
    this.dictionary = {};
 
    this.used = [];
-   this.resetUsed = function() { this.used = []; }
-
    var findUsedParams = true;
-   this.setFindUsedParams = function(tf) { findUsedParams = tf; }
+   this.setFindUsedParams = function(tf) { 
+      findUsedParams = tf; 
+      this.resetUsed();
+   }
    this.getFindUsedParams = function() { return findUsedParams; }
+   this.setUsed = function(key) { 
+      if(this.getFindUsedParams() == false || this.used.contains(key))
+         return;
+      else
+         this.used.push(key);
+   }
+   this.isUsed = function(key) { 
+      return this.used.contains(key);
+   }
+   this.resetUsed = function() { this.used = []; }
 
    this.uninitialized = [];
    this.setUninitialized = function(key) { this.uninitialized.push(key); };
@@ -115,7 +126,7 @@ function ParamDict(){
       if(check == null)
          return check;
 
-      this.used.push(key);
+      this.setUsed(key);
       return this.dictionary[key]; 
    };
    this.getValue = function(key) { 
@@ -125,7 +136,7 @@ function ParamDict(){
 
       var value = this.dictionary[key].value;
 
-      this.used.push(key);
+      this.setUsed(key);
       return value;
    };
    this.getMultiplier = function(key) { 
@@ -135,7 +146,7 @@ function ParamDict(){
 
       var multiplier = this.dictionary[key].multiplier;
 
-      this.used.push(key);
+      this.setUsed(key);
       return multiplier;
    };
    this.getUnits = function(key) { 
@@ -145,7 +156,7 @@ function ParamDict(){
 
       var units = this.dictionary[key].units;
 
-      this.used.push(key);
+      this.setUsed(key);
       return units;
    };
    this.get = function(key) { 
@@ -166,18 +177,13 @@ function ParamDict(){
       else
          return_value = value * multiplier;
 
-      this.used.push(key);
+      this.setUsed(key);
       return return_value; 
    };
    this.getOriginalParam = function(key) { return this.getParam("_" + key); };
    this.getOriginalValue = function(key) { return this.getOriginalParam(key).value; };
    this.getOriginal = function(key) { return this.get("_" + key); };
    this.hasOriginal = function(key) { return (this.dictionary["_" + key] !== undefined); }
-
-   this.updateUsed = function(key) { 
-      // if(this.getFindUsedParams())
-         this.used.push(key);
-   }
 
    // Get the entire Params this.dictionary
    this.getDict = function() { 
