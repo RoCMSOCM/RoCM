@@ -225,7 +225,7 @@ function create_citations_table( d ) {
     var table_tag = '<table class="citation" cellpadding="5" cellspacing="0" border-collapse="collapse" style="padding-left:50px;padding-top:10px;">';
 
     var n = [23, 24, 24, 25];
-    var d = ['v', 'L<sub>☉</sub>', 'R<sub>0</sub>', 'M<sub>HI</sub>'];
+    var d = ['v', 'L<sub>B</sub>', 'R<sub>0</sub>', 'M<sub>HI</sub>'];
     var c = [
     	'R. Kuzio de Naray, S. S. McGaugh and W. J. G. de Blok, Ap. J. 676, 920 (2008).',
 		'W. J. G. de Blok and A. Bosma, A. A. 385, 816 (2002).',
