@@ -130,6 +130,8 @@ function create_curve_plot_svg() {
   d3.select("#rocm_wrapper")
     .attr("width", "75%")
     .attr("min-width", width + margin.left + margin.right + 200);
+
+  $("#graph_svg").draggable();
 }
 
 function create_curve_plot(galaxy_name, is_initial){
@@ -608,8 +610,7 @@ function create_legend(velocities, SHOW_SUN) {
     .attr("id", legend_panel_id)
     .attr("x", width + leg_width/2)
     .attr("y", -leg_width/2)
-    //defined dynamically below // .attr("width", leg_width*legend_width_factor*data_size)
-    .attr("height", "100%");//data_size*(leg_width+legend_item_vertical_offset) / 2)
+    .attr("height", "100%");
 
   legend_panel.append("rect")
     .attr("id", "legend_rect")
@@ -643,8 +644,8 @@ function create_legend(velocities, SHOW_SUN) {
 
     var using_chrome = (window.navigator.userAgent.indexOf("Chrome")  > -1);
 
-    var off_x = (margin.left + margin.right);
-    var off_y = (margin.top + margin.bottom) * 2;
+    var off_x = (margin.left);
+    var off_y = (margin.top);
 
     $( "#legend_panel" )
       .draggable()

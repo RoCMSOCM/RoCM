@@ -19,7 +19,7 @@ function create_data_table(table_id)
 		} ]
 	} );
 
-	$("#" + table_id + " tbody").on('click', '.reference', function () {
+	$("#" + table_id + " tbody").on('click', '.citation', function () {
 		var tr = $(this).closest('tr');
 		var row = table.row( tr );
 
@@ -30,7 +30,7 @@ function create_data_table(table_id)
         }
         else {
             // Open this row
-            row.child( format_references(row.data()) ).show();
+            row.child( create_citations_table(row.data()) ).show();
             tr.addClass('shown');
         }
     } );
@@ -77,6 +77,11 @@ function create_socm_table(param_data) {
 				var row_data = param_data[r-1][keys[c]];
 				var prefix = "";
 				var suffix = "";
+
+				if(typeof(row_data) == "string" && row_data.contains("Citation")){
+					prefix = "<button class='citation'>";
+					suffix = "</button>";
+				}
 				
 				row.append($("<td/>").html(prefix + row_data + suffix))
 
@@ -95,7 +100,7 @@ function create_socm_table(param_data) {
 
 	$("#socmt_wrapper").append(table);	
 
-	$(".reference").button();
+	$(".citation").button();
 	$(".plot").button({
 		icons: {
 	        primary: "ui-icon-image"
@@ -215,28 +220,33 @@ function close_all_dropdowns(div_id) {
 }
 
 
-function format_references( d ) {
+function create_citations_table( d ) {
     // `d` is the original data object for the row
-    return '<table cellpadding="5" cellspacing="0" border-collapse="collapse" style="padding-left:50px;padding-top:10px;">'+
-    '<tr>'+
-	    '<td>[23]</td>'+
-	    '<td>v</td>'+
-	    '<td>R. Kuzio de Naray, S. S. McGaugh and W. J. G. de Blok, Ap. J. 676, 920 (2008).</td>'+
-    '</tr>'+
-    '<tr>'+
-	    '<td>[24]</td>'+
-	    '<td>L</td>'+
-	    '<td>W. J. G. de Blok and A. Bosma, A. A. 385, 816 (2002).</td>'+
-    '</tr>'+
-    '<tr>'+
-	    '<td>[24]</td>'+
-	    '<td>R<sub>0</sub></td>'+
-	    '<td>W. J. G. de Blok and A. Bosma, A. A. 385, 816 (2002).</td>'+
-    '</tr>'+
-    '<tr>'+
-	    '<td>[25]</td>'+
-	    '<td>HI</td>'+
-	    '<td>J. M. Stil and F. P. Israel, A. A. 389, 29 (2002).</td>'+
-    '</tr>'+
-    '</table>';
+    var table_tag = '<table class="citation" cellpadding="5" cellspacing="0" border-collapse="collapse" style="padding-left:50px;padding-top:10px;">';
+
+    var n = [23, 24, 24, 25];
+    var d = ['v', 'L<sub>☉</sub>', 'R<sub>0</sub>', 'M<sub>HI</sub>'];
+    var c = [
+    	'R. Kuzio de Naray, S. S. McGaugh and W. J. G. de Blok, Ap. J. 676, 920 (2008).',
+		'W. J. G. de Blok and A. Bosma, A. A. 385, 816 (2002).',
+		'W. J. G. de Blok and A. Bosma, A. A. 385, 816 (2002).',
+		'J. M. Stil and F. P. Israel, A. A. 389, 29 (2002).'
+	];
+
+
+    var num_citations = 4;
+    var citation_table = table_tag;
+    
+    for(var i = 0; i < num_citations; i++){
+    	citation_table = citation_table 
+    		+ '<tr>' 
+    			+ '<td>' + n[i] + '</td>'
+    			+ '<td>' + d[i] + '</td>'
+    			+ '<td>' + c[i] + '</td>'
+    		+ '</tr>'
+    }
+
+    citation_table = citation_table + "</table>";
+
+    return citation_table;
 }

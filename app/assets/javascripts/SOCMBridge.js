@@ -175,7 +175,7 @@ function add_table_elements(d) {
   d.velocities_count = velocities_count;
 
   // citations
-  d.citation_ids_array = citations;
+  d.citation_ids_array = "Citations"; //use the citations object
 
   // Plot and Download buttons
   d.Functions = "<button class='plot' id='" + d.galaxy_name + "-PLOT'' style='font-size: .8em !important;'>"

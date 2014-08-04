@@ -21,7 +21,7 @@ function ParamSlider(param_name, param) {
 	this.param = param;
 
 	// Dynamically create slider
-	var sliders_width = 700; // px
+	var sliders_width = 650; // px
 
 	var wrapper = $("#sliders")
 					.css("width", sliders_width + "px");
