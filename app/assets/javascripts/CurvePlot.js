@@ -605,17 +605,18 @@ function create_legend(velocities, SHOW_SUN) {
   var legend_panel_id = "legend_panel";
 
   var legend_panel = svg.append("svg")
-        .attr("id", legend_panel_id)
-        .attr("x", width + leg_width/2)
-        .attr("y", -leg_width/2)
-        //defined dynamically below // .attr("width", leg_width*legend_width_factor*data_size)
-        .attr("height", "100%");//data_size*(leg_width+legend_item_vertical_offset) / 2)
+    .attr("id", legend_panel_id)
+    .attr("x", width + leg_width/2)
+    .attr("y", -leg_width/2)
+    //defined dynamically below // .attr("width", leg_width*legend_width_factor*data_size)
+    .attr("height", "100%");//data_size*(leg_width+legend_item_vertical_offset) / 2)
 
   legend_panel.append("rect")
-        .attr("width", "100%")
-        .attr("height", "100%")
-        .attr("fill", "white")
-        .attr("opacity", 0);
+    .attr("id", "legend_rect")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("fill", "white")
+    .attr("opacity", 0);
 
 
   var num_elements = 0;
@@ -640,15 +641,22 @@ function create_legend(velocities, SHOW_SUN) {
 
     legend_panel.attr("width", max_width + leg_width);
 
+    var using_chrome = (window.navigator.userAgent.indexOf("Chrome")  > -1);
 
-    // $( "#legend_panel" )
-    //   .draggable()
-    //   .bind('drag', function(event, ui){
-    //     // update coordinates manually, since top/left style props don't work on SVG
-    //     event.target.setAttribute('x', ui.position.left - margin.left - margin.right);
-    //     event.target.setAttribute('y', ui.offset.top - num_elements*legend_item_vertical_offset);
-    //   });
+    var off_x = (margin.left + margin.right);
+    var off_y = (margin.top + margin.bottom) * 2;
+
+    $( "#legend_panel" )
+      .draggable()
+      .bind('drag', function(event, ui){
+        // update coordinates manually, since top/left style props don't work on SVG
+        event.target.setAttribute('x', ui.position.left - off_x);
+        event.target.setAttribute('y', ui.position.top - off_y);
+        dragged = true;
+      });
 }
+
+var dragged = false;
 
 function add_to_legend(legend) {
   legend.append("rect")
@@ -660,7 +668,11 @@ function add_to_legend(legend) {
     .style("opacity", 1.0)
     .style("fill", function(d) { return get_color(d); })
     .style("stroke", function(d) { return d3.rgb(get_color(d)).darker(2); })
-    .on("click", function(d) { 
+    .on("mouseup", function(d) { 
+      if(dragged){
+        dragged = false;
+        return;
+      }
       var object_class = is(d, "err") ? "VROT_DATA_ERROR" : d.name;
 
       object_opacity(object_class);
@@ -712,7 +724,12 @@ function add_to_legend(legend) {
     .style("-ms-user-select", "none")
     .style("fill", "black")
     .text(function(d) { return legend_name(d.name); })
-    .on("click", function(d) {
+    .on("mouseup", function(d) {
+      if(dragged){
+        dragged = false;
+        return;
+      }
+
       var object_class = is(d, "err") ? "VROT_DATA_ERROR" : d.name;
       object_opacity(object_class);
     });

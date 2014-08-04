@@ -475,6 +475,9 @@ function initialize_sliders(slider_keys) {
     	var param = PARAMS.getParam(key);
    		var slider = new ParamSlider(key, param);
     }
+
+    // Make the sliders div a draggable Object
+    $("#sliders").draggable();
 }
 
 function remove_slider(param_name) {
