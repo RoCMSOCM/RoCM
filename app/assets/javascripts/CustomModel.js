@@ -121,7 +121,7 @@ function get_custom_models() {
 }
 
 function remove_model_from_list(dialog_id) {
-	$("li.ui-selected").each(function() {
+	$("li.ui-selected." + dialog_id + "_item").each(function() {
 		var text = $(this).text();
 
 		if(remove_model(text)){

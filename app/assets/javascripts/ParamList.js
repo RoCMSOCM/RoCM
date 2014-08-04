@@ -81,9 +81,11 @@ function update_list_dialog(dialog_id, data, empty_message) {
 	list.addClass("ui_list");
 
 	for(var i=0;i<data.length;i++){
-		list.append($("<li>")
+		var item = $("<li>")
 			.attr("class", "ui-widget-content")
-			.html( data[i] ));
+			.html( data[i] )
+		item.addClass(dialog_id + "_item");
+		list.append(item);
 	}
 
 	if(data.length == 0){
@@ -103,7 +105,7 @@ function fire_dialog(dialog_id) {
 }
 
 function add_param_from_list(dialog_id) {
-	$("li.ui-selected").each(function() {
+	$("li.ui-selected." + dialog_id + "_item").each(function() {
 		var text = $(this).text();
 		var split = text.split(" ");
 

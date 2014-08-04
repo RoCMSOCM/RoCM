@@ -13,7 +13,7 @@
  *= require_tree .
  *= require_self
  *= require jquery-ui
- *= require jquery-ui/humanity
+ *= require_tree ../../../vendor/assets/stylesheets
  *= require github.css
  *= require jquery.dataTables.css
  *= require RoCM.css

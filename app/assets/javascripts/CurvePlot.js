@@ -409,10 +409,26 @@ function plot_data(data){
       .attr("r", 2)
       .attr("cx", function(d) { return x(d.R); })
       .attr("cy", function(d) { return y(d.VROT_DATA); })
-      .style("fill", get_color("DATA"))
-      .append("title")
-        .attr("class", "VROT_DATA_TITLE")
-        .text(function(d) { return "(" + d.R + ", " + d.VROT_DATA + ")"; });
+      .style("fill", get_color("DATA"));
+
+
+    $(".VROT_DATA").tipsy({ 
+      gravity: 's', 
+      html: true, 
+      title: function() {
+        var tooltip = "";
+        var d = this.__data__;
+        for(var v in VDATA) {
+          if(v[0] != "_" && v != "R"){
+            tooltip += v.replace("VROT_", "") + " <br> (" + formatExponential(d.R) + " kpc, " + formatExponential(VDATA[v][VDATA.R.indexOf(d.R)]) + " km/s) <br>";
+          }
+        }
+
+        return tooltip;
+        }
+      })
+
+
 }
 
 function update_data(R_data, V_data) {

@@ -22,6 +22,8 @@ function ParamSlider(param_name, param) {
 
 	// Dynamically create slider
 	var sliders_width = 650; // px
+	var input_text_color = "#4d0000"; // Dark crimson (same as custom jQuery-ui theme)
+	//var burgundy = d3.rgb(0.5*255, 0, 0.13*255).toString();
 
 	var wrapper = $("#sliders")
 					.css("width", sliders_width + "px");
@@ -37,7 +39,7 @@ function ParamSlider(param_name, param) {
 
 	var minus_button = $("<button>")
 		.attr("id", minus_button_id)
-		.attr("class", "slider_button")
+		.attr("class", "inner_slider_button")
 		.text("-") // In case the jquery icon fails
 		.on("click", function(d) {
 			remove_slider(param_name);
@@ -56,7 +58,7 @@ function ParamSlider(param_name, param) {
 		.attr("id", param_name + "_amount")
 		.css("background-color", "white")
 		.css("opacity", "1")
-		.css("color", "#f6931f")
+		.css("color", input_text_color)
 		.css("font-weight", "bold")
 		.keyup(resizeInput)
 		.keypress(function(e) {
@@ -101,7 +103,7 @@ function ParamSlider(param_name, param) {
 		.attr("id", param_name + "_min")
 		.css("background-color", "white")
 		.css("opacity", "1")
-		.css("color", "#f6931f")
+		.css("color", input_text_color)
 		.css("font-weight", "bold")
 		.keyup(resizeInput)
 		.keypress(function(e) {
@@ -118,7 +120,7 @@ function ParamSlider(param_name, param) {
 		.attr("id", param_name + "_max")
 		.css("background-color", "white")
 		.css("opacity", "1")
-		.css("color", "#f6931f")
+		.css("color", input_text_color)
 		.css("font-weight", "bold")
 		.css("float", "right")
 		.keyup(resizeInput)
@@ -385,7 +387,7 @@ function initialize_sliders(slider_keys) {
 	var add_button_id = "slider_add";
 
 	$("#sliders").append($("<button/>")
-		.attr("class", "slider_button")
+		.attr("class", "inner_slider_button")
 		.attr("id", add_button_id)
 		.text("+") // In case the jquery icon fails
 		.on("click", function() {

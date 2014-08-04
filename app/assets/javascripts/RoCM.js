@@ -94,6 +94,8 @@ $(document).ready(function() {
 	window.location.href = rocm_url;
 
 	PARAMS.initialize("galaxy_name", galaxy_name);
+
+	$("button").addClass("default_button");
 });
 
 

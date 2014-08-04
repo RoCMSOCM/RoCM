@@ -271,8 +271,10 @@ function update_derived_parameters(param_name) {
         if(d != "R" && d[0] != "_"){
           var size = VDATA[d].length;
           var _VROT = VDATA["_" + d];
-          for(var i=0; i<size; i++){
-            VDATA[d][i] = _VROT[i] * inc_sin;
+          if(_VROT.length > 0){
+            for(var i=0; i<size; i++){
+              VDATA[d][i] = _VROT[i] * inc_sin;
+            }
           }
         }
       });

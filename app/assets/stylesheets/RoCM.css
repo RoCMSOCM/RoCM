@@ -44,24 +44,28 @@ table th{
 
 .sliders_dropdown {
   /* Set the opacity level of the background and of the child elements */
-  background-color: rgba(241, 241, 241, 0.7); /* Background */
+  background-color: rgba(245, 245, 245, 0.7); /* Background */
   padding: 20px;
   top: 90px;
   left: 50px;
 }
 
 .sliders_dropdown * {
-  background-color: rgba(241, 241, 241, 0.5); /* Background */
+  background-color: rgba(245, 245, 245, 0.5); /* Background */
 }
 
 .auto_obj_test {
   /*display: none !important;*/
 }
 
-.slider_button {
+.inner_slider_button {
   width: 25px;
   height: 20px;
   float: right;
+}
+
+.default_button {
+  font-size: 12px !important;
 }
 
 .text_button {
@@ -72,11 +76,11 @@ table th{
 
 /* Parameter list (From clicking the '+' button) */
 .ui_list .ui-selecting { 
-  background: #FECA40;
+  background: #a5a5a5;
 }
 
 .ui_list .ui-selected { 
-  background: #F39814;
+  background: #747474;
   color: white;
 }
 
@@ -91,4 +95,8 @@ table th{
   margin: 3px;
   padding: 0.4em;
   /*height: 18px;*/
+}
+
+button:focus {
+  outline:0;
 }

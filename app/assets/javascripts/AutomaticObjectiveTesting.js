@@ -85,6 +85,8 @@ function AutomaticObjectiveTesting() {
 
 	var passableConstDict = _.object(constUsed, constNum);
 
+	// TODO: GMODEL within models
+	// RegEx for TOTAL = this.GR(R); this.DARK(R); 
 
 	var regex_PARAMS = /PARAMS.get\(\"\b(\w*)\b\"\)/g;
 	var regex_CONST = /CONST.get\(\"\b(\w*)\b\"\)/g;
