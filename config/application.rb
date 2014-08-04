@@ -21,5 +21,7 @@ module RoCM
     # config.i18n.default_locale = :de
 
     config.assets.precompile = ['*.js', '*.css', '*.v3.js', '*.jpg', '*.png', '*.ico']
+    config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
+
   end
 end
