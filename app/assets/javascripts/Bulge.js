@@ -62,7 +62,7 @@ function BULGE(R, LOCAL_BULGE, IS_PARALLEL) {
 };
 
 function calculate_bulge(R, mass_bulge, scale_length_bulge) {
-	var bulge_contrib = mass_bulge*27478.2/R*numerically_integrate(0.00001, R/scale_length_bulge, 1, integral_func);
+	var bulge_contrib = mass_bulge*27478.2/R*numerically_integrate(0.0001, R/scale_length_bulge, 1, integral_func);
 
 	return bulge_contrib;
 }
