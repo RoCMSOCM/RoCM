@@ -93,6 +93,11 @@ function add_model() {
 	localStorage.setItem("model_color", model_color);
 	localStorage.setItem("model_full_name", full_name);
 
+
+	var chi_name = model_name + "_" + chi_squared_string;
+    PARAMS.initialize(chi_name, 0);
+	add_param_to_table("chi_table", chi_name, PARAMS.get(chi_name));
+
 	update_models();
 }
 
@@ -100,6 +105,9 @@ function remove_model(model_name) {
 	delete GMODEL[model_name];
 
 	delete localStorage[CUSTOM_PRE + model_name];
+
+	var chi_name = model_name + "_" + chi_squared_string;
+	remove_param_from_table("chi_table", chi_name);
 
 	return true;
 }
