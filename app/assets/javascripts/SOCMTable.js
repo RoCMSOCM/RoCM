@@ -100,7 +100,7 @@ function create_socm_table(param_data) {
 
 	$("#socmt_wrapper").append(table);	
 
-	$(".citation").button();
+	$(".citation").button().addClass("default_button");
 	$(".plot").button({
 		icons: {
 	        primary: "ui-icon-image"
@@ -160,7 +160,7 @@ function create_socm_table(param_data) {
 			JSON2CSV([data], gname+"-PARAMETERS");
 		});
 	});
-	
+
 	create_data_table(table_id);
 }
 

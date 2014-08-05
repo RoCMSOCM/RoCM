@@ -723,6 +723,8 @@ function add_to_legend(legend) {
         }
       });      
 
+      $("button").addClass("default_button");
+
       //stop showing browser menu
       d3.event.preventDefault();
     });

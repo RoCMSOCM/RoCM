@@ -98,6 +98,8 @@ function update_list_dialog(dialog_id, data, empty_message) {
 	list.bind("mousedown", function(e) {
 		e.metaKey = true;
 	}).selectable();
+
+	$("button").addClass("default_button");
 }
 
 function fire_dialog(dialog_id) {

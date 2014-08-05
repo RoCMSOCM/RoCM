@@ -15,8 +15,8 @@ var model_map = {
 	  DATA_ERROR: {full_name: "Observational Data Error", color: "#edd4d4", opacity: 1},
 	  DARK: {full_name: "Dark Matter (ΛCDM)", color: "#f6931f", opacity: 0},
 	  GR: {full_name: "General Relativity", color: "green", opacity: 1},
-	  TOTAL: {full_name: "Total = (GR + ΛCDM)", color: "black", opacity: 1},
-	  CONFORMAL: {full_name: "Conformal Gravity", color: "navy", opacity: 1},
+	  TOTAL: {full_name: "Total = (GR + ΛCDM)", color: "black", opacity: 0},
+	  CONFORMAL: {full_name: "Conformal Gravity", color: "navy", opacity: 0},
 	  MOND: {full_name: "MOND", color: "purple", opacity: 0}
 }
 
