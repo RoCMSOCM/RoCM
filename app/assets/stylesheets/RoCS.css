@@ -11,7 +11,7 @@ body {
 }
 .star {
   stroke : white;
-  fill : black;
+  fill : white;
 }
 .black_hole {
   stroke : none;

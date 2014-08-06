@@ -220,7 +220,6 @@ function insert_star(container, data, max_x, is3D){
           .attr("class", "orbit")
           .attr("r", radius_scale(max_x))
           .attr("opacity", 1)
-          .style("fill", "black")
           .style("stroke", d3.rgb(60,60,60))
           .style("stroke-dasharray", ("3, 3"));
       }

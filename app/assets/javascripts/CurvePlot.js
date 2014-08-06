@@ -405,7 +405,7 @@ function create_error_bar(data) {
       .style("fill", "none")
       .style("stroke", get_color("DATA_ERROR"))
       .style("stroke-width", "1.5px")
-      .style("opacity", err_op);   
+      .style("opacity", get_opacity("DATA_ERROR"));   
     }
 }
 
@@ -417,8 +417,9 @@ function plot_data(data){
       .attr("r", 2)
       .attr("cx", function(d) { return x(d.R); })
       .attr("cy", function(d) { return y(d.VROT_DATA); })
+      .attr("opacity", get_opacity("DATA"))
       .style("fill", get_color("DATA"));
-
+      
 
     $(".VROT_DATA").tipsy({ 
       gravity: 's', 
@@ -470,6 +471,8 @@ function update_error_bar(R_data) {
 
   error_bars
     .data(error_data)
+    .attr("fill", get_color("DATA_ERROR"))
+    .attr("opacity", get_opacity("DATA_ERROR"))
     .attr("d", xy_line);
 }
 

@@ -11,8 +11,8 @@ function GalacticModelStyle(model_name, full_name, color, opacity) {
 };
 
 var model_map = {
-	  DATA: {full_name: "Observational Data", color: "brown", opacity: 1},
-	  DATA_ERROR: {full_name: "Observational Data Error", color: "#edd4d4", opacity: 1},
+	  DATA: {full_name: "Observational Data", color: "brown", opacity: 0},
+	  DATA_ERROR: {full_name: "Observational Data Error", color: "#edd4d4", opacity: 0},
 	  DARK: {full_name: "Dark Matter (ΛCDM)", color: "#f6931f", opacity: 0},
 	  GR: {full_name: "General Relativity", color: "green", opacity: 1},
 	  TOTAL: {full_name: "Total = (GR + ΛCDM)", color: "black", opacity: 0},

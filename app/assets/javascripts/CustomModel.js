@@ -95,8 +95,10 @@ function add_model() {
 
 
 	var chi_name = model_name + "_" + chi_squared_string;
-    PARAMS.initialize(chi_name, 0);
-	add_param_to_table("chi_table", chi_name, PARAMS.get(chi_name));
+	if($("#" + chi_name + "_param_header").length == 0){
+	    PARAMS.initialize(chi_name, 0);
+		add_param_to_table("chi_table", chi_name, PARAMS.get(chi_name));
+	}
 
 	update_models();
 }
