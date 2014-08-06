@@ -21,12 +21,9 @@ function ParamSlider(param_name, param) {
 	this.param = param;
 
 	// Dynamically create slider
-	var sliders_width = 650; // px
-	var input_text_color = "#4d0000"; // Dark crimson (same as custom jQuery-ui theme)
-	//var burgundy = d3.rgb(0.5*255, 0, 0.13*255).toString();
+	var wrapper = $("#sliders");					
 
-	var wrapper = $("#sliders")
-					.css("width", sliders_width + "px");
+	var input_text_color = "#4d0000"; // Dark crimson (same as custom jQuery-ui theme)
 
 	var minus_button_id = "slider_" + param_name + "_remove";
 
@@ -80,7 +77,7 @@ function ParamSlider(param_name, param) {
 
 	var free_id = param_name + "_free_parameter";
 	var free_parameter_toggle = $("<input/>")
-	    .attr("type", "radio")
+	    .attr("type", "checkbox")
 	    .attr("name", "free_parameter")
 	    .attr("class", "auto_obj_test")
 	    .css("float", "right")
@@ -92,11 +89,6 @@ function ParamSlider(param_name, param) {
 	    .css("float", "right")
 		.css("font-weight", "bold")
 	    .html(chi_squared_string);
-
-
-	$("#" + free_id).change(function() {
-
-	});
 
 	var min_input = $("<input>")
 		.attr("type", "text")
@@ -135,7 +127,7 @@ function ParamSlider(param_name, param) {
 
 	var slider_width = "100%";
 	if($(".auto_obj_test").css("display") != "none")
-		slider_width = "94%";
+		slider_width = "92%";
 
 	var div_slider = $("<div>")
 		.attr("id", "slider_" + param_name)
@@ -162,8 +154,8 @@ function ParamSlider(param_name, param) {
 				.append(max_label)
 				.append(max_input)
 				.append(div_slider)
-				.append(free_parameter_toggle)
-				.append(free_parameter_label)));
+				.append(free_parameter_label)
+				.append(free_parameter_toggle)));
 
 	$("#" + minus_button_id).button({
       icons: {
@@ -386,7 +378,12 @@ function initialize_sliders(slider_keys) {
 	// Add button
 	var add_button_id = "slider_add";
 
-	$("#sliders").append($("<button/>")
+	var sliders = $("#sliders"); 
+	var sliders_width = 650; // px
+	
+	sliders.css("width", sliders_width + "px");
+
+	sliders.append($("<button/>")
 		.attr("class", "inner_slider_button")
 		.attr("id", add_button_id)
 		.text("+") // In case the jquery icon fails
@@ -402,6 +399,7 @@ function initialize_sliders(slider_keys) {
 			update_list_dialog(dialog_id, parameters, "No parameters available");
 			fire_dialog(dialog_id);
 		}));
+
 
 	$("#" + add_button_id).button({
       icons: {
@@ -478,8 +476,19 @@ function initialize_sliders(slider_keys) {
    		var slider = new ParamSlider(key, param);
     }
 
-    // Make the sliders div a draggable Object
-    $("#sliders").draggable();
+	// Make the sliders div a resizable jQuery object
+	sliders.resizable({ 
+		handles: "e, w",
+		minWidth: 550
+	});
+
+	// Make the sliders div a draggable jQuery object
+    var sliders = $("#sliders");
+    sliders.draggable().addClass("draggable").data({
+	    'originalLeft': sliders.css('left'),
+	    'origionalTop': sliders.css('top'),
+	    'originalWidth': sliders.css("width")
+	});
 }
 
 function remove_slider(param_name) {

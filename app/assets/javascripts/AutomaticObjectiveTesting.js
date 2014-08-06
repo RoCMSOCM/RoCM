@@ -45,9 +45,12 @@ function AutomaticObjectiveTesting() {
 	// var obs_err = VDATA.VROT_DATA_ERROR;
 	// var R = VDATA.R;
 
-	// var s = parameter_names.length == 0 ? "" : "s";
-	//alert("Objective: " + model_name + "\nFree parameter" + s + ": " + parameter_names);
+	var s = parameter_names.length == 1 ? "" : "s";
+	alert("Objective: " + model_name + "\nFree parameter" + s + ": " + parameter_names.join(", "));
+	return;
+
 	
+	/*//TODO: IMPLEMENT
 	var number_of_steps = 100;
 	var step_interval = (max[0] - min[0]) / number_of_steps;
 	// console.log("Number of steps = ", number_of_steps, " Step intervals of " + step_interval);
@@ -177,7 +180,7 @@ function AutomaticObjectiveTesting() {
 		});
 	}).then(callBack);
 
-
+	*///TODO: IMPLEMENT
 
 	// for(var step=min; step<=max; step+steps){
 	// 	// slider.slider("value", step);
@@ -193,4 +196,7 @@ function AutomaticObjectiveTesting() {
 
 
 	// alert("Optimizing " + chi_squared_string + " for " + model_name + ":\n\n" + parameter_name[0] + " = " + i);
+
+
+
 }

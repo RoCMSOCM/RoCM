@@ -48,6 +48,9 @@ table th{
   padding: 20px;
   top: 90px;
   left: 50px;
+  position: absolute !important;
+  overflow:hidden;
+  z-index: 2000;
 }
 
 .sliders_dropdown * {

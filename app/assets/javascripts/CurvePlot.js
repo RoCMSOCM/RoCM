@@ -113,7 +113,9 @@ function add_models_to_data(data) {
 
 function create_curve_plot_svg() {
   // D3 graph set-up
-  svg = d3.select("#graph_svg")
+  var graph_id = "graph_svg";
+
+  svg = d3.select("#" + graph_id)
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -123,15 +125,21 @@ function create_curve_plot_svg() {
   svg.append("rect")
     .attr("width", "100%")
     .attr("height", "100%")
-    .style("fill", "blue")
-    .attr("opacity", 0);
+    .attr("transform", "translate(" + -margin.left + "," + -margin.top + ")")
+    .attr("fill", "white");
 
 
   d3.select("#rocm_wrapper")
     .attr("width", "75%")
     .attr("min-width", width + margin.left + margin.right + 200);
 
-  $("#graph_svg").draggable();
+  var graph = $("#" + graph_id)
+  graph.draggable()
+    .attr("class", "draggable")
+    .data({
+      'originalLeft': graph.css('left'),
+      'origionalTop': graph.css('top')
+    });
 }
 
 function create_curve_plot(galaxy_name, is_initial){
@@ -663,8 +671,14 @@ function create_legend(velocities, SHOW_SUN) {
     var off_x = (margin.left);
     var off_y = (margin.top);
 
-    $( "#legend_panel" )
+    var legend_panel_svg = $("#legend_panel");
+    legend_panel_svg
       .draggable()
+      .attr("class", "draggable_child")
+      .data({
+        'originalX': legend_panel_svg.attr('x'),
+        'origionalY': legend_panel_svg.attr('y')
+      })      
       .bind('drag', function(event, ui){
         // update coordinates manually, since top/left style props don't work on SVG
         event.target.setAttribute('x', ui.position.left - off_x);

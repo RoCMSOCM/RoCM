@@ -33,6 +33,11 @@ function create_param_table(table_id, data){
 
     }
     $("input").superScript();
+
+    table.draggable().addClass("draggable").data({
+        'originalLeft': table.css('left'),
+        'origionalTop': table.css('top')
+    });
 }
 
 function add_param_to_table(table_id, param_name, data) {

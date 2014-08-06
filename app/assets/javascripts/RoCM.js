@@ -54,6 +54,8 @@ $(document).ready(function() {
 		send_to_rocs();
 	});
 
+	$("#reset_positions").button().click(reset_positions);
+
 	$("#reset_rocm").button().click(function() {
 		reset_rocm();
 	});
@@ -98,6 +100,27 @@ $(document).ready(function() {
 	$("button").addClass("default_button");
 });
 
+function reset_positions() {
+	$(".draggable").each(function() {
+		var element = $(this);
+		element.css({
+			"left": element.data("originalLeft"),
+			"top": element.data("origionalTop")
+		});
+	});
+
+	$(".draggable_child").each(function() {
+		var element = $(this);
+		element.attr({
+			"x": element.data("originalX"),
+			"y": element.data("origionalY")
+		});
+	});
+
+	var sliders = $("#sliders");
+
+	sliders.css("width", sliders.data().originalWidth);
+}
 
 function reset_rocm() {
 	localStorage.clear();
