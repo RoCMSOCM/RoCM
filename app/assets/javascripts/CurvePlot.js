@@ -154,7 +154,7 @@ function create_curve_plot(galaxy_name, is_initial){
   import_parameters(SOCMPARAMS[galaxy_name], is_initial);
 
   var galaxy_id = SOCMPARAMS[galaxy_name].id;
-  d3.json(socm_url + "/" + galaxy_id + "/velocities.json?page=false", function(error, data) {
+  d3.json("http://socm.herokuapp.com/galaxies/" + galaxy_id + "/velocities.json?page=false", function(error, data) {
 
     // META
     data = get_data(data);

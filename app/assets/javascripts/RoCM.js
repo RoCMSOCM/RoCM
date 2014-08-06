@@ -15,7 +15,6 @@ GLOBAL_BULGE = false; // updated via default_bulge(galaxy_name)
 UPDATE_Y_AXIS = false; // updated via update_session()
 
 var FONT = "12px sans-serif";
-var	socm_url = "http://socm.herokuapp.com/galaxies";
 
 $(document).ready(function() { 
 	// Initial interface formatting
@@ -82,7 +81,7 @@ $(document).ready(function() {
 	create_dropdown_div("sliders", "slider_button", "down");
 
 	// RoCM and SOCM Logic
-	var allGalaxiesEndpoint = socm_url + ".json?page=false"
+	var allGalaxiesEndpoint = "http://socm.herokuapp.com/galaxies.json?page=false"
 
 	GLOBAL_BULGE = default_bulge(galaxy_name);
 

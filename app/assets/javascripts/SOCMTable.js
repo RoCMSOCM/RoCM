@@ -19,21 +19,24 @@ function create_data_table(table_id)
 		} ]
 	} );
 
-	$("#" + table_id + " tbody").on('click', '.citation', function () {
-		var tr = $(this).closest('tr');
-		var row = table.row( tr );
+	// Citations sub-table and SOCM call
+	d3.json("http://socm.herokuapp.com/citations.json?page=false", function(error, data){
+		$("#" + table_id + " tbody").on('click', '.citation', function () {
+			var tr = $(this).closest('tr');
+			var row = table.row( tr );
 
-		if ( row.child.isShown() ) {
-            // This row is already open - close it
-            row.child.hide();
-            tr.removeClass('shown');
-        }
-        else {
-            // Open this row
-            row.child( create_citations_table(row.data()) ).show();
-            tr.addClass('shown');
-        }
-    } );
+			if ( row.child.isShown() ) {
+	            // This row is already open - close it
+	            row.child.hide();
+	            tr.removeClass('shown');
+	        }
+	        else {
+	            // Open this row
+	            row.child( create_citations_table(data) ).show();
+	            tr.addClass('shown');
+	        }
+	    });
+    });
 }
 
 
@@ -134,8 +137,8 @@ function create_socm_table(param_data) {
 		var gid = id.split("-DOWNLOAD")[0];	
 		var gname = this.name;
 
-		var vel_download_url = socm_url + "/" + gid + "/velocities.json";
-		var param_download_url = socm_url + "/" + gid + ".json";
+		var vel_download_url = "http://socm.herokuapp.com/galaxies/" + gid + "/velocities.json";
+		var param_download_url = "http://socm.herokuapp.com/galaxies/" + gid + ".json";
 
 		d3.json(vel_download_url, function(error, data) {
 			data.forEach(function(d) {
@@ -220,29 +223,122 @@ function close_all_dropdowns(div_id) {
 }
 
 
-function create_citations_table( d ) {
-    // `d` is the original data object for the row
-    var table_tag = '<table class="citation" cellpadding="5" cellspacing="0" border-collapse="collapse" style="padding-left:50px;padding-top:10px;">';
+function create_citations_table(citations_in) {
+	//TODO: Associate by the galaxies id
+	// Get all parameter_citations
+	// Check if no mass_hydrogen_citation -> NA (N/A)
+	// Check if no scale_length_citation -> ES (Estimated)
 
-    var n = [23, 24, 24, 25];
-    var d = ['v', 'L<sub>B</sub>', 'R<sub>0</sub>', 'M<sub>HI</sub>'];
-    var c = [
-    	'R. Kuzio de Naray, S. S. McGaugh and W. J. G. de Blok, Ap. J. 676, 920 (2008).',
-		'W. J. G. de Blok and A. Bosma, A. A. 385, 816 (2002).',
-		'W. J. G. de Blok and A. Bosma, A. A. 385, 816 (2002).',
-		'J. M. Stil and F. P. Israel, A. A. 389, 29 (2002).'
-	];
+    var table_tag = '<table class="citation" '
+    	+ 'cellpadding="5" '
+    	+ 'cellspacing="0" '
+    	+ 'border-collapse="collapse" '
+    	+ 'style="padding-left:50px;padding-top:10px;">';
+
+    var ids = [23, 24, 24, 25];
+    var parameters_in = {'velocities_citation': 'v',
+    	'luminosity_citations': FORMATTED_MAP.luminosity.name,
+    	'scale_length_citation': FORMATTED_MAP.scale_length.name,
+    	'mass_hydrogen_citation': FORMATTED_MAP.mass_hydrogen.name
+	};
+
+	// Test citations in case SOCM citations is dropped.
+	// var c1 = {
+ //    	author: 'R. Kuzio de Naray, S. S. McGaugh and W. J. G. de Blok',
+	// 	journal: 'Ap. J.',
+	// 	volume: '676',
+	// 	pages: '920',
+	// 	year: '2008'
+	// };
+	// var c2 = {
+ //    	author: 'W. J. G. de Blok and A. Bosma',
+	// 	journal: 'A. A.',
+	// 	volume: '385',
+	// 	pages: '816',
+	// 	year: '2002'
+	// };
+	// var c3 = {
+ //    	author: 'W. J. G. de Blok and A. Bosma',
+	// 	journal: 'A. A.',
+	// 	volume: '385',
+	// 	pages: '816',
+	// 	year: '2002'
+	// };
+	// var c4 = {
+ //    	author:'J. M. Stil and F. P. Israel',
+	// 	journal: 'A. A.',
+	// 	volume: '389',
+	// 	pages: '29',
+	// 	year: '2002'
+	// };
+	// var citations_in = [c1,c2,c3,c4];
+
+    var num_citations = citations_in.length;
+    var max_citations = 4;
+	var citations = [];
+	var bold_volume = true;
+	var italic_journal = false;
+
+	for(var c = 0; c < max_citations; c++){
+		// Gets random citation from the SOCM citations.json
+		var rand_id = Math.floor(Math.random() * (num_citations-1)) + 1;
+
+		var author_in = citations_in[rand_id].author;
+		var journal_in = citations_in[rand_id].journal;
+		var volume_in = citations_in[rand_id].volume;
+		var pages_in = citations_in[rand_id].pages;
+		var year_in = citations_in[rand_id].year;
+
+		var and = author_in.split("and");
+		and = and.map(function(str) { 
+			// Remove outer whitespace
+			return str.trim(); 
+		});
+		var num_authors = and.length;
+		var authors = "";
+		if(num_authors == 1)
+			authors += and[0];
+		else if(num_authors == 2)
+			authors += and[0] + " and " + and[1];
+		else if(num_authors > 2){
+			for(var a = 0; a < num_authors; a++) {
+				if(num_authors - a == 2){
+					authors += and[a] + " and " + and[a+1];
+					break;
+				}
+				else
+					authors += and[a] + ", "
+			}
+		}
 
 
-    var num_citations = 4;
+		if(italic_journal)
+			journal_in = "<i>" + journal_in + "</i>";
+
+		if(bold_volume)
+			volume_in = "<b>" + volume_in + "</b>";
+
+
+		var author = authors.trim();
+		var journal = journal_in.trim();
+		var volume = volume_in;
+		var pages = pages_in;
+		var year = year_in;
+
+		citations.push(author + ", " + journal + " " + volume + ", " + pages + " (" + year + ").");
+	}
+
+	var parameters = Object.keys(parameters_in);
+
+	// Start with the beginning table tag
     var citation_table = table_tag;
     
-    for(var i = 0; i < num_citations; i++){
+    for(var i = 0; i < max_citations; i++){
     	citation_table = citation_table 
     		+ '<tr>' 
-    			+ '<td>' + n[i] + '</td>'
-    			+ '<td>' + d[i] + '</td>'
-    			+ '<td>' + c[i] + '</td>'
+    			+ '<td>' + ids[i] + '</td>'
+    			+ '<td>' + parameters_in[parameters[i]] + '</td>'
+    			+ '<td>' + citations[i] + '</td>'
     		+ '</tr>'
     }
 
