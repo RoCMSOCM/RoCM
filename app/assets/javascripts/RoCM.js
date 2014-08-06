@@ -31,7 +31,10 @@ $(document).ready(function() {
 	else{
 		galaxy_name = "MILKY-WAY";
 		// update_PARAMS();
+		localStorage.removeItem("FORMATTED_MAP");
 		localStorage.removeItem("PARAMS");
+		localStorage.removeItem("STYLE_dictionary");
+		localStorage.removeItem("slider_configuration");
 	}
 
 	// Coming in from RoCS or just hit "Back" on the browser, update function.
