@@ -23,3 +23,14 @@ function CUSTOM(R) {
   
   return rotation_velocity;
 }
+
+function SINEWAVE(R) {
+
+  var y = 0;
+  y = Math.sin(R);
+
+  var factor = PARAMS.get("factor");
+
+  return factor*(y+1);
+  //TODO: ANDROMEDA
+}

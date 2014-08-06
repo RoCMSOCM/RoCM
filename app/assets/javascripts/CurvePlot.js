@@ -63,7 +63,7 @@ var sun_label = "Sun"
 
 var hide_legend_labels = true;
 
-var ORIGIN = 0; //0.0000000001
+var ORIGIN = 0; 
 
 function get_data(data) {
   var data_keys = Object.keys(data[0]);
@@ -118,6 +118,7 @@ function create_curve_plot_svg() {
   svg = d3.select("#" + graph_id)
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
+    .attr("float", "right")
     .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
       // .call(zoom);
