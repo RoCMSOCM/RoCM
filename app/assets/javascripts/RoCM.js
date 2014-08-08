@@ -28,10 +28,6 @@ $(document).ready(function() {
 		galaxy_name = url.split(gid)[1];
 	else{
 		galaxy_name = "MILKY-WAY";
-		// localStorage.removeItem("FORMATTED_MAP");
-		// localStorage.removeItem("PARAMS");
-		// localStorage.removeItem("STYLE_dictionary");
-		// localStorage.removeItem("slider_configuration");
 	}
 
 	// Coming back from RoCS
@@ -112,8 +108,6 @@ function reset_positions() {
 }
 
 function reset_rocm() {
-	localStorage.clear();
-
 	var galaxy_name = PARAMS.get("galaxy_name");
 
 	var rocm_url = "#GALAXY="+galaxy_name;

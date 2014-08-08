@@ -1,5 +1,5 @@
 // Parameter Formatting Global Map
-var FORMATTED_MAP;
+FORMATTED_MAP = undefined;
 
 $(document).ready(function(){
 	var stored_formatted_map = localStorage.getItem("FORMATTED_MAP");

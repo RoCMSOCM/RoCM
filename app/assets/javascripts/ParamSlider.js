@@ -245,6 +245,11 @@ function update_dynamic_input_fields() {
 	    .addClass("dynamic_field");
 
 
+
+	// Exceptions
+	$("#model_full_name").removeClass("dynamic_field");
+
+
     $("input").superScript();
 }
 

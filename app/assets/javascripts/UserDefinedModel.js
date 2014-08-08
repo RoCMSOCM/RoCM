@@ -1,5 +1,5 @@
 // CustomModel.js
-var CUSTOM_PRE = "CUSTOM-";
+CUSTOM_PRE = "CUSTOM-";
 
 $(document).ready(function() {
 	$("#add_model").click(
@@ -21,6 +21,8 @@ $(document).ready(function() {
 		fire_dialog(dialog_id);
 
 	});		
+
+	$("#model_full_name").removeClass("dynamic_field");
 });
 
 function add_model() {
