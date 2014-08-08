@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <% content_for :header do %>
-    <%= stylesheet_link_tag 'github.css' %>
-    <%= stylesheet_link_tag 'RoCS.css' %>
-  <% end %>
   <% content_for :javascript_includes do %>
     <%= javascript_include_tag 'd3', :charset => "utf-8" %>
 
     <%= javascript_include_tag 'jquery-1.11.1.min.js' %>
     <%= javascript_include_tag 'jquery-ui.min.js' %>
-    <%= javascript_include_tag 'parallel.js' %>
 
     <%= javascript_include_tag 'Helper.js' %>
     <%= javascript_include_tag 'MathHelper.js' %>

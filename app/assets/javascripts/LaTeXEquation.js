@@ -1,4 +1,3 @@
-
 LATEX = {
 	"VROT_GR": "v_{GR} = \\sqrt{\\frac{N^*\\beta^*c^2R^2}{2R^3_0}\\left[I_0\\left(\\frac{R}{2R_0}\\right)K_0\\left(\\frac{R}{2R_0}\\right)-I_1\\left(\\frac{R}{2R_0}\\right)K_1\\left(\\frac{R}{2R_0}\\right)\\right]}", 
 
@@ -10,10 +9,11 @@ LATEX = {
 
 var new_line = " \\\\\\\\ ";
 
-function display(){
-	var tex=$('#input #tex').val();
-	$('#output').html('\\['+tex+'\\]');
+function display_latex(input_tex, output_id){
+	var tex = input_tex;
+	$(output_id).html('\\['+tex+'\\]');
 	MathJax.Hub.Queue(['Typeset',MathJax.Hub]);
+
 	if(!window.location.origin)
 		window.location.origin=window.location.protocol+"//"+window.location.host;
 	var url=window.location.origin+window.location.pathname+(tex.length?'?'+encodeURIComponent(tex):'');
@@ -22,12 +22,20 @@ function display(){
 
 
 $(document).ready(function() {
-	$("#input #tex").val(LATEX["VROT_GR"] + new_line + LATEX["VROT_CONFORMAL"] + new_line + LATEX["VROT_DARK"] + new_line + LATEX["VROT_TOTAL"]);
+	var input_id = '#input #tex';
+	var output_id = '#output';
+
+	$(input_id).val(LATEX["VROT_GR"] + new_line + LATEX["VROT_CONFORMAL"] + new_line + LATEX["VROT_DARK"] + new_line + LATEX["VROT_TOTAL"]);
 
 	$(function(){
-		$('#input #tex').on('change keyup',display);
-		display();
+		$(input_id).on('change keyup',function() {
+			var input_tex=$(input_id).val();
+			display_latex(input_tex, output_id);
+		});
+
+		var input_tex=$(input_id).val();
+		display_latex(input_tex, output_id);
 		if(location.search.length) 
-			$('#input #tex').val(unescape(location.search.slice(1))).change();
+			$(input_id).val(unescape(location.search.slice(1))).change();
 	});
 });

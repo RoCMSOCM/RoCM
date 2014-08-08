@@ -32,7 +32,7 @@ function create_bar_chart(model_name){
 
 	var $chi_button= $('<input/>').attr({ id: 'chi_button', type: 'button', name:'chi_buuton', value:'Hide Chi Squared'});
 
-	$chi_button.button().click(function() {
+	$chi_button.click(function() {
 		// Button name changes based on 'Show' and 'Hide'
 		if(this.value.contains("Show")){
 			this.value = this.value.replace("Show", "Hide");
@@ -78,7 +78,6 @@ function create_bar_chart(model_name){
       .attr("class", "label")
       .attr("x", bar_width/2)
       .attr("y", bar_margin.bottom*.75)
-      .style("font", FONT)
       .style("text-anchor", "middle")
       .text(chi_squared_string);
       // .text("Observed vs. Modeled Difference");
@@ -91,7 +90,6 @@ function create_bar_chart(model_name){
 	  .attr("x", -bar_margin.top)
 	  .attr("y", -bar_margin.left/1.25)
 	  .attr("dy", ".71em")
-      .style("font", FONT)
 	  .style("text-anchor", "end")
 	  .text("Frequency");
 
@@ -212,7 +210,6 @@ function create_bar_title(model_name){
 	      .attr("x", (bar_width / 2))             
 	      .attr("y", -bar_margin.top/2)
 	      .attr("text-anchor", "middle")  
-	      .style("font", FONT)
 	      .style("text-decoration", "underline")
 	      .style("fill", "black")
 	      .text(model_string + " Model");	

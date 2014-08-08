@@ -1,12 +1,4 @@
 <head>
-  <% content_for :header do %>
-    <%= stylesheet_link_tag 'github.css' %>
-    <%= stylesheet_link_tag 'SOCMTable.css' %>
-    <%= stylesheet_link_tag 'RoCM.css' %>
-    <%= stylesheet_link_tag 'jquery.dataTables.css' %>
-    <%= stylesheet_link_tag 'tipsy.css' %>
-    <%= stylesheet_link_tag 'spectrum.css' %>
-  <% end %>
   <% content_for :javascript_includes do %>
     <%= javascript_include_tag 'init-mathjax.js' %>
     <%= javascript_include_tag 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' %>
@@ -23,10 +15,6 @@
     <%= javascript_include_tag 'underscore-min.js' %>  
     <%= javascript_include_tag 'jquery.tipsy.js' %>  
 
-    <!-- Parallel Computation -->
-    <%= javascript_include_tag 'eval.js' %>  
-    <%= javascript_include_tag 'parallel.js' %>  
-
     <!-- RoCM Functions -->
     <%= javascript_include_tag 'Param.js' %>
     <%= javascript_include_tag 'ParamDict.js' %>
@@ -35,7 +23,7 @@
     <%= javascript_include_tag 'VData.js' %>
     <%= javascript_include_tag 'Constants.js' %>
     <%= javascript_include_tag 'Conversion.js' %>
-    <%= javascript_include_tag 'CustomModel.js' %>
+    <%= javascript_include_tag 'UserDefinedModel.js' %>
     <%= javascript_include_tag 'GalacticModel.js' %>
     <%= javascript_include_tag 'GalacticModelStyle.js' %>
     <%= javascript_include_tag 'GalacticModelStyleDict.js' %>
@@ -77,37 +65,60 @@
     </noscript>
   </center>
 
-  
-  
-
-  <div id="nav_bar" class="fixed">
-    <div id="title_div" class="sub_fixed" style="height:20px">
-      <h1>Rotation Curve Modeler</h1>
-    </div>
-  
-    <!-- Underscored lined beneath the title -->    
-    <h2> </h2>
-
-    <div id="button_bar" class="sub_fixed" style="position:relative;height:20px;"> 
-      <button id="display_button">Galaxies</button>
-      <button id="slider_button">Parameter Sliders</button>
-
-      <button style="float:right" id="simulate">Simulate</button>
-      <button style="float:right" id="save" onclick="saveSVG('graph')">Save to SVG</button>
-      <button style="float:right" id="reset_positions">Reset Positions</button>
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="">Rotation Curve Modeler</a>
     </div>
 
-    
-  </div>
+    <ul class="nav navbar-nav">
+      <li class="active li-nav-border-both"><a id="galaxy_button">
+        <span class="glyphicon glyphicon-align-justify"></span> Galaxy Table
+      </a></li>
+    </ul>
+
+
+    <ul class="nav navbar-nav">
+      <li class="active li-nav-border-right"><a id="slider_button">
+          <span class="glyphicon glyphicon-tasks"></span> Parameter Sliders
+      </li></a>
+    </ul>
+
+
+    <ul class="nav navbar-nav" style="float:right">
+      <li class="active li-nav-border-right"><a id="simulate" class="navbar-btn">
+        <span class="glyphicon glyphicon-refresh"></span> Simulate
+      </a></li>
+    </ul>
+    <ul class="nav navbar-nav" style="float:right">
+      <li class="active li-nav-border-both"><a id="save" class="navbar-btn" onclick="saveSVG('graph')">
+        <span class="glyphicon glyphicon-save"></span> Save to SVG
+      </a></li>
+    </ul>
+    <ul class="nav navbar-nav" style="float:right">      
+      <li class="active li-nav-border-left"><a id="reset_positions" class="navbar-btn">
+        Reset Positions
+      </a></li>
+    </ul>
+    </div>
+  </div><!-- /.container-fluid -->
+</nav>
 
   <div id="graph" style="padding-top:45px;float:right;fill:white;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;">
     <svg xmlns="http://www.w3.org/2000/svg" id="graph_svg" style="display:block;margin:auto;"></svg>
   </div>
 
   <div id="rocm_wrapper" class="rocm_wrapper">
-    <div id="socmt_wrapper" class="dropdown socm_dropdown"></div>
+    <div id="socmt_wrapper" class="dropdown_div socm_dropdown"></div>
 
-    <div id="sliders" class="dropdown sliders_dropdown"></div>
+    <div id="sliders" class="dropdown_div sliders_dropdown"></div>
     
 
     <br>

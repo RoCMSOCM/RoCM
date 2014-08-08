@@ -40,3 +40,16 @@ function sortByKey(array, key) {
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
 }
+
+function getAbsPos (obj){ // obj is jQuery object
+    var pos = { x: 0, y: 0 };
+    while(obj.length != 0){
+      if(obj.attr !== undefined && !isNaN(obj.attr("x")) && !isNaN(obj.attr("y"))) {
+          pos.x += +obj.attr("x");
+          pos.y += +obj.attr("y");
+        }
+
+      obj = obj.parent();   
+    }
+    return pos;
+}

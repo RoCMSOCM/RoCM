@@ -14,10 +14,8 @@
  *= require_self
  *= require jquery-ui
  *= require_tree ../../../vendor/assets/stylesheets
- *= require github.css
- *= require jquery.dataTables.css
- *= require RoCM.css
- *= require RoCS.css
- *= require SOCMTable.css
  *= require dataTables/jquery.dataTables
  */
+
+@import "bootstrap-sprockets";
+@import "bootstrap";

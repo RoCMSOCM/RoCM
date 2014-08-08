@@ -2,7 +2,7 @@
 var CUSTOM_PRE = "CUSTOM-";
 
 $(document).ready(function() {
-	$("#add_model").button().click(
+	$("#add_model").click(
 		add_model);
 
 	var dialog_id = "custom_model_list_dialog";
@@ -14,7 +14,7 @@ $(document).ready(function() {
       }
 	create_dialog(dialog_id, "Remove Custom Model", remove_func);
 
-	$("#remove_model").button().click(function() {
+	$("#remove_model").click(function() {
 		var custom_models = get_custom_models();
 
 		update_list_dialog(dialog_id, custom_models, "No custom models available");

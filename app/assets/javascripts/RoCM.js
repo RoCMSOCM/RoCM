@@ -14,12 +14,10 @@ GLOBAL_BULGE = false; // updated via default_bulge(galaxy_name)
 
 UPDATE_Y_AXIS = false; // updated via update_session()
 
-var FONT = "12px sans-serif";
-
 $(document).ready(function() { 
 	// Initial interface formatting
 
-	document.getElementById("graph").style.font = FONT;
+	// $("#graph").css("font-family", FONT);
 
 	// RoCM URL with GID 
 	var galaxy_name;
@@ -30,35 +28,24 @@ $(document).ready(function() {
 		galaxy_name = url.split(gid)[1];
 	else{
 		galaxy_name = "MILKY-WAY";
-		// update_PARAMS();
 		localStorage.removeItem("FORMATTED_MAP");
 		localStorage.removeItem("PARAMS");
 		localStorage.removeItem("STYLE_dictionary");
 		localStorage.removeItem("slider_configuration");
 	}
 
-	// Coming in from RoCS or just hit "Back" on the browser, update function.
+	// Coming back from RoCS
+	// or
+	// Hit "Back" on the browser
 	update_session();
 
-	$("#slider_button").button();
-
-	$("#save").button({
-		icons:{
-			secondary: "ui-icon-disk"
-		}
-	});
-
-	$("#simulate").button({
-		icons:{
-			secondary: "ui-icon-refresh"
-		}
-	}).click(function(){
+	$("#simulate").click(function(){
 		send_to_rocs();
 	});
 
-	$("#reset_positions").button().click(reset_positions);
+	$("#reset_positions").click(reset_positions);
 
-	$("#reset_rocm").button().click(function() {
+	$("#reset_rocm").click(function() {
 		reset_rocm();
 	});
 
@@ -78,7 +65,7 @@ $(document).ready(function() {
 	style_galactic_models();
 
 	// SOCM Table dropdown overlay
-	create_dropdown_div("socmt_wrapper", "display_button", "down");
+	create_dropdown_div("socmt_wrapper", "galaxy_button", "down");
 
 	// Parameter Fitting Slider dropdown overlay
 	create_dropdown_div("sliders", "slider_button", "down");

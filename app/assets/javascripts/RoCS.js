@@ -194,6 +194,20 @@ function simulate(data, galaxy_name, data_type, one_galaxy) {
 
   generate_galaxy_title(galaxy_title_div, data_type, is_data, one_galaxy);
 
+
+  var id_suffix;
+  id_suffix = is_data ? "DATA" : "VROT";
+
+  var g_id = "g_" + id_suffix;
+  var svg_id = "svg_" + id_suffix;
+  var svg = d3.select("#" + svg_id);
+
+  var w = +(svg.style("width").replace("px", ""));
+  var h = +(svg.style("height").replace("px", ""));
+
+  $("#" + g_id).attr("transform", "translate(" + w/2 + "," + h/2 + ")")
+
+
   var rotate_galaxy = true;
 
   var t0 = Date.now() - 10000000;
@@ -232,12 +246,6 @@ function insert_star(container, data, max_x, is3D){
           .style("stroke", "white")
           .style("fill", "white")
           .attr("class", "star")   
-          .attr("opacity", 0.6+i/2)
-            .transition()
-              // .duration(100000)
-              // .ease(Math.sqrt)
-              // .attr("r", 10)
-              // .remove();
       }
 });
 }
@@ -251,9 +259,6 @@ function update_star_color_range() {
         .style("fill", range_color(d.velocity))
   });
 }
-
-_spin_velocity = 100;
-spin_velocity = _spin_velocity;
 
 function rotate(star_cluster, star_velocity, is3D, t0, is_data){
   var delta = (Date.now() - t0);
@@ -270,24 +275,10 @@ function rotate(star_cluster, star_velocity, is3D, t0, is_data){
     })
   }
   star_cluster.attr("transform",  function(d) {
-    if(spin_velocity != 0)
-      return "rotate(" + delta * d.velocity/spin_velocity + ")";
-    else
-      return "rotate(" + d.velocity * Math.pow(10, 1) + ")";
+    if(velocity_factor == velocity_factor_min)
+      delta = t0;
+    return "rotate(" + delta * d.velocity * velocity_factor + ")";
   })
-
-
-  var id_suffix;
-  id_suffix = is_data ? "DATA" : "VROT";
-
-  var g_id = "g_" + id_suffix;
-  var svg_id = "svg_" + id_suffix;
-  var svg = d3.select("#" + svg_id);
-
-  var w = +(svg.style("width").replace("px", ""));
-  var h = +(svg.style("height").replace("px", ""));
-
-  $("#" + g_id).attr("transform", "translate(" + w/2 + "," + h/2 + ")")
 
 }
 
@@ -333,15 +324,24 @@ $( "#slider_angle" ).slider({
 $( "#angle_value" ).val( a_value + " degrees" );
 }
 
+velocity_factor = 0.02;
+_velocity_factor = velocity_factor;
+velocity_factor_min = 0.00005;
+velocity_factor_max = 0.05;
+velocity_factor_step = 0.0005;
 function initialize_spin_slider() {
 
   $( "#slider_spin" ).slider({
     range: "min",
-    min: spin_velocity/4,
-    max: spin_velocity*2,
-    value: spin_velocity,
+    min: velocity_factor_min,
+    max: velocity_factor_max,
+    value: velocity_factor,
+    step: velocity_factor_step,
     change: function( event, ui ) {
-      spin_velocity = +ui.value;
+      velocity_factor = +ui.value;
+    },
+    slide: function( event, ui ) {
+      velocity_factor = +ui.value;
     }
   });
 
@@ -382,8 +382,8 @@ function update_original_speed(type) {
     val_suffix = " degrees";
   }
   else if(type == "spin"){
-    spin_velocity = _spin_velocity;
-    orig_val = spin_velocity;
+    velocity_factor = _velocity_factor;
+    orig_val = velocity_factor;
   }
 
   var slider_name = "#slider_" + type;
@@ -433,11 +433,7 @@ function create_back_button(galaxy_name) {
       .attr("z-index", "10")
       .text("Back to RoCM"));    
     
-  $("#" + back_id).button({
-    icons: {
-      primary: "ui-icon-arrowreturnthick-1-w"
-    }
-  }).click(function() {
+  $("#" + back_id).click(function() {
     back(galaxy_name);
   });
 }

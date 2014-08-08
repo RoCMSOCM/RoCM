@@ -104,6 +104,8 @@ function update_list_dialog(dialog_id, data, empty_message) {
 
 function fire_dialog(dialog_id) {
 	$("#" + dialog_id).dialog('open');
+	$(".ui-dialog-buttonset button").removeClass();
+	$(".ui-dialog-buttonset button").addClass("default_button");
 }
 
 function add_param_from_list(dialog_id) {

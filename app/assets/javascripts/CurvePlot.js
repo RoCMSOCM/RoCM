@@ -1,7 +1,7 @@
 // Our Sun's distance to the galactic center
 var d_sun = 8.1 //+- 0.6 kpc
 
-var margin = {top: 20, right: 220, bottom: 30, left: 80},
+var margin = {top: 20, right: 220, bottom: 50, left: 80},
 width = 1150 - margin.left - margin.right,
 height = 500 - margin.top - margin.bottom;
 
@@ -303,10 +303,9 @@ function apply_axis_formatting(svg) {
     .style("shape-rendering", "middle");
 
   svg.selectAll(".tick")
-    .style("font", FONT)
-    .style("font-weight", "bold")
+    // .style("font-weight", "bold")
     .selectAll("line")
-    .style("font-weight", "bold")
+    // .style("font-weight", "bold")
     .style("stroke", "#000");
 }
 
@@ -317,16 +316,12 @@ function create_xaxis() {
     .style("fill", "black")
     .call(xAxis)
     .append("text")
-      .attr("class", "label")
-      .attr("x", 150)
-      .attr("y", -6)
+      .style("font-size", "12px")
+      .attr("x", width) //525
+      .attr("y", 40)
       .style("text-anchor", "end")
-      .style("font", FONT)
       .style("fill", "black")
-      .text("Galactocentric Distance, R (kpc)")
-      .transition()
-        .duration(TIME*(3/4))    
-        .attr("x", width);
+      .text("Galactocentric Distance, R (kpc) ");
 
 }
 
@@ -346,16 +341,12 @@ function create_yaxis() {
     .call(yAxis)
     .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("x", -height + 150)
-      .attr("dy", ".71em")
+      .attr("x", 0) //-125
+      .attr("y", -50)
+      .style("font-size", "12px")
       .style("text-anchor", "end")
-      .style("font", FONT)
       .style("fill", "black")
-      .text("Rotation Velocity, VROT (km/s)")
-      .transition()
-        .duration(TIME*(3/4))    
-        .attr("x", 0);
+      .text("Rotation Velocity, VROT (km/s) ")
 
 
 }
@@ -380,7 +371,6 @@ function create_sun_label() {
     .attr("x", x(d_sun_line[1].x))             
     .attr("y", y(d_sun_line[1].y))
     .attr("text-anchor", "middle")  
-    .style("font", FONT)
     .style("font-size", "0px") 
     .style("stroke", sun_color)
     .style("opacity", get_opacity("sun"))
@@ -695,7 +685,8 @@ var dragged = false;
 
 function add_to_legend(legend) {
   legend.append("rect")
-    .attr("class", function(d) { return d.name + "_legend_rect"; })
+    .attr("class", "legend_rect")
+    .attr("id", function(d) { return d.name + "_legend_rect"})
     .attr("x", rect_position_offset)
     .attr("y", rect_position_offset)
     .attr("width", leg_width*legend_width_factor)
@@ -739,7 +730,7 @@ function add_to_legend(legend) {
             $(this).empty();
           }
         }
-      });      
+      });
 
       $("button").addClass("default_button");
 
@@ -748,13 +739,14 @@ function add_to_legend(legend) {
     });
 
 
+  // LaTeX / Citations tooltip
   legend.append("text")
     .attr("x", rect_position_offset + leg_width*legend_width_factor*1.1)
     .attr("y", rect_position_offset + leg_width/2)
     .attr("dy", ".35em")
-    .attr("class", function(d) { return d.name + "_legend_text"; })
-    .style("font", FONT)
-    .style("font-style", "italic")
+    .attr("class", "legend_text")
+    .attr("id", function(d) { return d.name + "_legend_text"; })
+    .style("font-size", "12px") 
     .style("user-select", "none")
     .style("-moz-user-select", "none") 
     .style("-webkit-user-select", "none") 
@@ -769,7 +761,65 @@ function add_to_legend(legend) {
 
       var object_class = is(d, "err") ? "VROT_DATA_ERROR" : d.name;
       object_opacity(object_class);
+    })
+
+  $(".legend_text")
+    .tipsy({ 
+      gravity: 'se', 
+      html: true, 
+      title: get_latex_tooltip
     });
+
+  $(".legend_rect")
+    .tipsy({ 
+      gravity: 'se', 
+      html: true, 
+      title: get_latex_tooltip
+    });
+
+
+    $(".legend_text").on("mouseover", show_latex_tooltip);
+    $(".legend_rect").on("mouseover", show_latex_tooltip);
+}
+
+function show_latex_tooltip(d) {
+  var dot_tipsy_class = ".tipsy-inner";
+  var tipsy_div = $(dot_tipsy_class)
+  var input_tex = tipsy_div.html();
+
+  if(input_tex.contains("Citation"))
+    return;
+
+  display_latex(input_tex, dot_tipsy_class);
+
+  tipsy_div.css("font-size", "16px")
+    .css("max-width", "100%");
+
+  var tipsy_wrapper = $(".tipsy");
+  var nav_height = $(".navbar").css("height");
+
+  tipsy_wrapper
+    .css("left", 0)
+    .css("top", nav_height);
+
+
+  $(".tipsy-arrow").hide();
+}
+
+function get_latex_tooltip() {
+  var tooltip = "";
+  var d = this.__data__;
+
+  var latex_eq = LATEX[d.name];
+  if(latex_eq === undefined){
+    // TODO: Get the 'v' citation for the Obs. Data tooltip.
+    tooltip = "Citation for velocity"; 
+  }
+  else{
+    tooltip = latex_eq;
+
+  }
+  return tooltip;
 }
 
 function remove_legend_element(d, this_dialog) {
@@ -785,18 +835,15 @@ function remove_legend_element(d, this_dialog) {
     if(legend_data[i].name == this_name)
       this_index = i;
   }
-  var this_rect_class = "." + this_name + "_legend_rect";
-  var this_text_class = "." + this_name + "_legend_text";
+  var this_legend_class = "#legend_" + this_name;
 
-  svg.select(this_rect_class).node().parentNode.remove();
-  svg.select(this_rect_class).remove();
-  svg.select(this_text_class).remove();
+  svg.select(this_legend_class).remove();
 
   legend_data.forEach(function(d, i) {
     if(this_index < i){
       // Removes the items below the right-clicked from the legend.
-      var below_rect_name = "." + d.name + "_legend_rect";
-      var below_text_name = "." + d.name + "_legend_text";
+      var below_rect_name = "#" + d.name + "_legend_rect";
+      var below_text_name = "#" + d.name + "_legend_text";
 
       var this_y = d3.transform(svg.select(below_rect_name).attr("transform")).translate[1];
 
@@ -816,11 +863,10 @@ function remove_legend_element(d, this_dialog) {
 function create_title(galaxy_name, SHOW_TITLE, ANIMATE_TITLE) {
   if(SHOW_TITLE){
   var title = svg.append("text")
-      .attr("class", "title")
+      .attr("class", "title label")
       .attr("x", (width / 2))             
       .attr("y", ANIMATE_TITLE ? 220 : 0)
       .attr("text-anchor", "middle")  
-      .style("font", FONT)
       .style("font-size", ANIMATE_TITLE ? "40px" : "14px") 
       .style("text-decoration", "underline")
       .style("fill", "black")

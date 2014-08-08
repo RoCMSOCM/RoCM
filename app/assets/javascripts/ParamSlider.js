@@ -36,12 +36,15 @@ function ParamSlider(param_name, param) {
 
 	var minus_button = $("<button>")
 		.attr("id", minus_button_id)
-		.attr("class", "inner_slider_button")
-		.text("-") // In case the jquery icon fails
+		.attr("class", "default_button btn-xs inner-slider-button")
+		.css("float", "right")
 		.on("click", function(d) {
 			remove_slider(param_name);
 			update_slider_configuration();
-		});
+		}).append($("<span>")
+			.attr("class", "glyphicon glyphicon-minus")
+
+		);
 
 	var amount_label = $("<label>")
 		.attr("for", param_name + "_amount")
@@ -53,7 +56,6 @@ function ParamSlider(param_name, param) {
     var amount_input = $("<input>")
 		.attr("type", "text")
 		.attr("id", param_name + "_amount")
-		.css("background-color", "white")
 		.css("opacity", "1")
 		.css("color", input_text_color)
 		.css("font-weight", "bold")
@@ -93,7 +95,6 @@ function ParamSlider(param_name, param) {
 	var min_input = $("<input>")
 		.attr("type", "text")
 		.attr("id", param_name + "_min")
-		.css("background-color", "white")
 		.css("opacity", "1")
 		.css("color", input_text_color)
 		.css("font-weight", "bold")
@@ -105,12 +106,11 @@ function ParamSlider(param_name, param) {
 	var min_label = $("<label>")
 		.attr("for", param_name + "_min")
 		.css("float", "left")
-		.html("MIN");
+		.html("MIN:");
 
 	var max_input = $("<input>")
 		.attr("type", "text")
 		.attr("id", param_name + "_max")
-		.css("background-color", "white")
 		.css("opacity", "1")
 		.css("color", input_text_color)
 		.css("font-weight", "bold")
@@ -123,7 +123,7 @@ function ParamSlider(param_name, param) {
 	var max_label = $("<label>")
 		.attr("for", param_name + "_max")
 		.css("float", "right")
-		.html("MAX");
+		.html("MAX:");
 
 	var slider_width = "100%";
 	if($(".auto_obj_test").css("display") != "none")
@@ -151,18 +151,12 @@ function ParamSlider(param_name, param) {
 			.append(div_slider_container
 				.append(min_input)
 				.append(min_label)
-				.append(max_label)
 				.append(max_input)
+				.append(max_label)
 				.append(div_slider)
 				.append(free_parameter_label)
 				.append(free_parameter_toggle)));
 
-	$("#" + minus_button_id).button({
-      icons: {
-        primary: "ui-icon-minus"
-      },
-      text: false
-    });
 
 	var value = this.param.value;
 	var min = this.param.min;
@@ -247,7 +241,9 @@ function update_param_slider(param_name) {
 function update_dynamic_input_fields() {
 	$('input[type="text"]')
 	    .keyup(resizeInput)
-	    .each(resizeInput);
+	    .each(resizeInput)
+	    .addClass("dynamic_field");
+
 
     $("input").superScript();
 }
@@ -384,9 +380,9 @@ function initialize_sliders(slider_keys) {
 	sliders.css("width", sliders_width + "px");
 
 	sliders.append($("<button/>")
-		.attr("class", "inner_slider_button")
+		.attr("class", "default_button btn-xs inner-slider-button")
+		.css("float", "right")
 		.attr("id", add_button_id)
-		.text("+") // In case the jquery icon fails
 		.on("click", function() {
 			var parameters = find_all_parameters(true);
 			for(var i=0;i<parameters.length;i++){
@@ -398,31 +394,26 @@ function initialize_sliders(slider_keys) {
 			var dialog_id = "param_list_dialog";
 			update_list_dialog(dialog_id, parameters, "No parameters available");
 			fire_dialog(dialog_id);
-		}));
+		}).append($("<span>")
+			.attr("class", "glyphicon glyphicon-plus")
 
-
-	$("#" + add_button_id).button({
-      icons: {
-        primary: "ui-icon-plus"
-      },
-      text: false
-    });
-
+		));
 
 
 	var bulge_toggle = $("<input/>")
 		.attr("type", "checkbox")
-		.css("float", "left")
+		.css("float", "right")
 		.attr("id", "bulge_toggle")
 	$("#sliders").append();
 
 	var bulge_label = $("<label/>")
 		.attr("id", "bulge_label")
-		.css("float", "left")
+		.css("float", "right")
 		.html("<b>Bulge</b>");
 
     var run_button = $("<button/>")
-		.attr("class", "text_button auto_obj_test")
+		.attr("class", "default_button auto_obj_test btn-xs inner-slider-text-button")
+		.css("float", "right")
 		.attr("id", "slider_run")
 		.css("font-size",".8em")
 		.text("Run " + chi_squared_string) 
@@ -432,7 +423,8 @@ function initialize_sliders(slider_keys) {
 
 
     var reset_button = $("<button/>")
-		.attr("class", "text_button")
+		.attr("class", "default_button btn-xs inner-slider-text-button")
+		.css("float", "right")
 		.attr("id", "slider_reset")
 		.css("font-size",".8em")
 		.text("Reset") 
@@ -442,16 +434,17 @@ function initialize_sliders(slider_keys) {
 
 	var title = $("<h2>")
 		.html("Parameter Fitting Sliders")
-		.css("text-align", "center")
 		.css("margin", "0 auto")
+		.css("float", "left")
 		.css("z-index", -1)
 		.css("border", 0)
 
-	$("#sliders").append(bulge_toggle)
-		.append(bulge_label)
+	$("#sliders")
+		.append(title)
 		.append(reset_button)
 		.append(run_button)
-		.append(title);
+		.append(bulge_label)
+		.append(bulge_toggle);
 
 
 	// Default to GLOBAL_BULGE
@@ -461,12 +454,7 @@ function initialize_sliders(slider_keys) {
         GLOBAL_BULGE = $(this).is(":checked");
         localStorage.setItem("GLOBAL_BULGE", GLOBAL_BULGE);
         update_models("mass_bulge");
-    });
-
-	reset_button.button();	
-
-	run_button.button();
-	
+    });	
 
 	// Create initial sliders
     for(var i=0;i<slider_keys.length;i++){

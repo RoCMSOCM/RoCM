@@ -74,8 +74,9 @@ $(document).ready(function(){
 	create_dialog(dialog_id, "Add parameter to PARAMS", add_func);
 	create_parameter_input_fields(dialog_id);
 
-	$("#add_parameter").button().click(function(){
+	$("#add_parameter").click(function(){
 		fire_dialog("add_parameter_dialog");
+		$("#add_parameter_dialog input").removeClass("dynamic_field");
 	});
 });
 
@@ -165,7 +166,8 @@ function add_input_with_label(input_id, div, html_text, is_number) {
 	var input = $("<input>")
 		.attr("id", input_id)
 		.attr("type", "text")
-		.css("min-width", "95%");
+		.css("min-width", "95%")
+		.css("border", "1px !important");
 
 	if(is_number){
 		input.keypress(function(e) {

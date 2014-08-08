@@ -1,0 +1,29 @@
+table {
+  border-collapse: collapse;
+}
+
+.dropdown_div {
+  display: none;
+  position: absolute !important;
+  box-shadow: 5px 5px 2.5px #888888;
+  border: 1px solid;
+  border-color: dimgrey;
+  z-index: 10;
+}
+
+.socm_dropdown {
+  opacity: 0.95;
+  background-color: rgba(255, 255, 255, 0.9);
+  left: 1%;
+  top: 55px;
+  width: 96%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 1%;
+  padding-left: 1%;
+}
+
+.plot, .download {
+  width: 50%;
+  height: 20px;
+}

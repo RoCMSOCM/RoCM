@@ -1,0 +1,134 @@
+@import "bootstrap";
+
+body {
+  background-color: white;
+}
+
+.axis {
+  path, line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+  }
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+table th {
+  background-color: #f2f2f2;
+}
+
+.fixed {
+  top: 0;
+  left: 0;
+  z-index: 1030;
+  position: fixed;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px;
+}
+
+.sub_fixed {
+  padding-left: 5%;
+  padding-right: 5%;
+  // width: 90%;
+}
+
+.rocm_wrapper {
+  max-width: 90%;
+  margin: 0 auto;
+  padding-top: 45px;
+}
+
+.sliders_dropdown {
+  /* Set the opacity level of the background and of the child elements */
+  /* Background */
+  padding: 20px;
+  top: 55px;
+  left: 50px;
+  position: absolute !important;
+  overflow: hidden;
+  z-index: 2000;
+  background-color: rgba(245, 245, 245, 0.9);
+}
+
+.auto_obj_test {
+  display: none !important; 
+}
+
+.default_button {
+  @extend .btn;
+  @extend .btn-default;
+  font-size: 12px !important;
+}
+
+.text_button {
+  width: auto;
+  height: 20px;
+  float: right;
+}
+
+/* Parameter list (From clicking the '+' button) */
+
+.ui_list {
+  .ui-selecting {
+    background: #a5a5a5;
+  }
+  .ui-selected {
+    background: #747474;
+    color: white;
+  }
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  li {
+    margin: 3px;
+    padding: 0.4em;
+    /*height: 18px; */
+  }
+}
+
+button:focus {
+  outline: 0 !important;
+}
+
+.custom_model_text {
+  /*font-family: "Lucida Console", Monaco, monospace; */
+  font-size: 12px;
+}
+
+.dynamic_field {
+  margin-left: 5px;
+  margin-right: 5px;
+  border: 0px;
+  background-color: rgba(0,0,0,0);
+}
+
+.li-nav-border-both {
+  border-right: 1px solid #999;
+  border-left: 1px solid #999;
+}
+
+.li-nav-border-left {
+  border-left: 1px solid #999;
+}
+
+.li-nav-border-right {
+  border-right: 1px solid #999;
+}
+
+.inner-slider-button {
+  width: 40px;
+}
+
+.inner-slider-text-button {
+  margin-right: 5px;
+  margin-left: 5px;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
