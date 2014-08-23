@@ -170,7 +170,7 @@ F_b = \left[I_0\left(\frac{R}{2R_0}\right)K_0\left(\frac{R}{2R_0}\right)-I_1\lef
 It is assumed that each parameter is fixed (other than the input $R$). But since these fixed parameters have an accepted range, it's difficult to alter them and see the behavior of the model in a single run program.   
 
 
-\subsection{Lambda Cold Dark Matter}
+\subsection{Lambda Cold Dark Matter Prediction}
 An issue when modeling galaxies is how to best adjust a free parameter like $N^*$. Some models have more free parameters than others, all dictated by the theory. The $\Lambda CDM$ theory states that each galaxy has two unobservable parameters, namely the spherical dark matter density, $\sigma_0$, and the dark matter halo radius, $r_0$. As described by \cite{mannheim}, the $\Lambda CDM$ rotation velocity contribution
 \begin{equation}
 v_{dark}(R) = \sqrt{4\pi\beta^*c^2\sigma_0\left[1-\frac{r_0}{R}\text{arctan}\left(\frac{R}{r_0}\right)\right]}
@@ -210,21 +210,6 @@ v_{bulge}(R) = \sqrt{\frac{2 N^*_b\beta^* c^2}{\pi R} \int_0^{R/t} dz\; z^2K_0(z
 
 Not every galaxy includes a bulge, thus RoCM provides a means to turn on and off the bulge contribution.  This again allows the user to explore all possible options in modeling a galaxy while still keeping try to physical observations (for example, some galaxies are noted to have a small but possible insignificant bulge etc)
 
-\section{Scholarly Observed Celestial Measurements}
-Researchers must first sift through peer-reviewed articles and gather galactic data one-by-one before modeling a galaxy. To minimize the time astrophysicists gather data, SOCM was created. SOCM is a public database that serves as a central repository for galactic parameters and observed velocity data. The database can also be used as an API for researchers. Initially, SOCM is comprised of 112 galaxies, including the peer-reviewed galactic parameters and measurements of star velocities contained within.  Although we are housing all of this information in one central location, all proper citations and references have still been maintained for proper use by theorists of the SOCM tool.
-       
-
-\begin{figure*}[!h]
-\centering
-\includegraphics[width=\textwidth, height=2in, keepaspectratio]{socmtable}
-\caption{The SOCM table where you can access all the galactic data.}
-\label{socm_fig}
-\end{figure*}
-
-
-The idea is for astronomers to submit new measurements to the SOCM administrator (the authors) for approval. Thus creating a single means of distributing validated measurements of hundreds of galaxies. The input data can then be sent to RoCM. This way, if new galaxies get submitted and accepted, RoCM will always have the most up-to-date data that is provided. As an added feature, SOCM was created to also serve as a simple central database.  Thus, researchers may also pull from the SOCM application programming interface (API) to use the data for other applications other than rotation curve modeling.  When data and parameters are pulled from SOCM outside of RoCM, all of the proper units as well as citations are preserved.
-
-
 
 \section{RoCM Functionality}
 
@@ -240,13 +225,21 @@ RoCM seeks to bring together the equations described above, and create a worksta
 
 \end{enumerate}
 
+\subsection{Scholarly Observed Celestial Measurements}
+Researchers must first sift through peer-reviewed articles and gather galactic data one-by-one before modeling a galaxy. To minimize the time astrophysicists gather data, SOCM was created. SOCM is a public database that serves as a central repository for galactic parameters and observed velocity data. The database can also be used as an API for researchers. Initially, SOCM is comprised of 112 galaxies, including the peer-reviewed galactic parameters and measurements of star velocities contained within.  Although we are housing all of this information in one central location, all proper citations and references have still been maintained for proper use by theorists of the SOCM tool.
+       
 
+\begin{figure*}[!h]
+\centering
+\includegraphics[width=\textwidth]{socmtable}
+\caption{The user can sort by value, or search within the SOCM table to select a galaxy they would like to plot. The user can also download the parameter and velocity data of the galaxy in CSV format. Each galaxy has a set of associated citations to reference the origin of the data.}
+\label{socm_fig}
+\end{figure*}
 
-\subsection{Accessing the SOCM database from RoCM}
-Figure \ref{socm_fig} shows the table of galactic data that is generated from the SOCM database. The user can sort by value, or search within the table to select a galaxy they would like to plot. The user can also download the parameter and velocity data of the galaxy in a CSV format.
-
---\textbf{TODO:} Talk about citations in the datebase. -- 
 %The Milky Way data came from \cite{kundu} and \cite{sofue}. The rest of the data included in SOCM came from \cite{mannheim}. 
+
+
+The idea is for astronomers to submit new measurements to the SOCM administrator (the authors) for approval. Thus creating a single means of distributing validated measurements of hundreds of galaxies. The input data can then be sent to RoCM. This way, if new galaxies get submitted and accepted, RoCM will always have the most up-to-date data that is provided. As an added feature, SOCM was created to also serve as a simple central database.  Thus, researchers may also pull from the SOCM application programming interface (API) to use the data for other applications other than rotation curve modeling.  When data and parameters are pulled from SOCM outside of RoCM, all of the proper units as well as citations are preserved.
 
 
 \subsection{Curve Plot for Rotation Velocity}
@@ -262,6 +255,7 @@ The main focus of RoCM is the curve plotting tool. Each galactic model is provid
 \caption{The plotted GR, CR, total $\Lambda CDM$ models over the observational data for the Milky Way (generated from RoCM).}
 \label{milkywayplot}
 \end{figure}
+
 
 Having the $\chi^2$ value presented to the user shows the goodness of fit for each model. We implemented a $\chi^2$ variance because the observational data contains errors, $\mu$, and can be tested with
 \begin{equation}
@@ -301,9 +295,10 @@ The power of RoCM lies within these parameter sliders. The user can adjust the m
 \label{slider_fig}
 \end{figure}
 
+\newpage
 
 \subsection{User Defined Models and Parameters}
-The discussed models, namely GR, $\Lambda CDM$, and CG aren't the only theories that model galaxies. Thus, users have the ability to write a model in JavaScript to import directly into RoCM. The User Defined Model workbench (Figure \ref{udm}) opens RoCM up for any and all models that want to be compared against each other. The function should be in the form:
+The discussed models, namely GR, $\Lambda CDM$, and CG aren't the only theories that model galaxies. Thus, users have the ability to write a model in JavaScript to import directly into RoCM. The User Defined Model workbench opens RoCM up for any and all models that want to be compared against each other. The function should be in the form:
 \begin{center}
 \begin{tabular}{c}
 \begin{lstlisting}
