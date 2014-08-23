@@ -16,7 +16,7 @@ var model_map = {
 	  DARK: {full_name: "Dark Matter (ΛCDM)", color: "#f6931f", opacity: 0},
 	  GR: {full_name: "General Relativity (GR)", color: "green", opacity: 1},
 	  TOTAL: {full_name: "Total = (GR + ΛCDM)", color: "black", opacity: 0},
-	  CONFORMAL: {full_name: "Conformal Gravity CG)", color: "navy", opacity: 0},
+	  CONFORMAL: {full_name: "Conformal Gravity (CG)", color: "navy", opacity: 0},
 	  MOND: {full_name: "MOND", color: "purple", opacity: 0}
 }
 
