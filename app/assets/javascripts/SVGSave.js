@@ -15,7 +15,9 @@ function saveSVG(type) {
   var form = document.getElementById("svgform");
   form['output_format'].value = 'svg';
   form['data'].value = svg_xml;
-  
+
+  var galaxy_name = PARAMS.getValue("galaxy_name");
+
   var blob = new Blob([svg_xml], {type: "text/plain;charset=utf-8"});
-  saveAs(blob, "d3_svg_element.svg");
+  saveAs(blob, galaxy_name + ".svg");
 }
