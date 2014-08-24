@@ -91,12 +91,12 @@ String.prototype.superScript = function () {
 
 function arcsec_to_kpc(arcsec, DMpc) {
 	var Dkpc = CONVERT.Mpc_to_kpc(DMpc);
-	return Dkpc * Math.tan(CONVERT.deg_to_rad(CONVERT.arcsec_to_degree(arcsec)));
+	return Dkpc * Math.tan(CONVERT.degree_to_radian(CONVERT.arcsec_to_degree(arcsec)));
 }
 
 function kpc_to_arcsec(kpc, DMpc) {
 	var DMpc = CONVERT.Mpc_to_kpc(DMpc);
-	return CONVERT.degree_to_arcsec(CONVERT.rad_to_deg(Math.atan(kpc/DMpc)));
+	return CONVERT.degree_to_arcsec(CONVERT.radian_to_degree(Math.atan(kpc/DMpc)));
 }
 
 function stellar_surface_matter_density(R, scale_length) {

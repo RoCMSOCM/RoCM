@@ -42,10 +42,10 @@ Conversion.prototype = {
 	degree_to_arcsec: function(degree) {
 		return degree * 3600;
 	},
-	rad_to_deg: function(rad) {
+	radian_to_degree: function(rad) {
 		return rad * 180/Math.PI;
 	},
-	deg_to_rad: function(deg) {
+	degree_to_radian: function(deg) {
 		return deg * Math.PI/180;
 	}
 };

@@ -260,10 +260,10 @@ function update_derived_parameters(param_name) {
   else if(param_name == "inclination_angle") {
     if(VDATA._VROT_DATA !== undefined) {
       var _inclination_angle = PARAMS.getOriginal("inclination_angle");
-      _inclination_angle = CONVERT.deg_to_rad(_inclination_angle);
+      _inclination_angle = CONVERT.degree_to_radian(_inclination_angle);
 
       var inclination_angle = PARAMS.get("inclination_angle");
-      inclination_angle = CONVERT.deg_to_rad(inclination_angle);
+      inclination_angle = CONVERT.degree_to_radian(inclination_angle);
 
       var inc_sin = Math.sin(_inclination_angle)/Math.sin(inclination_angle);
 
