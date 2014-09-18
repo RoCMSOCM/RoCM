@@ -177,20 +177,30 @@ function create_curve_plot(galaxy_name, is_initial){
         VDATA["_" + name][j] = velocities[i].values[j].v;
       }
     }
-    
-    set_curve_domain(data, velocities);
+
+    var is_deltav = true;
+
+    set_curve_domain(data, velocities, is_deltav);
+
+    var xlabel = "Galactocentric Distance, R (kpc) ";
+    var ylabel;
+
+    if(is_deltav)
+      ylabel = "ΔV / V_OBS"
+    else
+      ylabel = "Rotation Velocity, VROT (km/s) ";
 
     // zoom.x(x).y(y);
 
     if(is_initial)
-      create_axes();
+      create_axes(xlabel, ylabel);
     else {
       update_axes();
     }
 
     var SHOW_ERR_BAR = true;
 
-    var SHOW_SUN = false; //(galaxy_name == "Milky-Way");
+    var SHOW_SUN = false;//(galaxy_name == "MILKY-WAY");
 
     if(SHOW_SUN){
       create_sun_label();
@@ -212,8 +222,14 @@ function create_curve_plot(galaxy_name, is_initial){
 
     // svg.attr("display", "block");
 
-    plot_data(data);
-    plot_curves(velocities);
+    if(is_deltav)
+      plot_deltav(velocities);
+    else
+      plot_data(data);
+
+
+    if(!is_deltav)
+      plot_curves(velocities);
 
     // Create title for the galaxy
     create_title(galaxy_name, SHOW_TITLE = true, ANIMATE_TITLE = false);
@@ -233,11 +249,16 @@ function create_curve_plot(galaxy_name, is_initial){
   });
 }
 
-function set_curve_domain(data, velocities) {
+function set_curve_domain(data, velocities, is_deltav) {
   x.domain(d3.extent(data, function(d) { return d.R; }));
 
-  var ymin = d3.min(velocities, function(c) { return d3.min(c.values, function(v) { return v.v; }); });
-  var ymax = d3.max(data, function(d) { return d.VROT_DATA; });
+  var ymin = d3.min(velocities, function(c) { return d3.min(c.values, function(v) { return is_deltav ? v.deltav : v.v; }); });
+  
+  var ymax;
+  if(is_deltav)
+    ymax = d3.max(velocities, function(c) { return d3.max(c.values, function(v) { return v.deltav; }); });
+  else
+    ymax = d3.max(data, function(d) { return d.VROT_DATA; });
 
   y.domain([ymin, ymax + ymax/4]);
 }
@@ -257,11 +278,11 @@ function set_curve_x_domain(min, max) {
   x.domain([min, max]);
 }
 
-function create_axes() {
+function create_axes(xlabel, ylabel) {
 
-  create_xaxis()
+  create_xaxis(xlabel)
 
-  create_yaxis();
+  create_yaxis(ylabel);
 
   apply_axis_formatting(svg);
 
@@ -309,7 +330,7 @@ function apply_axis_formatting(svg) {
     .style("stroke", "#000");
 }
 
-function create_xaxis() {
+function create_xaxis(axis_label) {
   svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
@@ -321,11 +342,11 @@ function create_xaxis() {
       .attr("y", 40)
       .style("text-anchor", "end")
       .style("fill", "black")
-      .text("Galactocentric Distance, R (kpc) ");
+      .text(axis_label);
 
 }
 
-function create_yaxis() {
+function create_yaxis(axis_label) {
 
   var right_legend = svg.append("g")             
     .attr("class", "y axis right")    
@@ -346,7 +367,7 @@ function create_yaxis() {
       .style("font-size", "12px")
       .style("text-anchor", "end")
       .style("fill", "black")
-      .text("Rotation Velocity, VROT (km/s) ")
+      .text(axis_label)
 
 
 }
@@ -427,13 +448,13 @@ function plot_data(data){
         return tooltip;
         }
       })
-
-
 }
 
 function update_data(R_data, V_data) {
 
   var dot_data = get_dot_data(".VROT_DATA");
+  if(dot_data.length == 0)
+    return;
 
   var size = R_data.length;
   for(var i=0; i<size; i++) {
@@ -587,10 +608,14 @@ function update_velocities(data) {
   var velocities = R_filtered.map(function(name) {
     return {
       name: name,
-      values: data.map(function(d) {
-      return {R: d.R,
-        v: +d[name], 
-        y0: name.contains("ERROR") ? +d[name.replace("_ERROR", "")] : +d[name]};
+      values: data.map(function(d, i) {
+        var v = +d[name];
+        return {
+          R: d.R,
+          v: v, 
+          y0: name.contains("ERROR") ? +d[name.replace("_ERROR", "")] : +d[name],
+          deltav: deltav(v, d.VROT_DATA)
+        };
       })
     };
   });
