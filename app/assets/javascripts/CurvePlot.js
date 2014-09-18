@@ -178,7 +178,7 @@ function create_curve_plot(galaxy_name, is_initial){
       }
     }
 
-    var is_deltav = true;
+    var is_deltav = false;
 
     set_curve_domain(data, velocities, is_deltav);
 
