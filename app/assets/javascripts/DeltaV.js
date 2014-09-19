@@ -40,3 +40,28 @@ function plot_deltav(data){
           .style("fill", function(d) { return get_color(name); });
       })
 }
+
+function add_click_listener_deltav() {
+  // TODO: Dynamically create the menu items
+  var span = $("<span>")
+    .attr("class", "glyphicon glyphicon-th-large")
+
+  var dv_button = $("#deltav_button");
+  dv_button.text(" ΔV/V Plot");
+
+  var dv = "#DELTAV";
+  if(window.location.href.contains(dv))
+    dv_button.text(" Rotation Curve Plot");
+
+  dv_button.prepend(span);
+  
+  dv_button.click(function(){
+      if( !window.location.href.contains(dv) ) {
+        window.location.href += dv;
+      }
+      else {
+        window.location.href = window.location.href.replace(dv, "");
+      }
+      location.reload();
+  });
+}

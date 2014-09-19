@@ -53,14 +53,6 @@ var DASHED_CURVES = false;
 
 var err_op = 1.0; // Error opacity
 
-var sun_op = 1.0;
-
-var sun_color = "cadetblue";
-
-var sun_class = "SUN"
-
-var sun_label = "Sun"
-
 var hide_legend_labels = true;
 
 var ORIGIN = 0; 
@@ -146,6 +138,10 @@ function create_curve_plot_svg() {
 function create_curve_plot(galaxy_name, is_initial){
   // Generate the D3 plot with the velocity data (red data points)
   // and compute each model from GMODEL (colored curved lines)
+  var deltav = "#DELTAV";
+  var deltav_lc = deltav.toLowerCase();
+  galaxy_name = galaxy_name.replace(deltav, "").replace(deltav_lc, "");
+
   if(!SOCMPARAMS[galaxy_name]){
     alert("No velocity data for " + galaxy_name + ".");
     return -1;
@@ -178,15 +174,18 @@ function create_curve_plot(galaxy_name, is_initial){
       }
     }
 
-    var is_deltav = false;
+    var is_deltav = (window.location.href.contains("#DELTAV") || window.location.href.contains("#deltav"));
 
     set_curve_domain(data, velocities, is_deltav);
 
     var xlabel = "Galactocentric Distance, R (kpc) ";
     var ylabel;
 
-    if(is_deltav)
+    if(is_deltav){
       ylabel = "ΔV / V_OBS"
+      var zero = {value: 0, full_name: "", color: "gray", opacity: 1.0};
+      create_oriented_line("horizontal", zero.value, zero.full_name, zero.color, zero.opacity);
+    }
     else
       ylabel = "Rotation Velocity, VROT (km/s) ";
 
@@ -203,7 +202,8 @@ function create_curve_plot(galaxy_name, is_initial){
     var SHOW_SUN = false;//(galaxy_name == "MILKY-WAY");
 
     if(SHOW_SUN){
-      create_sun_label();
+      var sun = {value: d_sun, full_name: "Sun", color: "cadetblue", opacity: 1.0};
+      create_oriented_line("vertical", sun.value, sun.full_name, sun.color, sun.opacity);
     }
     
     if(!is_initial){
@@ -212,7 +212,7 @@ function create_curve_plot(galaxy_name, is_initial){
       remove_title();
     }
     else {
-      create_legend(velocities, SHOW_SUN);
+      create_legend(velocities, SHOW_SUN, "SUN");
     }
 
 
@@ -372,32 +372,40 @@ function create_yaxis(axis_label) {
 
 }
 
-function create_sun_label() {
-  var d_sun_line = [
-    {x:d_sun, y:y.domain()[0]},
-    {x:d_sun, y:y.domain()[1]}
-  ];
+function create_oriented_line(orientation, or_value, label, color, opacity) {
+
+  var d_line = [];
+  if(orientation == "vertical"){
+    d_line.push(
+      {x:or_value, y:y.domain()[0]},
+      {x:or_value, y:y.domain()[1]})
+  }
+  else {
+    d_line.push(
+      {x:x.domain()[0], y:or_value},
+      {x:x.domain()[1], y:or_value})
+  }
   
   svg.append("path")
-    .datum(d_sun_line)
-    .attr("class", sun_class)
+    .datum(d_line)
+    .attr("class", label.toUpperCase())
     .attr("d", xy_line)
     .style("stroke-dasharray", ("6, 3"))
-    .style("stroke", sun_color)
+    .style("stroke", color)
     .style("fill", "none")
-    .style("opacity", get_opacity("sun"));
+    .style("opacity", opacity);
   
-  var sun_text = svg.append("text")
-    .attr("class", sun_class)
-    .attr("x", x(d_sun_line[1].x))             
-    .attr("y", y(d_sun_line[1].y))
+  var text = svg.append("text")
+    .attr("class", label.toUpperCase())
+    .attr("x", x(d_line[1].x))             
+    .attr("y", y(d_line[1].y))
     .attr("text-anchor", "middle")  
     .style("font-size", "0px") 
-    .style("stroke", sun_color)
-    .style("opacity", get_opacity("sun"))
-    .text(sun_label);
+    .style("stroke", color)
+    .style("opacity", opacity)
+    .text(label);
 
-  sun_text.transition()
+  text.transition()
     .duration(TIME*(3/4)) 
     .style("font-size", "12px");
 }
@@ -491,9 +499,15 @@ function update_error_bar(R_data) {
 function remove_data() {
   svg.selectAll(".VROT_DATA").remove();
   svg.selectAll(".VROT_DATA_ERROR").remove();
+  svg.selectAll(".DELTAV").remove();
 }
 
 function plot_curves(velocities){
+  // Filter out the SUN from the velocities data structure
+  velocities = velocities.filter(function(v) {
+    return v.name != "SUN";
+  })
+
   var velocity = svg.append("g").attr("id", "velocities").selectAll(".velocity")
     .data(velocities)
     .enter().append("g")
@@ -634,7 +648,7 @@ var legend_item_vertical_offset = 25;
 var legend_width_factor = 2;
 var rect_position_offset = 5;
 
-function create_legend(velocities, SHOW_SUN) {
+function create_legend(velocities, SHOW_SUN, sun_class) {
   var legend_dialog = $("#rocm_wrapper").append($("<div>")
     .attr("id", "legend_confirm")
     .attr("title", "Remove model from legend?"));
