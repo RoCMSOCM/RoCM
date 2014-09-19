@@ -109,9 +109,7 @@ function create_socm_table(param_data) {
 
 	$("#socmt_wrapper").append(table);	
 
-	$(".citation").addClass("default_button");
 	$(".plot")
-		.addClass("default_button btn-xs")
 		.click(function() {
 			localStorage.removeItem("PARAMS");
 			var id = this.id;
@@ -134,7 +132,6 @@ function create_socm_table(param_data) {
 	);
 
 	$(".download")
-		.addClass("default_button btn-xs")
 		.click(function() {
 			var id = this.id;
 			var gid = id.split("-DOWNLOAD")[0];	
@@ -165,6 +162,13 @@ function create_socm_table(param_data) {
 				
 				JSON2CSV([data], gname+"-PARAMETERS");
 			});
+		}
+	);
+	$(".deltav_plot")
+		.click(function() {	
+			var gname = this.name;
+
+			plot_deltav_reload(gname);
 		}
 	);
 

@@ -178,11 +178,14 @@ function add_table_elements(d) {
   d.citation_ids_array = "Citations"; //use the citations object
 
   // Plot and Download buttons
-  d.Functions = "<button class='plot' id='" + d.galaxy_name + "-PLOT'' style='font-size: .8em !important;'>"
+  d.Functions = "<button class='plot function_button default_button btn-xs' id='" + d.galaxy_name + "-PLOT'' style='font-size: .8em !important;'>"
                 + "Plot"
                 + "</button>"
-                + "<button class='download' id='" + d.id + "-DOWNLOAD' name='" + d.galaxy_name + "' style='font-size: .8em !important;'>"
+                + "<button class='download function_button default_button btn-xs' id='" + d.id + "-DOWNLOAD' name='" + d.galaxy_name + "' style='font-size: .8em !important;'>"
                 + "CSV"
+                + "</button>"
+                + "<button class='deltav_plot function_button default_button btn-xs' id='" + d.id + "-DELTAV' name='" + d.galaxy_name + "' style='font-size: .8em !important;'>"
+                + "ΔV/V"
                 + "</button>";
 
   return d;

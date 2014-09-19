@@ -56,12 +56,31 @@ function add_click_listener_deltav() {
   dv_button.prepend(span);
   
   dv_button.click(function(){
-      if( !window.location.href.contains(dv) ) {
-        window.location.href += dv;
-      }
-      else {
-        window.location.href = window.location.href.replace(dv, "");
-      }
-      location.reload();
+    plot_deltav_reload();
   });
+}
+
+function plot_deltav_reload(galaxy_name) {
+  var dv = "#DELTAV";
+  var flag = false;
+
+  if(galaxy_name !== undefined) {
+    var new_galaxy_url = window.location.href.split("=")[0] + "=" + galaxy_name;
+    if(window.location.href.contains(dv) && window.location.href.contains(galaxy_name))
+      flag = true;
+    else
+      window.location.href = new_galaxy_url + dv;
+  }
+  else {
+    if( !window.location.href.contains(dv) ) {
+      window.location.href += dv;
+    }
+    else {
+      window.location.href = window.location.href.replace(dv, "");
+    }
+  }
+
+
+  if( !flag )
+    location.reload();
 }
