@@ -131,14 +131,28 @@ function create_socm_table(param_data) {
 		}
 	);
 
-	$(".download")
+	$(".parameters_download")
+		.click(function() {
+			var id = this.id;
+			var gid = id.split("-DOWNLOAD")[0];	
+			var gname = this.name;
+
+			var param_download_url = "http://socm.herokuapp.com/galaxies/" + gid + ".json";
+
+			d3.json(param_download_url, function(error, data) {
+				delete data.id;
+				
+				JSON2CSV([data], gname+"-PARAMETERS");
+			});
+		}
+	);
+	$(".velocities_download")
 		.click(function() {
 			var id = this.id;
 			var gid = id.split("-DOWNLOAD")[0];	
 			var gname = this.name;
 
 			var vel_download_url = "http://socm.herokuapp.com/galaxies/" + gid + "/velocities.json";
-			var param_download_url = "http://socm.herokuapp.com/galaxies/" + gid + ".json";
 
 			d3.json(vel_download_url, function(error, data) {
 				data.forEach(function(d) {
@@ -156,11 +170,6 @@ function create_socm_table(param_data) {
 
 				data = sortByKey(data, "R");
 				JSON2CSV(data, gname+"-VELOCITY");
-			});
-			d3.json(param_download_url, function(error, data) {
-				delete data.id;
-				
-				JSON2CSV([data], gname+"-PARAMETERS");
 			});
 		}
 	);

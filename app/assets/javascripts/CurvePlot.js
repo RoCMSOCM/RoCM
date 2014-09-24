@@ -1,8 +1,13 @@
 // Our Sun's distance to the galactic center
 var d_sun = 8.1 //+- 0.6 kpc
 
+///////////////////////////////////////
+// For Sofue MW graph | width = 800  //
+///////////////////////////////////////
+var use_only_sofue = false;
+
 var margin = {top: 20, right: 220, bottom: 50, left: 80},
-width = 1150 - margin.left - margin.right,
+width = use_only_sofue ? 800 - margin.left - margin.right : 1150 - margin.left - margin.right,
 height = 500 - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
@@ -60,12 +65,17 @@ var ORIGIN = 0;
 function get_data(data) {
   var data_keys = Object.keys(data[0]);
   var origin_data = {};
+  var last_point_data = {};
+  var max_R = d3.max(data, function(d) { return d.r });
 
-  // Add origin to the data
+  // Add origin and last model point to the data
   for(var k=0;k<data_keys.length;k++){
     origin_data[data_keys[k]] = ORIGIN;
+    // To extend the models past the last data point, a 'ghost' point is put in place.
+    last_point_data[data_keys[k]] = max_R + max_R/50;
   }
   data.unshift(origin_data);
+  data.push(last_point_data);
 
   var data_size = data.length;
 
@@ -152,6 +162,10 @@ function create_curve_plot(galaxy_name, is_initial){
 
   var galaxy_id = SOCMPARAMS[galaxy_name].id;
   d3.json("http://socm.herokuapp.com/galaxies/" + galaxy_id + "/velocities.json?page=false", function(error, data) {
+    if(use_only_sofue && galaxy_name == "MILKY-WAY") {
+      data = sofue_data;      
+    }
+
 
     // META
     data = get_data(data);
@@ -216,7 +230,7 @@ function create_curve_plot(galaxy_name, is_initial){
     }
 
 
-    if(SHOW_ERR_BAR){
+    if(!is_deltav && SHOW_ERR_BAR){
       create_error_bar(data);
     }
 
@@ -256,7 +270,7 @@ function set_curve_domain(data, velocities, is_deltav) {
   
   var ymax;
   if(is_deltav)
-    ymax = d3.max(velocities, function(c) { return d3.max(c.values, function(v) { return v.deltav; }); });
+    ymax = 80;//d3.max(velocities, function(c) { return d3.max(c.values, function(v) { return v.deltav; }); });
   else
     ymax = d3.max(data, function(d) { return d.VROT_DATA; });
 
@@ -378,7 +392,7 @@ function create_oriented_line(orientation, or_value, label, color, opacity) {
   if(orientation == "vertical"){
     d_line.push(
       {x:or_value, y:y.domain()[0]},
-      {x:or_value, y:y.domain()[1]})
+      {x:or_value, y:y.domain()[1] - (y.domain()[1]/15)})
   }
   else {
     d_line.push(
@@ -413,7 +427,8 @@ function create_oriented_line(orientation, or_value, label, color, opacity) {
 function create_error_bar(data) {
   var err_svg = svg.append("g").attr("id", "stars_error");
 
-  for(var i=0;i<data.length;i++){
+  // To extend the models past the last data point, no error bar for the 'ghost' point is created (length-1).
+  for(var i = 0;i < data.length-1; i++){
     var err_y = [
       {x:data[i].R, y:data[i].VROT_DATA + data[i].VROT_DATA_ERROR},
       {x:data[i].R, y:data[i].VROT_DATA - data[i].VROT_DATA_ERROR}
@@ -430,6 +445,9 @@ function create_error_bar(data) {
 }
 
 function plot_data(data){
+  // To extend the models past the last data point, a 'ghost' point is popped out.
+  var last = data.pop();
+
   svg.append("g").attr("id", "stars").selectAll(".dot")
     .data(data)
     .enter().append("circle")
@@ -456,6 +474,7 @@ function plot_data(data){
         return tooltip;
         }
       })
+  data.push(last);
 }
 
 function update_data(R_data, V_data) {
@@ -482,7 +501,8 @@ function update_error_bar(R_data) {
   var error_bars = d3.selectAll(".VROT_DATA_ERROR");
   var error_data = [];
 
-  for(var i=0;i<R_data.length;i++){
+  // To extend the models past the last data point, no error bar for the 'ghost' point is created (length-1).
+  for(var i=0;i < R_data.length-1;i++){
     error_data.push([
       {x:R_data[i], y:VDATA.VROT_DATA[i] + VDATA.VROT_DATA_ERROR[i]},
       {x:R_data[i], y:VDATA.VROT_DATA[i] - VDATA.VROT_DATA_ERROR[i]}
@@ -975,8 +995,6 @@ function object_opacity(d) {
 
   if(is(d, "err"))
     new_opacity = err_op - Math.round(curr_opacity*10)/10;
-  else if(is(d, "sun"))
-    new_opacity = sun_op - Math.round(curr_opacity*10)/10;
   else
     new_opacity = 1 - curr_opacity;
   

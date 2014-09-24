@@ -13,8 +13,8 @@ function initialize_default_parameters(){
 		new Param(1.3, "10<sup>-7</sup> GeV cm<sup>-3</sup>", Math.pow(10,-7)));
 
 
-	var mass_bulge = 0.91656 // 10^10
-	var scale_length_bulge = 0.10534
+	var mass_bulge = 0.6207 //0.91656 // 10^10
+	var scale_length_bulge = 0.08353 //0.10534
 	add_param(
 		"mass_bulge",
 		"M<sub>Bulge</sub>", 

@@ -3,10 +3,10 @@ function deltav(V_model, V_Obs) {
 	// dV = (V_model - V_Obs) / V_Obs
 	// .`.
 	// ((V_model - V_Obs) / V_Obs ) / V_Obs
-  var dV_V = ((V_model - V_Obs) / V_Obs ) / V_Obs;
+  var dV_V = ((V_model - V_Obs) / V_Obs );
   if(isNaN(dV_V))
     dV_V = 0;
-  return dV_V;
+  return Math.abs(dV_V)*100;
 }
 
 function plot_deltav(data){
@@ -20,6 +20,7 @@ function plot_deltav(data){
   var deltav_group = svg.append("g").attr("id", "deltav").selectAll(".deltav")
     .data(data)
 
+  var max_y = 80;
 
   deltav_group
     .enter().append("g")
@@ -27,17 +28,46 @@ function plot_deltav(data){
       .each(function(D, i) {
         var name = D.name;
 
+        D.values = D.values.filter(function(dd) {
+          return dd.deltav < max_y;
+        })
+
         var deltav_dot = d3.select(this)
           .selectAll("circle")
           .data(D.values);
 
-        deltav_dot.enter().append("circle")  
-          .attr("class", "DELTAV")
-          .attr("r", 2)
-          .attr("cx", function(d) { return x(d.R); })
-          .attr("cy", function(d) { return y(d.deltav); })
-          .attr("opacity", get_opacity("DATA"))
-          .style("fill", function(d) { return get_color(name); });
+        if(name == "VROT_GR"){
+          var sq = 5;
+          deltav_dot.enter().append("rect")  
+            .attr("class", "DELTAV")
+            .attr("width", sq)
+            .attr("height", sq)
+            .attr("x", function(d) { return x(d.R) - (sq/2); })
+            .attr("y", function(d) { return y(d.deltav) - (sq/2); })
+            .attr("opacity", get_opacity("DATA"))
+            .style("fill", function(d) { return get_color(name); });
+        }
+        else if(name == "VROT_CONFORMAL") {
+          deltav_dot.enter().append("circle")  
+            .attr("class", "DELTAV")
+            .attr("r", 3)
+            .attr("cx", function(d) { return x(d.R); })
+            .attr("cy", function(d) { return y(d.deltav); })
+            .attr("opacity", get_opacity("DATA"))
+            .style("fill", function(d) { return get_color(name); });
+        }
+        else if(name == "VROT_TOTAL") {
+          deltav_dot.enter().append("text")  
+            .attr("class", "DELTAV")
+            .attr("x", function(d) { return x(d.R); })
+            .attr("y", function(d) { return y(d.deltav); })
+            .attr("opacity", get_opacity("DATA"))
+            .style("fill", function(d) { return get_color(name); })
+            .text("Δ")
+            .attr("text-anchor", "middle")
+            .attr("font-weight", "bold")
+            .style("font-size", "10px")
+        }
       })
 }
 
