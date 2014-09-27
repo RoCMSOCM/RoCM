@@ -1,31 +1,48 @@
 function create_data_table(table_id)
 {
-	var table = $("#" + table_id).DataTable( {
-		"language": {
-			"lengthMenu": "Display _MENU_ galaxies",
-			"info": "Showing _START_-_END_ of _TOTAL_ galaxies"
-		},
-		"aLengthMenu": [[2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"]],
-		"iDisplayLength": 5,
-		columnDefs: [ {
-			targets: [ 0 ],
-			orderData: [ 0, 1 ]
-		}, {
-			targets: [ 1 ],
-			orderData: [ 1, 0 ]
-		}, {
-			targets: [ 4 ],
-			orderData: [ 4, 0 ]
-		} ]
-	} );
+	var row_data = {};
 
-	// Citations sub-table and SOCM call
-	d3.json("http://socm.herokuapp.com/citations.json?page=false", function(error, data){
+	d3.json("http://socm.herokuapp.com/citations.json?page=false", function(error, data) {
+		$("#" + table_id + " tbody tr").each(function () {
+			var galaxy_name = $(this).attr("id").replace("SOCM-", "");
+			var galaxy_data = SOCMPARAMS[galaxy_name];
+
+			var ids = [
+				galaxy_data.velocities_citation, 
+				galaxy_data.luminosity_citation, 
+				galaxy_data.scale_length_citation, 
+				galaxy_data.mass_hydrogen_citation
+			];
+			
+			var citations_data = create_citations_table(ids, data, galaxy_name);
+			row_data[galaxy_name] = citations_data;
+		});
+
+		var table = $("#" + table_id).DataTable( {
+			"language": {
+				"lengthMenu": "Display _MENU_ galaxies",
+				"info": "Showing _START_-_END_ of _TOTAL_ galaxies"
+			},
+			"aLengthMenu": [[2, 5, 10, 25, 50, -1], [2, 5, 10, 25, 50, "All"]],
+			"iDisplayLength": 5,
+			columnDefs: [ {
+				targets: [ 0 ],
+				orderData: [ 0, 1 ]
+			}, {
+				targets: [ 1 ],
+				orderData: [ 1, 0 ]
+			}, {
+				targets: [ 4 ],
+				orderData: [ 4, 0 ]
+			} ]
+		});
 
 		$("#" + table_id + " tbody").on('click', '.citation', function () {
 			var tr = $(this).closest('tr');
+			var galaxy_name = tr.attr("id").replace("SOCM-", "");
+
 			var row = table.row( tr );
-			var citations_data = create_citations_table(data);
+			var citations_data = row_data[galaxy_name];
 
 			if ( row.child.isShown() ) {
 	            // This row is already open - close it
@@ -38,7 +55,7 @@ function create_data_table(table_id)
 	            tr.addClass('shown');
 	        }
 	    });
-    });
+    });	
 }
 
 
@@ -66,8 +83,8 @@ function create_socm_table(param_data) {
 	for (var r = 0; r < rows + 1; r++) {
 		var row = $("<tr/>");
 		var galaxy_name;
-		if(param_data[r] !== undefined)
-			galaxy_name = param_data[r]["galaxy_name"];
+		if(param_data[r-1] !== undefined)
+			galaxy_name = param_data[r-1]["galaxy_name"];
 
 		for (var c = 0; c < cols; c++) {
 			// Filtered data from the SOCMTable
@@ -93,6 +110,7 @@ function create_socm_table(param_data) {
 				}
 				
 				row.append($("<td/>").html(prefix + row_data + suffix))
+				row.attr("id", "SOCM-" + galaxy_name);
 
 			}
 		}
@@ -207,26 +225,23 @@ function close_all_dropdowns(div_id) {
 }
 
 
-function create_citations_table(citations_in, galaxy_name) {
-	//TODO: Associate by the galaxies id
+function create_citations_table(ids, data, galaxy_name) {
 	// Get all parameter_citations
 	// Check if no mass_hydrogen_citation -> NA (N/A)
 	// Check if no scale_length_citation -> ES (Estimated)
-
     var table_tag = '<table class="citation" '
     	+ 'cellpadding="5" '
     	+ 'cellspacing="0" '
     	+ 'border-collapse="collapse" '
     	+ 'style="padding-left:50px;padding-top:10px;">';
 
-    var ids = [];// = [23, 24, 24, 25];
     var parameters_in = {'velocities_citation': 'v',
     	'luminosity_citations': FORMATTED_MAP.luminosity.name,
     	'scale_length_citation': FORMATTED_MAP.scale_length.name,
     	'mass_hydrogen_citation': FORMATTED_MAP.mass_hydrogen.name
 	};
 
-    var num_citations = citations_in.length;
+    var num_citations = data.length;
     var max_citations = 4;
 	var citations = [];
 	var bold_volume = true;
@@ -234,15 +249,19 @@ function create_citations_table(citations_in, galaxy_name) {
 
 	for(var c = 0; c < max_citations; c++){
 		// Gets random citation from the SOCM citations.json
-		var rand_id = Math.floor(Math.random() * (num_citations-1)) + 1;
-
-		ids.push(rand_id);
+		var id = ids[c];
 		
-		var author_in = citations_in[rand_id].author;
-		var journal_in = citations_in[rand_id].journal;
-		var volume_in = citations_in[rand_id].volume;
-		var pages_in = citations_in[rand_id].pages;
-		var year_in = citations_in[rand_id].year;
+		if(data[id] === undefined){
+			// Blank citation
+			citations.push("N/A");
+			continue;
+		}
+
+		var author_in = data[id].author;
+		var journal_in = data[id].journal;
+		var volume_in = data[id].volume;
+		var pages_in = data[id].pages;
+		var year_in = data[id].year;
 
 		var and = author_in.split("and");
 		and = and.map(function(str) { 
@@ -300,7 +319,7 @@ function create_citations_table(citations_in, galaxy_name) {
     citation_table = citation_table + "</table>";
 
     // Set the 'Citations' button to be the array of ids
-    // $(".citation span").text("[" + ids + "]");
+    $("#" + galaxy_name + "-CITATION").text("[" + ids + "]");
     
     return citation_table;
 }

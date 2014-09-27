@@ -10,7 +10,13 @@ function import_socm_galaxies(galaxyEndpoint, galaxy_name) {
 
     data.forEach(function(d) {
       d = add_table_elements(d);
-      SOCMPARAMS[d.galaxy_name] = d;
+      SOCMPARAMS[d.galaxy_name] = JSON.parse(JSON.stringify(d));
+
+      // Post deletion
+      delete d.velocities_citation;
+      delete d.luminosity_citation;
+      delete d.scale_length_citation;
+      delete d.mass_hydrogen_citation;
     });
 
     create_socm_table(data);

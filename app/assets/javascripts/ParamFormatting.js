@@ -55,7 +55,7 @@ $(document).ready(function(){
 			},
 			citation_ids_array: 
 			{
-				name: "Citations"
+				name: "Citations <br> [v,L<sub>B</sub>,R<sub>0</sub>,M<sub>HI</sub>]"
 			},
 			vrot_data_last: {
 				name: "V<sub>last</sub>",
