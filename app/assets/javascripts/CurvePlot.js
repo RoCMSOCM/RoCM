@@ -1,13 +1,22 @@
 // Our Sun's distance to the galactic center
 var d_sun = 8.1 //+- 0.6 kpc
 
+// Delta V feature handling
+var url_tag_deltav = "#DELTAV";
+var url_tag_deltav_lc = url_tag_deltav.toLowerCase();
+var url_tag_deltav_distribution = "#DELTAV-DISTRIBUTION";
+var url_tag_deltav_distribution_lc = url_tag_deltav.toLowerCase();
+var url = window.location.href;
+var is_deltav_distribution = (url.endsWith(url_tag_deltav_distribution) || url.endsWith(url_tag_deltav_distribution_lc));
+var is_deltav = (url.endsWith(url_tag_deltav) || url.endsWith(url_tag_deltav_lc));
+
 ///////////////////////////////////////
 // For Sofue MW graph | width = 800  //
 ///////////////////////////////////////
 var use_only_sofue = false;
 
 var margin = {top: 20, right: 220, bottom: 50, left: 80},
-width = use_only_sofue ? 800 - margin.left - margin.right : 1150 - margin.left - margin.right,
+width = use_only_sofue || is_deltav || is_deltav_distribution ? 800 - margin.left - margin.right : 1150 - margin.left - margin.right,
 height = 500 - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
@@ -148,9 +157,14 @@ function create_curve_plot_svg() {
 function create_curve_plot(galaxy_name, is_initial){
   // Generate the D3 plot with the velocity data (red data points)
   // and compute each model from GMODEL (colored curved lines)
-  var deltav = "#DELTAV";
-  var deltav_lc = deltav.toLowerCase();
-  galaxy_name = galaxy_name.replace(deltav, "").replace(deltav_lc, "");
+
+
+  // Remove the DELTAV and DELTAV-DISTRIBUTION tags from the url
+  galaxy_name = galaxy_name
+    .replace(url_tag_deltav_distribution, "")
+    .replace(url_tag_deltav_distribution_lc, "")
+    .replace(url_tag_deltav, "")
+    .replace(url_tag_deltav_lc, "");
 
   if(!SOCMPARAMS[galaxy_name]){
     alert("No velocity data for " + galaxy_name + ".");
@@ -188,9 +202,7 @@ function create_curve_plot(galaxy_name, is_initial){
       }
     }
 
-    var is_deltav = (window.location.href.contains("#DELTAV") || window.location.href.contains("#deltav"));
-
-    set_curve_domain(data, velocities, is_deltav);
+    set_curve_domain(data, velocities, is_deltav, is_deltav_distribution);
 
     var xlabel = "Galactocentric Distance, R (kpc) ";
     var ylabel;
@@ -198,12 +210,15 @@ function create_curve_plot(galaxy_name, is_initial){
     if(is_deltav){
       ylabel = "ΔV / V_OBS"
       var zero = {value: 0, full_name: "", color: "gray", opacity: 1.0};
-      create_oriented_line("horizontal", zero.value, zero.full_name, zero.color, zero.opacity);
+      //create_oriented_line("horizontal", zero.value, zero.full_name, zero.color, zero.opacity);
+    }
+    else if(is_deltav_distribution){
+      xlabel = "ΔV / V_OBS";
+      ylabel = "Frequency";
     }
     else
       ylabel = "Rotation Velocity, VROT (km/s) ";
 
-    // zoom.x(x).y(y);
 
     if(is_initial)
       create_axes(xlabel, ylabel);
@@ -230,23 +245,24 @@ function create_curve_plot(galaxy_name, is_initial){
     }
 
 
-    if(!is_deltav && SHOW_ERR_BAR){
+    if(!is_deltav && !is_deltav_distribution && SHOW_ERR_BAR){
       create_error_bar(data);
     }
 
-    // svg.attr("display", "block");
 
     if(is_deltav)
       plot_deltav(velocities);
+    else if(is_deltav_distribution)
+      plot_deltav_distribution(velocities);
     else
       plot_data(data);
 
 
-    if(!is_deltav)
+    if(!is_deltav && !is_deltav_distribution)
       plot_curves(velocities);
 
     // Create title for the galaxy
-    create_title(galaxy_name, SHOW_TITLE = true, ANIMATE_TITLE = false);
+    create_title(galaxy_name, SHOW_TITLE = true, ANIMATE_TITLE = false, is_deltav, is_deltav_distribution);
     
     // if(is_initial){
     //   // TODO: move bar chart
@@ -259,22 +275,31 @@ function create_curve_plot(galaxy_name, is_initial){
       update_chi_squared();
 
     // Update distance value to alter x-axis (special case)
-    update_derived_parameters("distance");
+    if(!is_deltav_distribution)
+      update_derived_parameters("distance");
   });
 }
 
-function set_curve_domain(data, velocities, is_deltav) {
-  x.domain(d3.extent(data, function(d) { return d.R; }));
+function set_curve_domain(data, velocities, is_deltav, is_deltav_distribution) {
+  if(!is_deltav_distribution)
+    x.domain(d3.extent(data, function(d) { return d.R; }));
+  else
+    x.domain([0,100]);
 
   var ymin = d3.min(velocities, function(c) { return d3.min(c.values, function(v) { return is_deltav ? v.deltav : v.v; }); });
   
   var ymax;
-  if(is_deltav)
-    ymax = 80;//d3.max(velocities, function(c) { return d3.max(c.values, function(v) { return v.deltav; }); });
-  else
+  if(is_deltav){
+    ymax = 100; //d3.max(velocities, function(c) { return d3.max(c.values, function(v) { return v.deltav; }); });
+  }
+  else if(is_deltav_distribution)
+    ymax = 1;
+  else{
     ymax = d3.max(data, function(d) { return d.VROT_DATA; });
+    ymax = ymax + ymax/4
+  }
 
-  y.domain([ymin, ymax + ymax/4]);
+  y.domain([ymin, ymax]);
 }
 
 function set_curve_y_domain(min, max) {
@@ -919,9 +944,15 @@ function remove_legend_element(d, this_dialog) {
   $(this_dialog).empty();
 }
 
-function create_title(galaxy_name, SHOW_TITLE, ANIMATE_TITLE) {
+function create_title(galaxy_name, SHOW_TITLE, ANIMATE_TITLE, is_deltav, is_deltav_distribution) {
   if(SHOW_TITLE){
-  var title = svg.append("text")
+    var title_text = galaxy_name + " GALAXY";
+    if(is_deltav)
+      title_text += " ΔV Density"
+    if(is_deltav_distribution)
+      title_text += " ΔV Distribution"
+
+    var title = svg.append("text")
       .attr("class", "title label")
       .attr("x", (width / 2))             
       .attr("y", ANIMATE_TITLE ? 220 : 0)
@@ -929,7 +960,7 @@ function create_title(galaxy_name, SHOW_TITLE, ANIMATE_TITLE) {
       .style("font-size", ANIMATE_TITLE ? "40px" : "14px") 
       .style("text-decoration", "underline")
       .style("fill", "black")
-      .text(galaxy_name + " GALAXY");
+      .text(title_text);
 
     if(ANIMATE_TITLE){
       title.transition()

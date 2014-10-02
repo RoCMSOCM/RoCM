@@ -194,8 +194,9 @@ function create_socm_table(param_data) {
 	$(".deltav_plot")
 		.click(function() {	
 			var gname = this.name;
+			var id = "#" + this.id.replace("-PLOT", "");
 
-			plot_deltav_reload(gname);
+			plot_deltav_reload(id, gname);
 		}
 	);
 

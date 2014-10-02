@@ -66,9 +66,6 @@ $(document).ready(function() {
 	// Parameter Fitting Slider dropdown overlay
 	create_dropdown_div("sliders", "slider_button", "down");
 
-	// Actives the DeltaV functionality
-	add_click_listener_deltav();
-
 	// RoCM and SOCM Logic
 	var allGalaxiesEndpoint = "http://socm.herokuapp.com/galaxies.json?page=false"
 

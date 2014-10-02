@@ -52,6 +52,7 @@
     <%= javascript_include_tag 'DownloadGalaxy.js' %>
     <%= javascript_include_tag 'AutomaticObjectiveTesting.js' %>
     <%= javascript_include_tag 'DeltaV.js' %>
+    <%= javascript_include_tag 'DeltaVDistribution.js' %>
     <%= javascript_include_tag 'SofueData.js' %>
     
     <%= javascript_include_tag 'RoCM.js' %>
@@ -95,7 +96,13 @@
 
     <ul class="nav navbar-nav">
       <li class="active li-nav-border-right"><a id="deltav_button">
-          <span class="glyphicon glyphicon-th-large"></span> ΔV/V Plot
+          <span class="glyphicon glyphicon-th-large"></span> ΔV/V Density Plot
+      </li></a>
+    </ul>
+
+    <ul class="nav navbar-nav">
+      <li class="active li-nav-border-right"><a id="deltav_distribution_button">
+          <span class="glyphicon glyphicon-stats"></span> ΔV/V Distribution Plot
       </li></a>
     </ul>
 

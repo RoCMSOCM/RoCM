@@ -53,3 +53,25 @@ function getAbsPos (obj){ // obj is jQuery object
     }
     return pos;
 }
+
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+}
+
+String.prototype.truncateAfter = function(truncating_pivot) {
+    if( !this.contains(truncating_pivot) || this.endsWith(truncating_pivot))
+        return this.toString();
+    else {
+        var remove = this.substring(this.indexOf(truncating_pivot) + truncating_pivot.length);
+        return this.replace(remove, "");
+    }   
+}
+
+String.prototype.truncateBefore = function(truncating_pivot) {
+    if( !this.contains(truncating_pivot) || this.endsWith(truncating_pivot))
+        return this.toString();
+    else {
+        var remove = this.truncateAfter(truncating_pivot);
+        return this.replace(remove, "");
+    }   
+}

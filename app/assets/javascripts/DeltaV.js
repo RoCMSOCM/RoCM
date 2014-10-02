@@ -30,7 +30,11 @@ function plot_deltav(data){
 
         D.values = D.values.filter(function(dd) {
           return dd.deltav < max_y;
-        })
+        });
+
+        // D.values = D.values.filter(function(dd) {
+        //   return dd.R > 18;
+        // });
 
         var deltav_dot = d3.select(this)
           .selectAll("circle")
@@ -71,42 +75,50 @@ function plot_deltav(data){
       })
 }
 
-function add_click_listener_deltav() {
+$(document).ready(function() { 
+  // Actives the DeltaV functionality
+  add_click_listener("deltav_button", "ΔV/V Density Plot", "DELTAV");
+});
+
+function add_click_listener(button_id, button_text, hashtag_url) {
   // TODO: Dynamically create the menu items
-  var span = $("<span>")
-    .attr("class", "glyphicon glyphicon-th-large")
+  var dv_button = $("#" + button_id);
+  
+  var span = dv_button.children();
 
-  var dv_button = $("#deltav_button");
-  dv_button.text(" ΔV/V Plot");
+  dv_button.text(" " + button_text);
 
-  var dv = "#DELTAV";
-  if(window.location.href.contains(dv))
+  var dv = "#" + hashtag_url;
+  if(window.location.href.endsWith(dv))
     dv_button.text(" Rotation Curve Plot");
 
   dv_button.prepend(span);
   
   dv_button.click(function(){
-    plot_deltav_reload();
+    plot_deltav_reload(dv);
   });
 }
 
-function plot_deltav_reload(galaxy_name) {
-  var dv = "#DELTAV";
+
+function plot_deltav_reload(id, galaxy_name) {
   var flag = false;
 
   if(galaxy_name !== undefined) {
     var new_galaxy_url = window.location.href.split("=")[0] + "=" + galaxy_name;
-    if(window.location.href.contains(dv) && window.location.href.contains(galaxy_name))
+    if(window.location.href.contains(id) && window.location.href.contains(galaxy_name))
       flag = true;
     else
-      window.location.href = new_galaxy_url + dv;
+      window.location.href = new_galaxy_url + id;
   }
   else {
-    if( !window.location.href.contains(dv) ) {
-      window.location.href += dv;
+    galaxy_name = window.location.href.truncateBefore("=").truncateAfter("#").replace("#", "");
+    var new_url = window.location.href.truncateAfter("#") + "GALAXY=" + galaxy_name;
+
+    if( !window.location.href.endsWith(id) ) {
+      window.location.href = new_url + id;
     }
     else {
-      window.location.href = window.location.href.replace(dv, "");
+      window.location.href = new_url;
     }
   }
 
