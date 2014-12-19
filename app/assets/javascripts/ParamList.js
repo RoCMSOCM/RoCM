@@ -39,7 +39,7 @@ function find_all_parameters(exclude_sliders) {
 	var return_params = [];
 
 	for(var param in parameters) {
-		if(param[0] != "_" && !param.contains(chi_squared_string) && !immutable_parameters.contains(param)){
+		if(param[0] != "_" && !param.contains(chi_squared_string) && !immutable_parameters.contains(param) && !param.contains("citation")){
 			if(exclude_sliders){
 				if(!slider_params.contains(param))
 					return_params.push(param);
