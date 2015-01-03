@@ -23,7 +23,29 @@ $(document).ready(function() {
 	});		
 
 	$("#model_full_name").removeClass("dynamic_field");
+
+	code_mirror_factory();
 });
+
+function code_mirror_factory() {
+	var fnc_string = "function CUSTOM(R) {\n  // General Relativity \n  var R0 = PARAMS.get(\"scale_length\");\n  var R0km = CONVERT.kpc_to_km(R0);\n  var Rkm = CONVERT.kpc_to_km(R);\n\n  var x = (Rkm/(2*R0km));\n  var bessel_func = (besseli(x,0)*besselk(x,0) - besseli(x,1)*besselk(x,1));\n\n  var c = CONST.get(\"speed_of_light\");\n  var B = CONST.get(\"schwarzschild_radius\");\n\n  var mass = PARAMS.get(\"mass_disk\");\n  var solar_mass = CONST.get(\"solar_mass\");\n\n  var Nstar = mass/solar_mass;\n\n  var bulge = BULGE(R);\n\n  var rotation_velocity = Math.sqrt(Rkm * (((Nstar*B*c*c*Rkm)/(2*R0km*R0km*R0km)) * bessel_func));\n\n  rotation_velocity = Math.sqrt(rotation_velocity*rotation_velocity + bulge);\n  \n  return rotation_velocity;\n}";
+	var code_mirror_div_id = "model_input";
+	create_code_mirror(fnc_string, code_mirror_div_id);
+
+
+	var ex_string = "function MODELNAME(R) {\n    // Input: R in kpc\n    // Output: rotation_velocity in km/s\n    // Available objects/functions: PARAMS, CONST, CONVERT, GMODEL, BULGE\n    \n    var rotation_velocity;\n\n\n    return rotation_velocity;\n}";
+	var code_mirror_ex_div_id = "model_input_example";
+	create_code_mirror(ex_string, code_mirror_ex_div_id);
+}
+
+function create_code_mirror(str, id) {
+	var codeMirror = CodeMirror(document.getElementById(id), {
+	  value: str,
+	  mode:  "javascript"
+	});
+
+	codeMirror.setSize("100%");
+}
 
 function add_model() {
 	var regex = new RegExp("^function \\w*\\(\\w*\\)\\s*$");

@@ -18,8 +18,8 @@
 /public/assets/**
 
 # Sublime Text 2
-.sublime-project
-".sublime-workspace
+*.sublime-project
+*.sublime-workspace
 
 # LaTeX generated files
 *.log

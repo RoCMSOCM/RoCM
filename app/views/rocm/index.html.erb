@@ -14,6 +14,8 @@
     <%= javascript_include_tag 'spectrum.js' %>  
     <%= javascript_include_tag 'underscore-min.js' %>  
     <%= javascript_include_tag 'jquery.tipsy.js' %>  
+    <%= javascript_include_tag 'codemirror.js' %>  
+    <%= javascript_include_tag 'codemirror-mode-javascript.js' %>  
 
     <!-- RoCM Functions -->
     <%= javascript_include_tag 'Param.js' %>
@@ -150,17 +152,7 @@
     <h2>User Defined Model</h2>
     <div id="user_defined_model_text" style="float:left;width:48%">
       <b>Write a JavaScript function in the form</b>: 
-        <pre class="custom_model_text">
-function MODELNAME(R) {
-    // Input: R in kpc
-    // Output: rotation_velocity in km/s
-    // Available objects/functions: PARAMS, CONST, CONVERT, GMODEL, BULGE
-    
-    var rotation_velocity;
-
-
-    return rotation_velocity;
-}</pre>
+        <div id="model_input_example"></div>
 
     <div id="latex_wrapper" style="float:left;width:100%">
       <h2>$\LaTeX$ equation</h2>
@@ -178,32 +170,7 @@ function MODELNAME(R) {
       <br>
       <input id="model_full_name" type="text" class="custom_model_text" style="float:left;min-width:80%;max-width:80%"></input>
       <input id="model_color" type="color" value="#3355cc" style="float:right;width:15%"/>
-      <textarea id="model_input" rows="4" cols="20" class="custom_model_text" style="width:100%;display:block;margin:0 auto;height:70%;min-height:30%;">
-function CUSTOM(R) {
-  // General Relativity 
-  var R0 = PARAMS.get("scale_length");
-  var R0km = CONVERT.kpc_to_km(R0);
-  var Rkm = CONVERT.kpc_to_km(R);
-
-  var x = (Rkm/(2*R0km));
-  var bessel_func = (besseli(x,0)*besselk(x,0) - besseli(x,1)*besselk(x,1));
-
-  var c = CONST.get("speed_of_light");
-  var B = CONST.get("schwarzschild_radius");
-
-  var mass = PARAMS.get("mass_disk");
-  var solar_mass = CONST.get("solar_mass");
-
-  var Nstar = mass/solar_mass;
-
-  var bulge = BULGE(R);
-
-  var rotation_velocity = Math.sqrt(Rkm * (((Nstar*B*c*c*Rkm)/(2*R0km*R0km*R0km)) * bessel_func));
-
-  rotation_velocity = Math.sqrt(rotation_velocity*rotation_velocity + bulge);
-  
-  return rotation_velocity;
-}</textarea>
+      <div id="model_input"></div>
 
       <p>
       <button id="add_model" style="float:left">Add/Update model</button>
