@@ -72,6 +72,18 @@ function plot_deltav(data){
             .attr("font-weight", "bold")
             .style("font-size", "10px")
         }
+        else if(name == "VROT_MOND"){
+          deltav_dot.enter().append("text")  
+            .attr("class", "DELTAV")
+            .attr("x", function(d) { return x(d.R); })
+            .attr("y", function(d) { return y(d.deltav); })
+            .attr("opacity", get_opacity("DATA"))
+            .style("fill", function(d) { return get_color(name); })
+            .text("★")
+            .attr("text-anchor", "middle")
+            .attr("font-weight", "bold")
+            .style("font-size", "10px")
+        }
       })
 }
 

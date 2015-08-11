@@ -88,32 +88,41 @@ GalacticModel.prototype = {
 		var rotation_velocity = Math.sqrt(GR*GR + DARK*DARK);
 
 		return rotation_velocity;
-	}/*,
+	},
 	MOND: function(R) {
-		return 0;
+		// Constants
+		var mod        = CONVERT.cm_to_kpc(1);
+		var norm       = CONVERT.kpc_to_km(1);
+		var solar_mass = CONST.get("solar_mass");
+		var c          = CONST.get("speed_of_light");
+		var B          = CONST.get("schwarzschild_radius");
+		var cMod       = CONVERT.km_to_cm(c)*mod;
+		var BMod       = CONVERT.km_to_cm(B)*mod;
 
-		var a0;
-		var gr_rotation_velocity = this.GR(R);
-		var eta_i;
-		var big_R;
-		var q;
+		// Galaxy parameters
+		var R0kpc    = PARAMS.get("scale_length"); 
+		var R0gas    = 4*R0kpc;             // gas scale_length
+		var mass     = PARAMS.get("mass_disk");
+		var gas_mass = PARAMS.get("mass_hydrogen");
+		var Nstar    = mass/solar_mass;
+	    var Ng       = gas_mass/solar_mass; // number of gas stars
 
+		// MOND constants
+		var monda  = 1.23*Math.pow(10,-8); // cm/s^2 
+		var mondb  = 1.35*Math.pow(10,-8); // cm/s^2
+		var mondaf = 3.24077929*Math.pow(10,-22)*monda; // cm/s^2
+		var mondbf = 3.24077929*Math.pow(10,-5)*mondb; // cm/s^2
+
+		// General relativity contribution
+		var GR = this.GR(R);
+
+		var besx_gas = R/(2*R0gas);
+		var veln_gas = Math.pow(norm,2)*((Ng*BMod*Math.pow(cMod,2)*Math.pow(R,2))/(2*Math.pow(R0gas,3)))*(besseli(besx_gas,0)*besselk(besx_gas,0)-besseli(besx_gas,1)*besselk(besx_gas,1));
 		
+		var bulge = BULGE(R);
+		var mond =  GR*GR + veln_gas;
+		var rotation_velocity = Math.sqrt( mond + (mond * ((Math.sqrt((1 + ((norm*mondbf*R)/mond))) - 1)/2)));
 
-
-		// var solar_mass = CONST.get("solar_mass");
-
-		// var G0 = PARAMS.get("G0");
-		// var M0 = PARAMS.get("M0");
-
-		// var r0 = CONVERT.cm_to_kpc(PARAMS.get("MONDr0"));
-
-		// var M = PARAMS.get("mass_disk"); // TODO: Add mass_hydrogen (M_HI)
-
-		// var rotation_velocity = Math.sqrt((G0 * M)/R)*Math.sqrt(1 + Math.sqrt(M0/M)*(1-Math.exp(-R/r0)*(1+R/r0) ) );
-
-		// return rotation_velocity;
-		
-	}*/
-	
+		return rotation_velocity;		
+	}	
 };
