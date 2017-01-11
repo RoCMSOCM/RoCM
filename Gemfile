@@ -20,7 +20,7 @@ end
 
 gem 'pg'
 gem 'thin'
-gem 'devise'
+gem 'devise', '3.5.1'
 gem 'ransack'
 gem 'd3-rails', '3.5.5'
 
