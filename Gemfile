@@ -22,7 +22,7 @@ gem 'pg'
 gem 'thin'
 gem 'devise'
 gem 'ransack'
-gem 'd3-rails'
+gem 'd3-rails', '3.5.5'
 
 gem 'tzinfo-data'
 
@@ -35,7 +35,6 @@ gem 'underscore-rails'
 
 #heroku
 gem 'rails_12factor', group: :production
-ruby "2.0.0"
 
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
