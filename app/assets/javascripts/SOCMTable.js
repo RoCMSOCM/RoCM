@@ -67,13 +67,7 @@ function create_socm_table(param_data) {
 
 	var div_id = "socmt_wrapper";
 
-	$("#" + div_id).append($('<h2 style="display: inline-block;"/>').html("Scholarly Observed Celestial Measurements"));
-
-	// TODO: change the hardcoded link below
-	// because it will break eventually
-	$button_form = $('<form action="http://socm.herokuapp.com/galaxies/new" target="_blank" style="display: inline-block;float: right;"></form>');
-	$button_form.append('<input type="submit" value="Add New Galaxy">')
-	$("#" + div_id).append($button_form);
+	$("#" + div_id).append($("<h2/>").html("Scholarly Observed Celestial Measurements"));
 
 	var table_id = "galaxy_table";
 
