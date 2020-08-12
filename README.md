@@ -1,6 +1,8 @@
 Rotation Curve Modeler (RoCM)
 =============
 
+Tool: [Rotation Curve Modeler](http://rotationcurve.herokuapp.com/)
+
 - **[Robert Moss](mailto:mossr@wit.edu)** <sup>(1)</sup>
 - **[Alex Clement](mailto:clementa1@wit.edu)** <sup>(1)</sup>
 
